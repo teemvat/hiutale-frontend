@@ -1,57 +1,49 @@
 package controller;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert;
-import utils.SessionManager;
 
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.OutputStream;
 import java.util.Scanner;
 
-public class LoginController {
+public class UserController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
+    @FXML private TextField emailField;
 
-    public void login() {
+    public void edit() {
         String username = usernameField.getText();
         String password = passwordField.getText();
+        String email = emailField.getText();
 
         try {
-            // Connect to the backend REST API
-            URL url = new URL("http://localhost:8080/api/users/login");
+            URL url = new URL("http://localhost:8080/api/users/edit"); // Placeholder backend URL
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setDoOutput(true);
 
-            // Send request parameters
-            String requestBody = "username=" + username + "&password=" + password;
+            String requestBody = "username=" + username + "&password=" + password + "&email=" + email;
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(requestBody.getBytes());
             }
 
-            // Read response
             Scanner scanner = new Scanner(conn.getInputStream());
             String response = scanner.hasNext() ? scanner.next() : "";
             scanner.close();
 
-            // Check the response & store session
             if (response.contains("success")) {
-                showAlert("Success", "Login successful!");
-                SessionManager.getInstance().login(username);
+                showAlert("Success", "Edit successful!");
             } else {
-                showAlert("Error", "Invalid credentials.");
+                showAlert("Error", "Edit failed.");
             }
-
         } catch (Exception e) {
             showAlert("Error", "Cannot connect to server.");
         }
-    }
-
-    private void logout() {
-        SessionManager.getInstance().logout();
     }
 
     private void showAlert(String title, String message) {
