@@ -60,7 +60,7 @@ public class UserController {
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setDoOutput(true);
 
-            String requestBody = "username=" + username + "&password=" + password + "&email=" + email;
+            String requestBody = "username=" + username + "&password=" + password + "&email=" + email + "&role=user";
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(requestBody.getBytes());
             }
@@ -81,7 +81,7 @@ public class UserController {
             System.out.println("Cannot connect to server.");
             return null;
         }
-    }
+    } // tää ehkä jo toimis backissa
 
     public static User edit(String username, String password, String email) {
 
