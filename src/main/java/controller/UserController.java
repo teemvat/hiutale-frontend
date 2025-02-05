@@ -1,24 +1,89 @@
 package controller;
+import model.User;
+import utils.SessionManager;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.Alert;
-
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.io.OutputStream;
 import java.util.Scanner;
 
-public class UserController {
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
-    @FXML private TextField emailField;
 
-    public void edit() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String email = emailField.getText();
+public class UserController {
+
+    public static User login(String username, String password) {
+
+        try {
+            // Connect to the backend REST API
+            URL url = new URL("http://localhost:8080/api/users/login");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setDoOutput(true);
+
+            // Send request parameters
+            String requestBody = "username=" + username + "&password=" + password;
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(requestBody.getBytes());
+            }
+
+            // Read response
+            Scanner scanner = new Scanner(conn.getInputStream());
+            String response = scanner.hasNext() ? scanner.next() : "";
+            scanner.close();
+
+            // Check the response & store session
+            if (response.contains("success")) {
+                User user = new User(username, password);
+                SessionManager.getInstance().login(user);
+
+                return user;
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Cannot connect to server.");
+            return null;
+        }
+    }
+
+    private static void logout() {
+        SessionManager.getInstance().logout();
+    }
+
+    public static User register(String username, String password, String email) {
+
+        try {
+            URL url = new URL("http://localhost:8080/api/users/register"); // Placeholder backend URL
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setDoOutput(true);
+
+            String requestBody = "username=" + username + "&password=" + password + "&email=" + email;
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(requestBody.getBytes());
+            }
+
+            Scanner scanner = new Scanner(conn.getInputStream());
+            String response = scanner.hasNext() ? scanner.next() : "";
+            scanner.close();
+
+            if (response.contains("success")) {
+                User user = new User(username, password);
+                SessionManager.getInstance().login(user);
+
+                return user;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Cannot connect to server.");
+            return null;
+        }
+    }
+
+    public static User edit(String username, String password, String email) {
 
         try {
             URL url = new URL("http://localhost:8080/api/users/edit"); // Placeholder backend URL
@@ -37,20 +102,16 @@ public class UserController {
             scanner.close();
 
             if (response.contains("success")) {
-                showAlert("Success", "Edit successful!");
+                User user = new User(username, password);
+                SessionManager.getInstance().login(user);
+
+                return user;
             } else {
-                showAlert("Error", "Edit failed.");
+                return null;
             }
         } catch (Exception e) {
-            showAlert("Error", "Cannot connect to server.");
+            System.out.println("Cannot connect to server.");
+            return null;
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

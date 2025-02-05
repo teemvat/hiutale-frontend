@@ -1,8 +1,10 @@
 package utils;
 
+import model.User;
+
 public class SessionManager {
     private static SessionManager instance;
-    private String username;
+    private User user;
 
     private SessionManager() { }
 
@@ -13,19 +15,19 @@ public class SessionManager {
         return instance;
     }
 
-    public void login(String username) {
-        this.username = username;
+    public void login(User user) {
+        this.user = user;
     }
 
     public void logout() {
-        this.username = null;
+        this.user = null;
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
     public boolean isLoggedIn() {
-        return username != null;
+        return user != null;
     }
 }
