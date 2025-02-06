@@ -114,4 +114,25 @@ public class UserController {
             return null;
         }
     }
+
+    public static User getUser(String username) {
+        try {
+            URL url = new URL("http://localhost:8080/api/users/get?username=" + username); // Placeholder backend URL
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            Scanner scanner = new Scanner(conn.getInputStream());
+            String response = scanner.hasNext() ? scanner.next() : "";
+            scanner.close();
+
+            if (response.contains("success")) {
+                return new User(username, "");
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Cannot connect to server.");
+            return null;
+        }
+    }
 }

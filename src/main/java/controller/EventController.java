@@ -14,7 +14,7 @@ public class EventController {
     public static boolean createEvent(String eventName, String eventDate, String eventLocation, String eventDescription, String eventCapacity, String eventPrice, String eventCategory) {
 
         try {
-            URL url = new URL("http://localhost:8080/api/events/create"); // Placeholder backend URL
+            URL url = new URL("http://localhost:8080/api/events"); // Placeholder backend URL
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -39,7 +39,7 @@ public class EventController {
     public static boolean editEvent(String eventName, String eventDate, String eventLocation, String eventDescription, String eventCapacity, String eventPrice, String eventCategory) {
 
         try {
-            URL url = new URL("http://localhost:8080/api/events/edit"); // Placeholder backend URL
+            URL url = new URL("http://localhost:8080/api/events"); // Placeholder backend URL
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -108,9 +108,9 @@ public class EventController {
                 .collect(Collectors.joining("&"));
 
         try {
-            URL url = new URL("http://localhost:8080/api/events/search"); // Placeholder backend URL
+            URL url = new URL("http://localhost:8080/api/events"); // Placeholder backend URL
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setDoOutput(true);
 
