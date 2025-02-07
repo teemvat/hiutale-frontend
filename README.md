@@ -1,0 +1,1 @@
+Type mvn clean javafx:run in terminal to run.
