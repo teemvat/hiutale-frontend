@@ -1,7 +1,6 @@
 package controller;
 
 import model.Event;
-import model.User;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
