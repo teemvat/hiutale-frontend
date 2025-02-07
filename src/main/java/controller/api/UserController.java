@@ -1,4 +1,4 @@
-package controller;
+package controller.api;
 import model.User;
 import utils.SessionManager;
 

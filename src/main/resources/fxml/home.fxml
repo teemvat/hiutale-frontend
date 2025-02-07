@@ -58,7 +58,7 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
-<SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+<SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.HomeController">
    <items>
       <VBox prefHeight="373.0" prefWidth="251.0">
          <children>
