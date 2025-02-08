@@ -42,6 +42,9 @@ public class HomeController {
     private Button profileButton;
 
     @FXML
+    private Button logoutButton;
+
+    @FXML
     private Button addEventButton;
 
     @FXML
@@ -79,6 +82,20 @@ public class HomeController {
     private void handleProfileAction(ActionEvent event) {
         // Placeholder profile function
         System.out.println("Profile button clicked");
+    }
+
+    @FXML
+    private void handleLogoutAction(ActionEvent event) {
+        // Perform logout logic here
+        System.out.println("Logout successful");
+        try {
+            Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+            Scene homeScene = new Scene(homePage);
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.setScene(homeScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
