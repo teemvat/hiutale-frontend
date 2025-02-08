@@ -1,5 +1,7 @@
 package controller.ui;
 
+import controller.api.EventController;
+import controller.api.UserController;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,23 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.converter.NumberStringConverter;
-import java.util.function.UnaryOperator;
-
-
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.function.UnaryOperator;
 
 import java.io.IOException;
@@ -77,8 +62,8 @@ public class HomeController {
     @FXML
     private void initialize() {
         // Initialize ChoiceBox items
-        sortChoiceBox.setItems(FXCollections.observableArrayList("Sort A-Z", "Sort Z-A", "Sort by Date"));
-        calendarSortChoiceBox.setItems(FXCollections.observableArrayList("Sort A-Z", "Sort Z-A", "Sort by Date"));
+        sortChoiceBox.setItems(FXCollections.observableArrayList("Edullisin ensin", "Kallein ensin", "Päivämäärän mukaan", "Lajittele A-Ö, Lajittele Ö-A"));
+        calendarSortChoiceBox.setItems(FXCollections.observableArrayList("Edullisin ensin", "Kallein ensin", "Päivämäärän mukaan", "Lajittele A-Ö, Lajittele Ö-A"));
 
         // Add a TextFormatter to ensure only numbers can be typed in the price fields
         configurePriceFields();
@@ -101,7 +86,15 @@ public class HomeController {
 
     @FXML
     private void handleSearchAction(ActionEvent event) {
-        // Placeholder search function
+        String searchQuery = searchField.getText();
+        String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "";
+        String eventType = eventTypeComboBox.getValue();
+        String location = locationComboBox.getValue();
+        String organizer = organizerComboBox.getValue();
+        String minPrice = minPriceField.getText();
+        String maxPrice = maxPriceField.getText();
+
+        EventController.searchEvents(searchQuery, eventType, date, location, minPrice, maxPrice, organizer);
         System.out.println("Search button clicked");
     }
 
@@ -120,14 +113,14 @@ public class HomeController {
 
     @FXML
     private void handleProfileAction(ActionEvent event) {
-        // Placeholder profile function
+        // TODO: Add functionality
         System.out.println("Profile button clicked");
     }
 
     @FXML
     private void handleLogoutAction(ActionEvent event) {
-        // Perform logout logic here
-        System.out.println("Logout successful");
+        UserController.logout();
+        System.out.println("Logout button clicked");
         try {
             Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
             Scene homeScene = new Scene(homePage);
@@ -157,7 +150,7 @@ public class HomeController {
 
     @FXML
     private void handleSortAction(ActionEvent event) {
-        // Placeholder sort function
+        // TODO: sort function
         ChoiceBox<String> source = (ChoiceBox<String>) event.getSource();
         String selectedSortMethod = source.getValue();
         System.out.println("Sort method selected: " + selectedSortMethod);

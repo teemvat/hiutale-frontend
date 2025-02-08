@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,9 @@ public class SignupController {
 
     @FXML
     private Label confirmPasswordError;
+
+    @FXML
+    private Label signupError;
 
     @FXML
     private Button signupButton;
@@ -74,15 +78,17 @@ public class SignupController {
         }
 
         if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && password.equals(confirmPassword)) {
-            // Perform signup logic here
-            System.out.println("Signup successful");
-            try {
-                Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
-                Scene homeScene = new Scene(homePage);
-                Stage stage = (Stage) signupButton.getScene().getWindow();
-                stage.setScene(homeScene);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (UserController.register(username, password, email) != null) {
+                try {
+                    Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
+                    Scene homeScene = new Scene(homePage);
+                    Stage stage = (Stage) signupButton.getScene().getWindow();
+                    stage.setScene(homeScene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                signupError.setText("Signup failed");
             }
         }
     }
@@ -100,6 +106,6 @@ public class SignupController {
     }
 
     public void initialize() {
-        // Initialization logic if needed
+        // TODO: Initialization logic if needed
     }
 }

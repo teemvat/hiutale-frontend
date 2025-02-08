@@ -88,6 +88,7 @@
          </children>
       </GridPane>
       <Button fx:id="signupButton" mnemonicParsing="false" onAction="#handleSignupAction" prefHeight="33.0" prefWidth="290.0" text="Signup" />
+      <Label fx:id="signupError" alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="15.0" prefWidth="290.0" textFill="RED" />
       <Hyperlink fx:id="loginLink" onAction="#handleLoginAction" text="here." underline="true">
          <graphic>
             <Label text="Already have an account? Login" />
