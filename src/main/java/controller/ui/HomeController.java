@@ -9,6 +9,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
+import java.util.function.UnaryOperator;
+
+
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 import java.io.IOException;
 
@@ -30,7 +48,10 @@ public class HomeController {
     private ComboBox<String> organizerComboBox;
 
     @FXML
-    private Slider priceRangeSlider;
+    private TextField minPriceField;
+
+    @FXML
+    private TextField maxPriceField;
 
     @FXML
     private Button searchButton;
@@ -58,6 +79,24 @@ public class HomeController {
         // Initialize ChoiceBox items
         sortChoiceBox.setItems(FXCollections.observableArrayList("Sort A-Z", "Sort Z-A", "Sort by Date"));
         calendarSortChoiceBox.setItems(FXCollections.observableArrayList("Sort A-Z", "Sort Z-A", "Sort by Date"));
+
+        // Add a TextFormatter to ensure only numbers can be typed in the price fields
+        configurePriceFields();
+    }
+
+    private void configurePriceFields() {
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*(\\.\\d{0,2})?")) { // Vain numerot ja max 2 desimaalia
+                return change;
+            }
+            return null;
+        };
+
+        TextFormatter<String> minFormatter = new TextFormatter<>(filter);
+        TextFormatter<String> maxFormatter = new TextFormatter<>(filter);
+        minPriceField.setTextFormatter(minFormatter);
+        maxPriceField.setTextFormatter(maxFormatter);
     }
 
     @FXML
@@ -74,7 +113,8 @@ public class HomeController {
         eventTypeComboBox.getSelectionModel().clearSelection();
         locationComboBox.getSelectionModel().clearSelection();
         organizerComboBox.getSelectionModel().clearSelection();
-        priceRangeSlider.setValue(0);
+        minPriceField.clear();
+        maxPriceField.clear();
         System.out.println("Reset button clicked");
     }
 
