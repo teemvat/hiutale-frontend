@@ -46,7 +46,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox alignment="CENTER" prefHeight="376.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.SignupController">
    <children>
       <ImageView fitHeight="86.0" fitWidth="106.0" pickOnBounds="true" preserveRatio="true">
@@ -67,9 +66,9 @@
       </Label>
       <GridPane alignment="CENTER" hgap="10.0" prefHeight="161.0" prefWidth="640.0" vgap="5.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="200.5" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="278.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="401.5" minWidth="10.0" prefWidth="198.5" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="160.5" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="290.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="401.5" minWidth="10.0" prefWidth="160.5" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -78,7 +77,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="usernameField" prefHeight="25.0" prefWidth="247.0" promptText="Username" GridPane.columnIndex="1" />
+            <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="290.0" promptText="Username" GridPane.columnIndex="1" />
             <TextField fx:id="emailField" prefHeight="25.0" prefWidth="247.0" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="200.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <PasswordField fx:id="confirmPasswordField" prefHeight="25.0" prefWidth="200.0" promptText="Password again" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -88,8 +87,8 @@
             <Label fx:id="passwordError" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Button fx:id="signupButton" mnemonicParsing="false" prefHeight="33.0" prefWidth="158.0" text="Signup" onAction="#handleSignupAction"/>
-      <Hyperlink fx:id="loginLink" text="here." underline="true" onAction="#handleLoginAction">
+      <Button fx:id="signupButton" mnemonicParsing="false" onAction="#handleSignupAction" prefHeight="33.0" prefWidth="290.0" text="Signup" />
+      <Hyperlink fx:id="loginLink" onAction="#handleLoginAction" text="here." underline="true">
          <graphic>
             <Label text="Already have an account? Login" />
          </graphic>

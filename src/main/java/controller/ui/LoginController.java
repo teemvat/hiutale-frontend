@@ -28,6 +28,9 @@ public class LoginController {
     private Button loginButton;
 
     @FXML
+    private Button loginAsGuestButton;
+
+    @FXML
     private Hyperlink signupLink;
 
     @FXML
@@ -58,6 +61,20 @@ public class LoginController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    private void handleLoginAsGuestAction(ActionEvent event) {
+        // Perform login logic here
+        System.out.println("Login as guest successful");
+        try {
+            Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
+            Scene homeScene = new Scene(homePage);
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(homeScene);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

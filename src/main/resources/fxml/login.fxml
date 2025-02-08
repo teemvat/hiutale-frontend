@@ -42,6 +42,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -81,8 +82,13 @@
             <Label fx:id="passwordError" prefHeight="17.0" prefWidth="182.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="33.0" prefWidth="158.0" text="Login" onAction="#handleLoginAction" />
-      <Hyperlink fx:id="signupLink" text="here." underline="true" onAction="#handleSignupAction">
+      <HBox alignment="CENTER" prefHeight="26.0" prefWidth="620.0" spacing="10.0">
+         <children>
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginAction" prefHeight="33.0" prefWidth="120.0" text="Login" />
+            <Button fx:id="loginAsGuestButton" mnemonicParsing="false" onAction="#handleLoginAsGuestAction" prefHeight="33.0" prefWidth="120.0" text="Login as guest." />
+         </children>
+      </HBox>
+      <Hyperlink fx:id="signupLink" onAction="#handleSignupAction" text="here." underline="true">
          <graphic>
             <Label text="New user? Signup" />
          </graphic>
