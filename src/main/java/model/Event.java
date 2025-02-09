@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 
 public class Event {
+    private String eventId;
     private String eventTitle;
     private String eventDescription;
     private String eventLocationId;
@@ -15,7 +16,8 @@ public class Event {
     private String endTime;
     private double eventPrice;
 
-    public Event(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizer, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizer, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+        this.eventId = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventLocationId = eventLocationId;
@@ -115,5 +117,13 @@ public class Event {
 
     public void setEventPrice(double eventPrice) {
         this.eventPrice = eventPrice;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 }

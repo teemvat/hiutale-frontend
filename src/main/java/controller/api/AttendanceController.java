@@ -3,6 +3,7 @@ package controller.api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Event;
+import utils.SessionManager;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -15,6 +16,7 @@ import java.util.Scanner;
 public class AttendanceController {
     private static final Gson gson = new Gson();
 
+    // voi tarvita jotain muuta sisään
     public static boolean createAttendance(String eventID, String userID) {
         try {
             URL url = new URL("http://localhost:8080/api/attendance/create"); // Backend URL
@@ -41,6 +43,7 @@ public class AttendanceController {
         }
     }
 
+    // tähän oikeat tiedot sisään toiminnalissuuden toteuttamiseksi
     public static boolean deleteAttendance(String eventID, String userID) {
         try {
             URL url = new URL("http://localhost:8080/api/attendance/delete"); // Backend URL
@@ -67,14 +70,17 @@ public class AttendanceController {
         }
     }
 
-    public static List<Event> getUserAttendances(String userID) {
-        return fetchAttendanceData("userID", userID);
+    public static List<Event> getUserAttendances() {
+        String username = SessionManager.getInstance().getUserName();
+        return fetchAttendanceData("username", username);
     }
 
-    public static List<Event> getEventAttendances(String eventID) {
-        return fetchAttendanceData("eventID", eventID);
+    public static List<Event> getEventAttendances(Event event) {
+
+        return fetchAttendanceData("eventID", event.getEventId());
     }
 
+    // utility funktio
     private static List<Event> fetchAttendanceData(String key, String value) {
         List<Event> events = new ArrayList<>();
 
