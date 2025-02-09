@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Event {
     private String eventTitle;
     private String eventDescription;
@@ -8,18 +10,18 @@ public class Event {
     private String eventOrganizer;
     private String eventCategories;
     private String eventStatus;
-    private String eventDate;
+    private LocalDate eventDate;
     private String eventTime;
     private double eventPrice;
 
-    public Event(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizer, String eventCategories, String eventStatus, String eventDate, String eventTime, double eventPrice) {
+    public Event(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizer, String eventCategories, String eventStatus, LocalDate eventDate, String eventTime, double eventPrice) {
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventLocationId = eventLocationId;
         this.eventCapacity = Integer.parseInt(eventCapacity);
         this.eventOrganizer = eventOrganizer;
         this.eventCategories = eventCategories;
-        this.eventStatus = eventStatus;
+        this.eventStatus = (eventStatus != null && !eventStatus.isEmpty()) ? eventStatus : "Default";
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.eventPrice = eventPrice;
@@ -81,11 +83,11 @@ public class Event {
         this.eventStatus = eventStatus;
     }
 
-    public String getEventDate() {
+    public LocalDate getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(String eventDate) {
+    public void setEventDate(LocalDate eventDate) {
         this.eventDate = eventDate;
     }
 

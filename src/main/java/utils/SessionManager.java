@@ -39,4 +39,7 @@ public class SessionManager {
     public String getToken(){
         return token;
     }
+    public String getUserName(){
+        return user.getUsername();
+    }
 }
