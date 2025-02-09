@@ -181,7 +181,17 @@ public class NewEventController {
                 // TODO: change eventPrice to minPrice and maxPrice
                 // TODO: send image as well
                 // TODO: check if its possible to return boolean from the createEvent method (now returns only false/value)
-                boolean isEventCreated = EventController.createEvent(eventName, eventDate.toString(), eventLocation, eventDescription, eventCapacity, eventPrice, eventType);
+                boolean isEventCreated = EventController.createEvent(
+                        eventName,
+                        eventDescription,
+                        eventLocation,
+                        eventCapacity,
+                        eventType,
+                        eventDate,
+                        "00:00",
+                        "23:59",
+                        Double.parseDouble(eventPrice)
+                ); // TODO: fiksailin nää vähän nopeesti et saa testejä ajettua :')
                 if (isEventCreated) {
                     System.out.println("Event created successfully");
                     // Close the new event window

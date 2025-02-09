@@ -27,11 +27,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getToken() {
         return token;
     }
 
-    public void setPassword(String password) {
+    public void setToken(String password) {
         this.token = token;
     }
 }
