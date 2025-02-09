@@ -1,4 +1,5 @@
 package controller.api;
+import com.google.gson.Gson;
 import model.User;
 import utils.SessionManager;
 
@@ -9,8 +10,9 @@ import java.util.Scanner;
 
 
 public class UserController {
+    private static final Gson gson = new Gson();
 
-    public static User login(String username, String password) {
+    public static User login(String email, String password) {
 
         try {
             // Connect to the backend REST API
@@ -21,7 +23,7 @@ public class UserController {
             conn.setDoOutput(true);
 
             // Send request parameters
-            String requestBody = "username=" + username + "&password=" + password;
+            String requestBody = "email=" + email + "&password=" + password;
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(requestBody.getBytes());
             }
@@ -33,8 +35,9 @@ public class UserController {
 
             // Check the response & store session
             if (response.contains("success")) {
-                User user = new User(username, password);
+                User user = gson.fromJson(response, User.class); // muuttaa olion jsonista
                 SessionManager.getInstance().login(user);
+
 
                 return user;
             } else {
@@ -51,7 +54,7 @@ public class UserController {
         SessionManager.getInstance().logout();
     }
 
-    public static User register(String username, String password, String email) {
+    public static User register(String email, String password, String username) {
 
         try {
             URL url = new URL("http://localhost:8080/api/users/register"); // Placeholder backend URL
@@ -70,7 +73,7 @@ public class UserController {
             scanner.close();
 
             if (response.contains("success")) {
-                User user = new User(username, password);
+                User user = gson.fromJson(response, User.class);
                 SessionManager.getInstance().login(user);
 
                 return user;
@@ -81,9 +84,9 @@ public class UserController {
             System.out.println("Cannot connect to server.");
             return null;
         }
-    } // tää ehkä jo toimis backissa
+    }
 
-    public static User edit(String username, String password, String email) {
+    public static User edit(String email, String password, String username) {
 
         try {
             URL url = new URL("http://localhost:8080/api/users/edit"); // Placeholder backend URL
@@ -102,8 +105,8 @@ public class UserController {
             scanner.close();
 
             if (response.contains("success")) {
-                User user = new User(username, password);
-                SessionManager.getInstance().login(user);
+                User user = gson.fromJson(response, User.class);
+                SessionManager.getInstance().login(user); // ei varsinaisesti login mut päivittää tiedot tonne
 
                 return user;
             } else {
@@ -117,7 +120,7 @@ public class UserController {
 
     public static User getUser(String username) {
         try {
-            URL url = new URL("http://localhost:8080/api/users/get?username=" + username); // Placeholder backend URL
+            URL url = new URL("http://localhost:8080/api/users/get?username=" + username); // Hakee usernamella nyt, pitäskö olla email?
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -126,7 +129,7 @@ public class UserController {
             scanner.close();
 
             if (response.contains("success")) {
-                return new User(username, "");
+                return gson.fromJson(response, User.class);
             } else {
                 return null;
             }

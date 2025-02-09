@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +49,7 @@ public class LoginController {
         }
 
         if (!email.isEmpty() && !password.isEmpty()) {
-            // Perform login logic here
+            UserController.login(email, password); // loginin funktio
             System.out.println("Login successful");
             try {
                 Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));

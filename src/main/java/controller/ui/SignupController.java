@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,7 +75,7 @@ public class SignupController {
         }
 
         if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && password.equals(confirmPassword)) {
-            // Perform signup logic here
+            UserController.register(email, password, username); // signupin funktio
             System.out.println("Signup successful");
             try {
                 Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));

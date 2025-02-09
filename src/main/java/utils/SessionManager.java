@@ -5,6 +5,7 @@ import model.User;
 public class SessionManager {
     private static SessionManager instance;
     private User user;
+    private String token;
 
     private SessionManager() { }
 
@@ -29,5 +30,13 @@ public class SessionManager {
 
     public boolean isLoggedIn() {
         return user != null;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken(){
+        return token;
     }
 }
