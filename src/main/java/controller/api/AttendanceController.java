@@ -1,24 +1,31 @@
 package controller.api;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.Event;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AttendanceController {
+    private static final Gson gson = new Gson();
 
     public static boolean createAttendance(String eventID, String userID) {
         try {
-            URL url = new URL("http://localhost:8080/api/attendance/create"); // Placeholder backend URL
+            URL url = new URL("http://localhost:8080/api/attendance/create"); // Backend URL
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setDoOutput(true);
 
-            String requestBody = "eventID=" + eventID + "&userID=" + userID;
+            String requestBody = "eventID=" + URLEncoder.encode(eventID, "UTF-8") +
+                    "&userID=" + URLEncoder.encode(userID, "UTF-8");
+
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(requestBody.getBytes());
             }
@@ -36,13 +43,15 @@ public class AttendanceController {
 
     public static boolean deleteAttendance(String eventID, String userID) {
         try {
-            URL url = new URL("http://localhost:8080/api/attendance/delete"); // Placeholder backend URL
+            URL url = new URL("http://localhost:8080/api/attendance/delete"); // Backend URL
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setDoOutput(true);
 
-            String requestBody = "eventID=" + eventID + "&userID=" + userID;
+            String requestBody = "eventID=" + URLEncoder.encode(eventID, "UTF-8") +
+                    "&userID=" + URLEncoder.encode(userID, "UTF-8");
+
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(requestBody.getBytes());
             }
@@ -58,47 +67,34 @@ public class AttendanceController {
         }
     }
 
-    public static ArrayList<Event> getUserAttendances(String userID) {
-        ArrayList<Event> events = new ArrayList<>();
+    public static List<Event> getUserAttendances(String userID) {
+        return fetchAttendanceData("userID", userID);
+    }
+
+    public static List<Event> getEventAttendances(String eventID) {
+        return fetchAttendanceData("eventID", eventID);
+    }
+
+    private static List<Event> fetchAttendanceData(String key, String value) {
+        List<Event> events = new ArrayList<>();
 
         try {
-            URL url = new URL("http://localhost:8080/api/attendance/get?userID=" + userID); // Placeholder backend URL
+            URL url = new URL("http://localhost:8080/api/attendance/get?" + key + "=" + URLEncoder.encode(value, "UTF-8"));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
             Scanner scanner = new Scanner(conn.getInputStream());
+            StringBuilder jsonResponse = new StringBuilder();
             while (scanner.hasNext()) {
-                String[] eventDetails = scanner.next().split(",");
-                events.add(new Event(eventDetails[0], eventDetails[1], eventDetails[2], eventDetails[3], eventDetails[4], eventDetails[5], eventDetails[6], eventDetails[7], eventDetails[8], Double.parseDouble(eventDetails[9])));
+                jsonResponse.append(scanner.next());
             }
             scanner.close();
+
+            events = gson.fromJson(jsonResponse.toString(), new TypeToken<List<Event>>(){}.getType());
         } catch (Exception e) {
             System.out.println("Cannot connect to server.");
         }
 
         return events;
     }
-
-    public static ArrayList<Event> getEventAttendances(String eventID) {
-        ArrayList<Event> events = new ArrayList<>();
-
-        try {
-            URL url = new URL("http://localhost:8080/api/attendance/get?eventID=" + eventID); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            while (scanner.hasNext()) {
-                String[] eventDetails = scanner.next().split(",");
-                events.add(new Event(eventDetails[0], eventDetails[1], eventDetails[2], eventDetails[3], eventDetails[4], eventDetails[5], eventDetails[6], eventDetails[7], eventDetails[8], Double.parseDouble(eventDetails[9])));
-            }
-            scanner.close();
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-        }
-
-        return events;
-    }
-
-    // vois olla viel joku edit attendance jos haluaa vaihtaa useria lipulla
 }

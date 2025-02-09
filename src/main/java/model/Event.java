@@ -11,19 +11,21 @@ public class Event {
     private String eventCategories;
     private String eventStatus;
     private LocalDate eventDate;
-    private String eventTime;
+    private String startTime;
+    private String endTime;
     private double eventPrice;
 
-    public Event(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizer, String eventCategories, String eventStatus, LocalDate eventDate, String eventTime, double eventPrice) {
+    public Event(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizer, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventLocationId = eventLocationId;
         this.eventCapacity = Integer.parseInt(eventCapacity);
         this.eventOrganizer = eventOrganizer;
         this.eventCategories = eventCategories;
-        this.eventStatus = (eventStatus != null && !eventStatus.isEmpty()) ? eventStatus : "Default";
+        this.eventStatus = "Default";
         this.eventDate = eventDate;
-        this.eventTime = eventTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.eventPrice = eventPrice;
     }
 
@@ -91,12 +93,20 @@ public class Event {
         this.eventDate = eventDate;
     }
 
-    public String getEventTime() {
-        return eventTime;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public double getEventPrice() {

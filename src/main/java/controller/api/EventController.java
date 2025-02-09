@@ -48,15 +48,15 @@ public class EventController {
         }
     }
 
-    public static boolean createEvent(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventStatus, LocalDate eventDate, String eventTime, double eventPrice) {
-        Event event = new Event(eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventStatus, eventDate, eventTime, eventPrice);
+    public static boolean createEvent(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+        Event event = new Event(eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventDate, startTime, endTime, eventPrice);
         String requestBody = gson.toJson(event);
         String response = sendHttpRequest("POST", "", requestBody);
         return response.contains("success");
     }
 
-    public static boolean editEvent(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventStatus, LocalDate eventDate, String eventTime, double eventPrice) {
-        Event event = new Event(eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventStatus, eventDate, eventTime, eventPrice);
+    public static boolean editEvent(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+        Event event = new Event(eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventDate, startTime, endTime, eventPrice);
         String requestBody = gson.toJson(event);
         String response = sendHttpRequest("PUT", "", requestBody);
         return response.contains("success");
