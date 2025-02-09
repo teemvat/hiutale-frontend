@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.User;
 
 import java.io.IOException;
 
@@ -27,6 +28,9 @@ public class LoginController {
 
     @FXML
     private Button loginButton;
+
+    @FXML
+    private Button loginAsGuestButton;
 
     @FXML
     private Hyperlink signupLink;
@@ -49,16 +53,35 @@ public class LoginController {
         }
 
         if (!email.isEmpty() && !password.isEmpty()) {
-            UserController.login(email, password); // loginin funktio
-            System.out.println("Login successful");
-            try {
-                Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
-                Scene homeScene = new Scene(homePage);
-                Stage stage = (Stage) loginButton.getScene().getWindow();
-                stage.setScene(homeScene);
-            } catch (IOException e) {
-                e.printStackTrace();
+            User user = UserController.login(email, password);
+            if (user != null) {
+                System.out.println("Login successful");
+                try {
+                    Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
+                    Scene homeScene = new Scene(homePage);
+                    Stage stage = (Stage) loginButton.getScene().getWindow();
+                    stage.setScene(homeScene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Login failed");
+                emailError.setText("Invalid email or password");
+                passwordError.setText("Invalid email or password");
             }
+        }
+    }
+
+    @FXML
+    private void handleLoginAsGuestAction(ActionEvent event) {
+        System.out.println("Login as guest");
+        try {
+            Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
+            Scene homeScene = new Scene(homePage);
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(homeScene);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -75,6 +98,6 @@ public class LoginController {
     }
 
     public void initialize() {
-        // TODO
+        // TODO: if needed
     }
 }

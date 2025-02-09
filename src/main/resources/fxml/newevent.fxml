@@ -47,7 +47,7 @@
 
 <VBox alignment="CENTER" prefHeight="376.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.NewEventController">
    <children>
-      <ImageView fx:id="eventImageView" fitHeight="133.0" fitWidth="349.0" pickOnBounds="true">
+      <ImageView fx:id="eventImageView" fitHeight="114.0" fitWidth="411.0" pickOnBounds="true">
          <image>
             <Image url="@../pictures/placeholder_image_portrait.png" />
          </image>
@@ -55,34 +55,43 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </ImageView>
-      <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#handleSelectImageAction" text="Valitse kuva" />
-      <GridPane alignment="CENTER" hgap="10.0" prefHeight="161.0" prefWidth="640.0" vgap="5.0">
+      <GridPane alignment="CENTER" hgap="10.0" prefHeight="166.0" prefWidth="554.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="200.5" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="278.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="401.5" minWidth="10.0" prefWidth="198.5" />
+            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="212.5" />
+          <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="401.5" minWidth="10.0" prefWidth="205.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
+          <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="20.0" prefHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="eventNameField" prefHeight="25.0" prefWidth="247.0" promptText="Tapahtuman nimi" GridPane.columnIndex="1" />
-            <Label fx:id="eventNameError" prefHeight="17.0" prefWidth="183.0" textFill="RED" GridPane.columnIndex="2" />
-            <DatePicker fx:id="eventDatePicker" editable="false" prefHeight="25.0" prefWidth="259.0" promptText="Tapahtumapäivä" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="eventDateError" prefHeight="17.0" prefWidth="217.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <ComboBox fx:id="eventLocationComboBox" editable="true" prefHeight="25.0" prefWidth="261.0" promptText="Sijainti" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="eventLocationError" prefHeight="17.0" prefWidth="186.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <ComboBox fx:id="eventTypeComboBox" editable="true" prefHeight="25.0" prefWidth="263.0" promptText="Tapahtumatyyppi" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="eventTypeError" prefHeight="17.0" prefWidth="216.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextField fx:id="eventPriceField" promptText="Hinta (€)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label fx:id="eventPriceError" prefHeight="17.0" prefWidth="216.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#handleSelectImageAction" text="Valitse kuva" />
+            <Label fx:id="eventImageError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="1" />
+            <TextField fx:id="eventNameField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman nimi" GridPane.rowIndex="2" />
+            <Label fx:id="eventNameError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="3" />
+            <TextField fx:id="eventDescriptionField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman kuvaus" GridPane.rowIndex="4" />
+            <Label fx:id="eventDescriptionError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="5" />
+            <ComboBox fx:id="eventTypeComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumatyyppi" GridPane.rowIndex="6" />
+            <Label fx:id="eventTypeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="7" />
+            <DatePicker fx:id="eventDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumapäivä" GridPane.columnIndex="1" />
+            <Label fx:id="eventDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="eventLocationComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Sijainti" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="eventLocationError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="eventCapacityField" prefHeight="25.0" prefWidth="250.0" promptText="Kapasiteetti (kpl)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="eventCapacityError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="eventPriceField" prefHeight="25.0" prefWidth="250.0" promptText="Hinta (€)" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label fx:id="eventPriceError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#handleAddEventAction" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="8" />
          </children>
       </GridPane>
-      <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#handleAddEventAction" prefHeight="25.0" prefWidth="251.0" text="Lisää tapahtuma" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

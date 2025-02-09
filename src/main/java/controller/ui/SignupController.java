@@ -38,6 +38,9 @@ public class SignupController {
     private Label confirmPasswordError;
 
     @FXML
+    private Label signupError;
+
+    @FXML
     private Button signupButton;
 
     @FXML
@@ -75,15 +78,17 @@ public class SignupController {
         }
 
         if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && password.equals(confirmPassword)) {
-            UserController.register(email, password, username); // signupin funktio
-            System.out.println("Signup successful");
-            try {
-                Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
-                Scene homeScene = new Scene(homePage);
-                Stage stage = (Stage) signupButton.getScene().getWindow();
-                stage.setScene(homeScene);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (UserController.register(username, password, email) != null) {
+                try {
+                    Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
+                    Scene homeScene = new Scene(homePage);
+                    Stage stage = (Stage) signupButton.getScene().getWindow();
+                    stage.setScene(homeScene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                signupError.setText("Signup failed");
             }
         }
     }
@@ -101,6 +106,6 @@ public class SignupController {
     }
 
     public void initialize() {
-        // Initialization logic if needed
+        // TODO: Initialization logic if needed
     }
 }

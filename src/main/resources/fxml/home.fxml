@@ -32,6 +32,8 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -40,7 +42,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -56,8 +57,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.HomeController">
    <items>
       <VBox prefHeight="373.0" prefWidth="251.0">
@@ -94,16 +93,16 @@
                         <ComboBox fx:id="eventTypeComboBox" editable="true" prefWidth="200.0" promptText="Tapahtuman tyyppi" />
                         <ComboBox fx:id="locationComboBox" editable="true" prefWidth="200.0" promptText="Sijainti" />
                         <ComboBox fx:id="organizerComboBox" editable="true" prefWidth="200.0" promptText="Järjestäjä" />
-                        <VBox prefHeight="60.0" prefWidth="173.0">
+                        <HBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <Label text="Hintahaarukka" />
-                              <Slider fx:id="priceRangeSlider" />
+                              <TextField fx:id="minPriceField" promptText="Min hinta (€)" />
+                              <TextField fx:id="maxPriceField" promptText="Max hinta (€)" />
                            </children>
-                        </VBox>
+                        </HBox>
                         <AnchorPane prefHeight="37.0" prefWidth="173.0">
                            <children>
-                              <Button fx:id="searchButton" mnemonicParsing="false" text="Hae" onAction="#handleSearchAction" AnchorPane.leftAnchor="5.0" />
-                              <Button fx:id="resetButton" mnemonicParsing="false" text="Tyhjennä" onAction="#handleResetAction" AnchorPane.rightAnchor="5.0" />
+                              <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchAction" text="Hae" AnchorPane.leftAnchor="5.0" />
+                              <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleResetAction" text="Tyhjennä" AnchorPane.rightAnchor="5.0" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -125,7 +124,8 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="addEventButton" mnemonicParsing="false" text="+" onAction="#handleAddEventAction" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogoutAction" text="Logout" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0" />
+                  <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#handleAddEventAction" text="+" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                </children>
             </AnchorPane>
          </children>
@@ -140,7 +140,7 @@
                            <children>
                               <AnchorPane prefHeight="17.0" prefWidth="444.0">
                                  <children>
-                                    <ChoiceBox fx:id="sortChoiceBox" layoutY="15.0" prefHeight="10.0" prefWidth="150.0" onAction="#handleSortAction" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
+                                    <ChoiceBox fx:id="sortChoiceBox" layoutY="15.0" onAction="#handleSortAction" prefHeight="10.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <items>
                                        <FXCollections fx:factory="observableArrayList">
                                           <String fx:value="A-Ö" />
@@ -156,7 +156,7 @@
                               </AnchorPane>
                               <ScrollPane fitToWidth="true" prefHeight="359.0" prefWidth="444.0">
                                  <content>
-                                    <FlowPane fx:id="listViewPane"/>
+                                    <FlowPane fx:id="listViewPane" />
                                  </content>
                               </ScrollPane>
                            </children>
@@ -169,7 +169,7 @@
                            <children>
                               <AnchorPane prefHeight="17.0" prefWidth="444.0">
                                  <children>
-                                    <ChoiceBox fx:id="calendarSortChoiceBox" layoutY="15.0" prefHeight="10.0" prefWidth="150.0" onAction="#handleSortAction" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
+                                    <ChoiceBox fx:id="calendarSortChoiceBox" layoutY="15.0" onAction="#handleSortAction" prefHeight="10.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <items>
                                           <FXCollections fx:factory="observableArrayList">
                                              <String fx:value="A-Ö" />

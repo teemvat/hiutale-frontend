@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.EventController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -23,19 +24,34 @@ public class NewEventController {
     private TextField eventNameField;
 
     @FXML
+    private TextField eventDescriptionField;
+
+    @FXML
+    private ComboBox<String> eventTypeComboBox;
+
+    @FXML
     private DatePicker eventDatePicker;
 
     @FXML
     private ComboBox<String> eventLocationComboBox;
 
     @FXML
-    private ComboBox<String> eventTypeComboBox;
+    private TextField eventCapacityField;
 
     @FXML
     private TextField eventPriceField;
 
     @FXML
+    private Label eventImageError;
+
+    @FXML
     private Label eventNameError;
+
+    @FXML
+    private Label eventDescriptionError;
+
+    @FXML
+    private Label eventTypeError;
 
     @FXML
     private Label eventDateError;
@@ -44,10 +60,13 @@ public class NewEventController {
     private Label eventLocationError;
 
     @FXML
-    private Label eventTypeError;
+    private Label eventCapacityError;
 
     @FXML
     private Label eventPriceError;
+
+    @FXML
+    private Label addEventError;
 
     @FXML
     private Button selectImageButton;
@@ -58,15 +77,11 @@ public class NewEventController {
     @FXML
     private void initialize() {
         // Add a TextFormatter to ensure only numbers can be typed in the price field
-
-        // Vaihtoehto 1
-        //eventPriceField.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
-
-        // Vaihtoehto 2
         configurePriceField();
     }
 
     private void configurePriceField() {
+        // UnaryOperator to filter the input
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();
             if (newText.matches("\\d*(\\.\\d{0,2})?")) { // Vain numerot ja max 2 desimaalia
@@ -75,8 +90,10 @@ public class NewEventController {
             return null;
         };
 
-        TextFormatter<String> formatter = new TextFormatter<>(filter);
-        eventPriceField.setTextFormatter(formatter);
+        TextFormatter<String> priceFormatter = new TextFormatter<>(filter);
+        TextFormatter<String> capacityFormatter = new TextFormatter<>(filter);
+        eventPriceField.setTextFormatter(priceFormatter);
+        eventCapacityField.setTextFormatter(capacityFormatter);
     }
 
     @FXML
@@ -91,6 +108,7 @@ public class NewEventController {
                 Image image = new Image(new FileInputStream(selectedFile));
                 eventImageView.setImage(image);
             } catch (FileNotFoundException e) {
+                eventImageError.setText("Image not found");
                 e.printStackTrace();
             }
         }
@@ -98,48 +116,86 @@ public class NewEventController {
 
     @FXML
     private void handleAddEventAction(ActionEvent event) {
+        Image eventImage = eventImageView.getImage();
         String eventName = eventNameField.getText();
+        String eventDescription = eventDescriptionField.getText();
+        String eventType = eventTypeComboBox.getValue();
         LocalDate eventDate = eventDatePicker.getValue();
         String eventLocation = eventLocationComboBox.getValue();
-        String eventType = eventTypeComboBox.getValue();
+        String eventCapacity = eventCapacityField.getText();
         String eventPrice = eventPriceField.getText();
+
+        boolean isValid = true;
 
         if (eventName.isEmpty()) {
             eventNameError.setText("Event name is required");
+            isValid = false;
         } else {
             eventNameError.setText("");
         }
 
+        if (eventDescription.isEmpty()) {
+            eventDescriptionError.setText("Event description is required");
+            isValid = false;
+        } else {
+            eventDescriptionError.setText("");
+        }
+
+        if (eventType == null || eventTypeComboBox.getValue().isEmpty()) {
+            eventTypeError.setText("Event type is required");
+            isValid = false;
+        } else {
+            eventTypeError.setText("");
+        }
+
         if (eventDate == null) {
             eventDateError.setText("Event date is required");
+            isValid = false;
         } else {
             eventDateError.setText("");
         }
 
         if (eventLocation == null || eventLocationComboBox.getValue().isEmpty()) {
             eventLocationError.setText("Event location is required");
+            isValid = false;
         } else {
             eventLocationError.setText("");
         }
 
-        if (eventType == null || eventTypeComboBox.getValue().isEmpty()) {
-            eventTypeError.setText("Event type is required");
+        if (eventCapacity.isEmpty()) {
+            eventCapacityError.setText("Event capacity is required");
+            isValid = false;
         } else {
-            eventTypeError.setText("");
+            eventCapacityError.setText("");
         }
 
         if (eventPrice.isEmpty()) {
             eventPriceError.setText("Event price is required");
+            isValid = false;
         } else {
             eventPriceError.setText("");
         }
 
-        if(!eventName.isEmpty() && eventDate != null && eventLocation != null && eventType != null && !eventPrice.isEmpty()) {
-            // Placeholder function for adding an event
-            System.out.println("Add event button clicked");
-            // Close the new event window
-            Stage stage = (Stage) addEventButton.getScene().getWindow();
-            stage.close();
+        if(isValid) {
+            try {
+                // TODO: change eventPrice to minPrice and maxPrice
+                // TODO: send image as well
+                // TODO: check if its possible to return boolean from the createEvent method (now returns only false/value)
+                boolean isEventCreated = EventController.createEvent(eventName, eventDate.toString(), eventLocation, eventDescription, eventCapacity, eventPrice, eventType);
+                if (isEventCreated) {
+                    System.out.println("Event created successfully");
+                    // Close the new event window
+                    Stage stage = (Stage) addEventButton.getScene().getWindow();
+                    stage.close();
+                } else {
+                    System.out.println("Event creation failed");
+                    addEventError.setText("Event creation failed");
+                }
+            } catch (Exception e) {
+                System.out.println("Event creation failed");
+                addEventError.setText("Event creation failed");
+                e.printStackTrace();
+            }
         }
     }
 }

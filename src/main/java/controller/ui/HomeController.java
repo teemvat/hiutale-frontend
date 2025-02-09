@@ -1,5 +1,7 @@
 package controller.ui;
 
+import controller.api.EventController;
+import controller.api.UserController;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.util.function.UnaryOperator;
 
 import java.io.IOException;
 
@@ -30,7 +33,10 @@ public class HomeController {
     private ComboBox<String> organizerComboBox;
 
     @FXML
-    private Slider priceRangeSlider;
+    private TextField minPriceField;
+
+    @FXML
+    private TextField maxPriceField;
 
     @FXML
     private Button searchButton;
@@ -40,6 +46,9 @@ public class HomeController {
 
     @FXML
     private Button profileButton;
+
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private Button addEventButton;
@@ -53,13 +62,39 @@ public class HomeController {
     @FXML
     private void initialize() {
         // Initialize ChoiceBox items
-        sortChoiceBox.setItems(FXCollections.observableArrayList("Sort A-Z", "Sort Z-A", "Sort by Date"));
-        calendarSortChoiceBox.setItems(FXCollections.observableArrayList("Sort A-Z", "Sort Z-A", "Sort by Date"));
+        sortChoiceBox.setItems(FXCollections.observableArrayList("Edullisin ensin", "Kallein ensin", "Päivämäärän mukaan", "Lajittele A-Ö, Lajittele Ö-A"));
+        calendarSortChoiceBox.setItems(FXCollections.observableArrayList("Edullisin ensin", "Kallein ensin", "Päivämäärän mukaan", "Lajittele A-Ö, Lajittele Ö-A"));
+
+        // Add a TextFormatter to ensure only numbers can be typed in the price fields
+        configurePriceFields();
+    }
+
+    private void configurePriceFields() {
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*(\\.\\d{0,2})?")) { // Vain numerot ja max 2 desimaalia
+                return change;
+            }
+            return null;
+        };
+
+        TextFormatter<String> minFormatter = new TextFormatter<>(filter);
+        TextFormatter<String> maxFormatter = new TextFormatter<>(filter);
+        minPriceField.setTextFormatter(minFormatter);
+        maxPriceField.setTextFormatter(maxFormatter);
     }
 
     @FXML
     private void handleSearchAction(ActionEvent event) {
-        // Placeholder search function
+        String searchQuery = searchField.getText();
+        String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "";
+        String eventType = eventTypeComboBox.getValue();
+        String location = locationComboBox.getValue();
+        String organizer = organizerComboBox.getValue();
+        String minPrice = minPriceField.getText();
+        String maxPrice = maxPriceField.getText();
+
+        EventController.searchEvents(searchQuery, eventType, date, location, minPrice, maxPrice, organizer);
         System.out.println("Search button clicked");
     }
 
@@ -71,14 +106,29 @@ public class HomeController {
         eventTypeComboBox.getSelectionModel().clearSelection();
         locationComboBox.getSelectionModel().clearSelection();
         organizerComboBox.getSelectionModel().clearSelection();
-        priceRangeSlider.setValue(0);
+        minPriceField.clear();
+        maxPriceField.clear();
         System.out.println("Reset button clicked");
     }
 
     @FXML
     private void handleProfileAction(ActionEvent event) {
-        // Placeholder profile function
+        // TODO: Add functionality
         System.out.println("Profile button clicked");
+    }
+
+    @FXML
+    private void handleLogoutAction(ActionEvent event) {
+        UserController.logout();
+        System.out.println("Logout button clicked");
+        try {
+            Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+            Scene homeScene = new Scene(homePage);
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.setScene(homeScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -100,7 +150,7 @@ public class HomeController {
 
     @FXML
     private void handleSortAction(ActionEvent event) {
-        // Placeholder sort function
+        // TODO: sort function
         ChoiceBox<String> source = (ChoiceBox<String>) event.getSource();
         String selectedSortMethod = source.getValue();
         System.out.println("Sort method selected: " + selectedSortMethod);

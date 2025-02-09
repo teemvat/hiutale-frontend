@@ -50,7 +50,7 @@ public class UserController {
         }
     }
 
-    private static void logout() {
+    public static void logout() {
         SessionManager.getInstance().logout();
     }
 
