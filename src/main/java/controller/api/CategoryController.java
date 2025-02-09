@@ -29,4 +29,12 @@ public class CategoryController {
 
         return categories;
     }
+
+    public static ArrayList<Category> getPlaceholderCategories() {
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(new Category(1, "Sitsit", "Istutaan ja ryypätään"));
+        categories.add(new Category(2, "Bileet", "Ryypätään baarissa"));
+        categories.add(new Category(3, "Rastikierros", "Kävellään ja ryypätään"));
+        return categories;
+    }
 }
