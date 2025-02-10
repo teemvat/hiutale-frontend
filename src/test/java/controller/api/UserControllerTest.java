@@ -46,7 +46,7 @@ class UserControllerTest {
     @Test
     @Order(5)
     void getUser() {
-        User user = UserController.getUser("pertti");
+        User user = UserController.getUser("5");
         assertNotNull(user);
         assertEquals("pertti", user.getUsername());
     }

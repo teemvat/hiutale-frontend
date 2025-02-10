@@ -8,7 +8,7 @@ public class Event {
     private String eventDescription;
     private String eventLocationId;
     private int eventCapacity;
-    private String eventOrganizer;
+    private String eventOrganizerId;
     private String eventCategories;
     private String eventStatus;
     private LocalDate eventDate;
@@ -16,13 +16,13 @@ public class Event {
     private String endTime;
     private double eventPrice;
 
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizer, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
         this.eventId = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventLocationId = eventLocationId;
         this.eventCapacity = Integer.parseInt(eventCapacity);
-        this.eventOrganizer = eventOrganizer;
+        this.eventOrganizerId = eventOrganizerId;
         this.eventCategories = eventCategories;
         this.eventStatus = "Default";
         this.eventDate = eventDate;
@@ -63,12 +63,12 @@ public class Event {
         this.eventCapacity = eventCapacity;
     }
 
-    public String getEventOrganizer() {
-        return eventOrganizer;
+    public String getEventOrganizerId() {
+        return eventOrganizerId;
     }
 
-    public void setEventOrganizer(String eventOrganizer) {
-        this.eventOrganizer = eventOrganizer;
+    public void setEventOrganizerId(String eventOrganizerId) {
+        this.eventOrganizerId = eventOrganizerId;
     }
 
     public String getEventCategories() {

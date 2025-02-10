@@ -112,6 +112,9 @@ public class UserController {
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
 
+            String token = SessionManager.getInstance().getUser().getToken();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+
             // make json
             Map<String, String> json = new HashMap<>();
             json.put("email", email);
@@ -142,31 +145,25 @@ public class UserController {
         }
     }
 
-    public static User getUser(String username) { // todo: kesken
+    public static User getUser(String userId) {
         try {
-            URL url = new URL("http://37.27.9.255:8080/users"); // Hakee usernamella nyt, pitäskö olla email?
+            URL url = new URL("http://37.27.9.255:8080/users/" + userId); // Hakee userId:llä
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Content-Type", "application/json");
 
-            String jsonInputString = gson.toJson(username);
-
-            // Send request parameters
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(jsonInputString.getBytes());
-                os.flush();
-            }
+            String token = SessionManager.getInstance().getUser().getToken();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
 
             Scanner scanner = new Scanner(conn.getInputStream());
             StringBuilder responseBuilder = new StringBuilder();
             while (scanner.hasNext()) {
                 responseBuilder.append(scanner.next());
             }
-
             scanner.close();
             String response = responseBuilder.toString();
 
             return gson.fromJson(response, User.class);
+
         } catch (Exception e) {
             System.out.println("Cannot connect to server.");
             return null;

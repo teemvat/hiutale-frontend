@@ -25,6 +25,11 @@ public class EventController {
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
+            if (SessionManager.getInstance().isLoggedIn()) {
+                String token = SessionManager.getInstance().getUser().getToken();
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+            }
+
             if (!requestBody.isEmpty()) {
                 try (OutputStream os = conn.getOutputStream()) {
                     os.write(requestBody.getBytes());
