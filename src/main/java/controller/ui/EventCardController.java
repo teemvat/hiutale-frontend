@@ -41,11 +41,29 @@ public class EventCardController {
     @FXML
     private Button favoriteButton;
 
+    private String title;
+    private String date;
+    private String location;
+
     private int totalTickets;
     private int ticketsLeft;
 
     private void initialize() {
         updateTicketIcon();
+        updateEventInformation();
+    }
+
+    private void setEventDetails(String title, String date, String location) {
+        this.title = title;
+        this.date = date;
+        this.location = location;
+        updateEventInformation();
+    }
+
+    private void updateEventInformation() {
+        eventTitle.setText(title);
+        eventDate.setText(date);
+        eventLocation.setText(location);
     }
 
     private void setTotalTickets(int totalTickets) {
