@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CalendarEventController {
+public class EventBoxController {
 
     @FXML
     private Label eventTitle;

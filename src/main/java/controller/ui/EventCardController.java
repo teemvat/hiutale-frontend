@@ -117,13 +117,14 @@ public class EventCardController {
     private void handleCardClick() {
         System.out.println("Event card clicked");
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventwindow.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/event.fxml"));
             Parent newEventRoot = fxmlLoader.load();
             Stage newEventStage = new Stage();
             newEventStage.setTitle(eventTitle.getText());
             newEventStage.setScene(new Scene(newEventRoot));
             newEventStage.initModality(Modality.WINDOW_MODAL);
             newEventStage.initOwner(eventTitle.getScene().getWindow());
+            newEventStage.setMaximized(true);
             newEventStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
