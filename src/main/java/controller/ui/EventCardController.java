@@ -124,7 +124,7 @@ public class EventCardController {
             newEventStage.setScene(new Scene(newEventRoot));
             newEventStage.initModality(Modality.WINDOW_MODAL);
             newEventStage.initOwner(eventTitle.getScene().getWindow());
-            newEventStage.setMaximized(true);
+            newEventStage.setMaximized(true);   // Open the new page in full screen
             newEventStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
