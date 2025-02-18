@@ -39,6 +39,12 @@ public class NewEventController {
     private TextField eventCapacityField;
 
     @FXML
+    private TextField startTimeField;
+
+    @FXML
+    private TextField endTimeField;
+
+    @FXML
     private TextField eventPriceField;
 
     @FXML
@@ -69,6 +75,9 @@ public class NewEventController {
     private Label addEventError;
 
     @FXML
+    private Label timeError;
+
+    @FXML
     private Button selectImageButton;
 
     @FXML
@@ -77,10 +86,10 @@ public class NewEventController {
     @FXML
     private void initialize() {
         // Add a TextFormatter to ensure only numbers can be typed in the price field
-        configurePriceField();
+        configureNumberFields();
     }
 
-    private void configurePriceField() {
+    private void configureNumberFields() {
         // UnaryOperator to filter the input
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();
@@ -92,8 +101,13 @@ public class NewEventController {
 
         TextFormatter<String> priceFormatter = new TextFormatter<>(filter);
         TextFormatter<String> capacityFormatter = new TextFormatter<>(filter);
+        TextFormatter<String> startTimeFormatter = new TextFormatter<>(filter);
+        TextFormatter<String> endTimeFormatter = new TextFormatter<>(filter);
+
         eventPriceField.setTextFormatter(priceFormatter);
         eventCapacityField.setTextFormatter(capacityFormatter);
+        startTimeField.setTextFormatter(startTimeFormatter);
+        endTimeField.setTextFormatter(endTimeFormatter);
     }
 
     @FXML
@@ -124,6 +138,8 @@ public class NewEventController {
         String eventLocation = eventLocationComboBox.getValue();
         String eventCapacity = eventCapacityField.getText();
         String eventPrice = eventPriceField.getText();
+        String startTime = startTimeField.getText();
+        String endTime = endTimeField.getText();
 
         boolean isValid = true;
 
@@ -155,6 +171,20 @@ public class NewEventController {
             eventDateError.setText("");
         }
 
+        if (startTime.isEmpty()) {
+            timeError.setText("Time information is required");
+            isValid = false;
+        } else {
+            timeError.setText("");
+        }
+
+        if (endTime.isEmpty()) {
+            timeError.setText("Time information is required");
+            isValid = false;
+        } else {
+            timeError.setText("");
+        }
+
         if (eventLocation == null || eventLocationComboBox.getValue().isEmpty()) {
             eventLocationError.setText("Event location is required");
             isValid = false;
@@ -178,7 +208,6 @@ public class NewEventController {
 
         if(isValid) {
             try {
-                // TODO: change eventPrice to minPrice and maxPrice
                 // TODO: send image as well
                 // TODO: check if its possible to return boolean from the createEvent method (now returns only false/value)
                 boolean isEventCreated = EventController.createEvent(
@@ -188,10 +217,10 @@ public class NewEventController {
                         eventCapacity,
                         eventType,
                         eventDate,
-                        "00:00",
-                        "23:59",
+                        startTime,
+                        endTime,
                         Double.parseDouble(eventPrice)
-                ); // TODO: fiksailin nää vähän nopeesti et saa testejä ajettua :')
+                );
                 if (isEventCreated) {
                     System.out.println("Event created successfully");
                     // Close the new event window

@@ -42,6 +42,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -70,6 +71,7 @@
             <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
             <RowConstraints fillHeight="false" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
             <RowConstraints fillHeight="false" minHeight="20.0" prefHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="20.0" prefHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#handleSelectImageAction" text="Valitse kuva" />
@@ -80,16 +82,23 @@
             <Label fx:id="eventDescriptionError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="5" />
             <ComboBox fx:id="eventTypeComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumatyyppi" GridPane.rowIndex="6" />
             <Label fx:id="eventTypeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="7" />
-            <DatePicker fx:id="eventDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumapäivä" GridPane.columnIndex="1" />
-            <Label fx:id="eventDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="eventLocationComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Sijainti" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="eventLocationError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="eventCapacityField" prefHeight="25.0" prefWidth="250.0" promptText="Kapasiteetti (kpl)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label fx:id="eventCapacityError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="eventPriceField" prefHeight="25.0" prefWidth="250.0" promptText="Hinta (€)" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label fx:id="eventPriceError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <DatePicker fx:id="eventDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumapäivä" showWeekNumbers="true" GridPane.rowIndex="8" />
+            <Label fx:id="eventDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="9" />
+            <ComboBox fx:id="eventLocationComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Sijainti" GridPane.columnIndex="1" />
+            <Label fx:id="eventLocationError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="eventCapacityField" prefHeight="25.0" prefWidth="250.0" promptText="Kapasiteetti (kpl)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="eventCapacityError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="eventPriceField" prefHeight="25.0" prefWidth="250.0" promptText="Hinta (€)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="eventPriceError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <children>
+                  <TextField fx:id="startTimeField" promptText="Alkamisaika" />
+                  <TextField fx:id="endTimeField" promptText="Päättymisaika" />
+               </children>
+            </HBox>
+            <Label fx:id="timeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#handleAddEventAction" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="8" />
+            <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="9" />
          </children>
       </GridPane>
    </children>
