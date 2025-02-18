@@ -46,8 +46,15 @@ class UserControllerTest {
     @Test
     @Order(5)
     void getUser() {
-        User user = UserController.getUser("5");
+        User user = UserController.getUser("pertti");
         assertNotNull(user);
         assertEquals("pertti", user.getUsername());
+    }
+
+    @Test
+    @Order(6)
+    void deleteUser() {
+        boolean success = UserController.deleteUser("testuser" + rnum);
+        assertTrue(success);
     }
 }

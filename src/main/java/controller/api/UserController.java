@@ -145,9 +145,9 @@ public class UserController {
         }
     }
 
-    public static User getUser(String userId) {
+    public static User getUser(String username) {
         try {
-            URL url = new URL("http://37.27.9.255:8080/users/" + userId); // Hakee userId:llä
+            URL url = new URL("http://37.27.9.255:8080/users/" + username); // Hakee username:lla
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -167,6 +167,33 @@ public class UserController {
         } catch (Exception e) {
             System.out.println("Cannot connect to server.");
             return null;
+        }
+    }
+
+    public static boolean deleteUser(String username) {
+        try {
+            URL url = new URL("http://37.27.9.255:8080/users/" + username); // Hakee username:lla
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+
+            String token = SessionManager.getInstance().getUser().getToken();
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+
+            Scanner scanner = new Scanner(conn.getInputStream());
+            StringBuilder responseBuilder = new StringBuilder();
+            while (scanner.hasNext()) {
+                responseBuilder.append(scanner.next());
+            }
+            scanner.close();
+            String response = responseBuilder.toString();
+
+            System.out.println(response);
+
+            return response.contains("success");
+
+        } catch (Exception e) {
+            System.out.println("Cannot connect to server.");
+            return false;
         }
     }
 }

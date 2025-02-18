@@ -15,8 +15,11 @@ public class Event {
     private String startTime;
     private String endTime;
     private double eventPrice;
+    private int attendeeCount;
+    private int favouriteCount;
 
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+    // for new event and getting events from database
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
         this.eventId = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
@@ -25,6 +28,21 @@ public class Event {
         this.eventOrganizerId = eventOrganizerId;
         this.eventCategories = eventCategories;
         this.eventStatus = "Default";
+        this.eventDate = eventDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.eventPrice = eventPrice;
+        this.attendeeCount = attendeeCount;
+    }
+
+    // for editing events
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+        this.eventId = eventId;
+        this.eventTitle = eventTitle;
+        this.eventDescription = eventDescription;
+        this.eventLocationId = eventLocationId;
+        this.eventCapacity = Integer.parseInt(eventCapacity);
+        this.eventCategories = eventCategories;
         this.eventDate = eventDate;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -125,5 +143,21 @@ public class Event {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public int getAttendeeCount() {
+        return attendeeCount;
+    }
+
+    public void setAttendeeCount(int attendeeCount) {
+        this.attendeeCount = attendeeCount;
+    }
+
+    public int getFavouriteCount() {
+        return favouriteCount;
+    }
+
+    public void setFavouriteCount(int favouriteCount) {
+        this.favouriteCount = favouriteCount;
     }
 }

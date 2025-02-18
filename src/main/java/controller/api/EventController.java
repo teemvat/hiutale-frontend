@@ -62,16 +62,16 @@ public class EventController {
                                       String startTime,
                                       String endTime,
                                       double eventPrice) {
-        Event event = new Event(null, eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventDate, startTime, endTime, eventPrice);
+        Event event = new Event(null, eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventDate, startTime, endTime, eventPrice, 0, 0);
         String requestBody = gson.toJson(event);
         String response = sendHttpRequest("POST", "", requestBody);
         return response.contains("success");
     }
 
     public static boolean editEvent(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
-        Event event = new Event(null, eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventDate, startTime, endTime, eventPrice);
+        Event event = new Event(null, eventTitle, eventDescription, eventLocationId, eventCapacity, eventCategories, eventDate, startTime, endTime, eventPrice);
         String requestBody = gson.toJson(event);
-        String response = sendHttpRequest("PUT", "", requestBody);
+        String response = sendHttpRequest("PATCH", "", requestBody);
         return response.contains("success");
     }
 
