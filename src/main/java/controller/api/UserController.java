@@ -3,6 +3,9 @@ import com.google.gson.Gson;
 import model.User;
 import utils.SessionManager;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,48 +15,52 @@ import java.util.Scanner;
 
 public class UserController {
     private static final Gson gson = new Gson();
+    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
 
-    public static User login(String email, String password) {
-
+    private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
-            // Connect to the backend REST API
-            URL url = new URL("http://37.27.9.255:8080/users/authenticate");
+            URL url = new URL(BASE_URL + endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod(method);
             conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
-            // make json
-            Map<String, String> json = new HashMap<>();
-            json.put("email", email);
-            json.put("password", password);
-            String jsonInputString = gson.toJson(json);
-
-            // Send request parameters
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(jsonInputString.getBytes());
-                os.flush();
+            if (SessionManager.getInstance().isLoggedIn()) {
+                String token = SessionManager.getInstance().getUser().getToken();
+                conn.setRequestProperty("Authorization", "Bearer " + token);
             }
 
-            // Read response
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder responseBuilder = new StringBuilder();
-            while (scanner.hasNext()) {
-                responseBuilder.append(scanner.next());
+            if (!requestBody.isEmpty()) {
+                try (OutputStream os = conn.getOutputStream()) {
+                    os.write(requestBody.getBytes());
+                }
             }
-            scanner.close();
-            String response = responseBuilder.toString();
 
-            // Check the response & store session
-            // Check for expected data
-            User user = gson.fromJson(response, User.class); // Convert JSON to User object
-            SessionManager.getInstance().login(user);
-            return user;
+            int responseCode = conn.getResponseCode();
+            InputStream is = (responseCode < 400) ? conn.getInputStream() : conn.getErrorStream();
 
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            }
         } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return null;
+            System.out.println("Error: " + e.getMessage());
+            return "";
         }
+    }
+
+    public static User login(String email, String password) {
+        String requestBody = '{' +
+                "\"email\": \"" + email + "\"," +
+                "\"password\": \"" + password + "\"" +
+                '}';
+        String response = sendHttpRequest("POST", "/users/login", requestBody);
+        return gson.fromJson(response, User.class);
     }
 
     public static void logout() {
@@ -61,139 +68,32 @@ public class UserController {
     }
 
     public static User register(String email, String password, String username) {
-
-        try {
-            URL url = new URL("http://37.27.9.255:8080/users/register");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
-
-            // make json
-            Map<String, String> json = new HashMap<>();
-            json.put("email", email);
-            json.put("password", password);
-            json.put("username", username);
-            json.put("role", "user");
-            String jsonInputString = gson.toJson(json);
-
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(jsonInputString.getBytes());
-                os.flush();
-            }
-
-            // Read response
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder responseBuilder = new StringBuilder();
-            while (scanner.hasNext()) {
-                responseBuilder.append(scanner.next());
-            }
-            scanner.close();
-            String response = responseBuilder.toString();
-
-            // Check the response & store session
-            // Check for expected data
-            User user = gson.fromJson(response, User.class); // Convert JSON to User object
-            SessionManager.getInstance().login(user);
-            return user;
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return null;
-        }
+        String requestBody = '{' +
+                "\"email\": \"" + email + "\"," +
+                "\"password\": \"" + password + "\"," +
+                "\"username\": \"" + username + "\"" +
+                '}';
+        String response = sendHttpRequest("POST", "/users/register", requestBody);
+        return gson.fromJson(response, User.class);
     }
 
     public static User edit(String email, String password, String username) {
-
-        try {
-            URL url = new URL("http://37.27.9.255:8080/users/edit"); // en tiiä onko olemassa
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("PUT");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
-
-            String token = SessionManager.getInstance().getUser().getToken();
-            conn.setRequestProperty("Authorization", "Bearer " + token);
-
-            // make json
-            Map<String, String> json = new HashMap<>();
-            json.put("email", email);
-            json.put("password", password);
-            json.put("username", username);
-            String jsonInputString = gson.toJson(json);
-
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(jsonInputString.getBytes());
-                os.flush();
-            }
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder responseBuilder = new StringBuilder();
-            while (scanner.hasNext()) {
-                responseBuilder.append(scanner.next());
-            }
-            scanner.close();
-            String response = responseBuilder.toString();
-
-            User user = gson.fromJson(response, User.class);
-            SessionManager.getInstance().login(user); // ei varsinaisesti login mut päivittää tiedot tonne
-
-            return user;
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return null;
-        }
+        String requestBody = '{' +
+                "\"email\": \"" + email + "\"," +
+                "\"password\": \"" + password + "\"," +
+                "\"username\": \"" + username + "\"" +
+                '}';
+        String response = sendHttpRequest("PUT", "/users/edit", requestBody);
+        return gson.fromJson(response, User.class);
     }
 
     public static User getUser(String username) {
-        try {
-            URL url = new URL("http://37.27.9.255:8080/users/" + username); // Hakee username:lla
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            String token = SessionManager.getInstance().getUser().getToken();
-            conn.setRequestProperty("Authorization", "Bearer " + token);
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder responseBuilder = new StringBuilder();
-            while (scanner.hasNext()) {
-                responseBuilder.append(scanner.next());
-            }
-            scanner.close();
-            String response = responseBuilder.toString();
-
-            return gson.fromJson(response, User.class);
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return null;
-        }
+        String response = sendHttpRequest("GET", "/users/" + username, "");
+        return gson.fromJson(response, User.class);
     }
 
     public static boolean deleteUser(String username) {
-        try {
-            URL url = new URL("http://37.27.9.255:8080/users/" + username); // Hakee username:lla
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("DELETE");
-
-            String token = SessionManager.getInstance().getUser().getToken();
-            conn.setRequestProperty("Authorization", "Bearer " + token);
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder responseBuilder = new StringBuilder();
-            while (scanner.hasNext()) {
-                responseBuilder.append(scanner.next());
-            }
-            scanner.close();
-            String response = responseBuilder.toString();
-
-            System.out.println(response);
-
-            return response.contains("success");
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return false;
-        }
+        String response = sendHttpRequest("DELETE", "/users/" + username, "");
+        return response.contains("success");
     }
 }

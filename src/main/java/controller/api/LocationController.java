@@ -1,115 +1,97 @@
 package controller.api;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import model.Event;
 import model.Location;
+import utils.SessionManager;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+// pitäis olla ok kaikki
+// todo: testaa postmanilla
 public class LocationController {
     private static final Gson gson = new Gson();
+    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
 
-    public static ArrayList<Location> getAllLocations() {
-        ArrayList<Location> locations = new ArrayList<>();
-
+    private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
-            URL url = new URL("http://localhost:8080/locations"); // Placeholder backend URL
+            URL url = new URL(BASE_URL + endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod(method);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
 
-            Scanner scanner = new Scanner(conn.getInputStream());
-            while (scanner.hasNext()) {
-                locations.add(gson.fromJson(scanner.next(), Location.class));
+            if (SessionManager.getInstance().isLoggedIn()) {
+                String token = SessionManager.getInstance().getUser().getToken();
+                conn.setRequestProperty("Authorization", "Bearer " + token);
             }
 
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-        }
+            if (!requestBody.isEmpty()) {
+                try (OutputStream os = conn.getOutputStream()) {
+                    os.write(requestBody.getBytes());
+                }
+            }
 
-        return locations;
+            int responseCode = conn.getResponseCode();
+            InputStream is = (responseCode < 400) ? conn.getInputStream() : conn.getErrorStream();
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return "";
+        }
+    }
+
+    public static List<Location> getAllLocations() {
+        String result = sendHttpRequest("GET", "/locations/all", "");
+        return gson.fromJson(result, new TypeToken<ArrayList<Location>>(){}.getType());
     }
 
     public static Location getLocationById(String locationId) {
-        try {
-            URL url = new URL("http://localhost:8080/locations/" + locationId); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            return gson.fromJson(scanner.next(), Location.class);
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return null;
-        }
+        String result = sendHttpRequest("GET", "/locations/one/" + locationId, "");
+        return gson.fromJson(result, Location.class);
     }
 
     public static boolean createLocation(String name, String address, String city, String postalCode) {
-        try {
-            URL url = new URL("http://localhost:8080/locations/create"); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setDoOutput(true);
-
-            String requestBody = "name=" + name +
-                    "&address=" + address +
-                    "&city=" + city +
-                    "&postalCode=" + postalCode;
-
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = requestBody.getBytes("utf-8");
-                os.write(input, 0, input.length);
-            }
-
-            return conn.getResponseCode() == 200;
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return false;
-        }
+        String requestBody = '{' +
+                "\"name\": \"" + name + "\"," +
+                "\"address\": \"" + address + "\"," +
+                "\"city\": \"" + city + "\"," +
+                "\"postalCode\": \"" + postalCode + "\"" +
+                '}';
+        String response = sendHttpRequest("POST", "/locations/create", requestBody);
+        return response.contains("success");
     }
 
     public static boolean editLocation(String locationId, String name, String address, String city, String postalCode) {
-        try {
-            URL url = new URL("http://localhost:8080/locations/" + locationId); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("PATCH");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setDoOutput(true);
-
-            String requestBody = "name=" + name +
-                    "&address=" + address +
-                    "&city=" + city +
-                    "&postalCode=" + postalCode;
-
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = requestBody.getBytes("utf-8");
-                os.write(input, 0, input.length);
-            }
-
-            return conn.getResponseCode() == 200;
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return false;
-        }
+        String requestBody = '{' +
+                "\"name\": \"" + name + "\"," +
+                "\"address\": \"" + address + "\"," +
+                "\"city\": \"" + city + "\"," +
+                "\"postalCode\": \"" + postalCode + "\"" +
+                '}';
+        String response = sendHttpRequest("PUT", "/locations/update/" + locationId, requestBody);
+        return response.contains("success");
     }
 
     public static boolean deleteLocation(String locationId) {
-        try {
-            URL url = new URL("http://localhost:8080/locations/" + locationId); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("DELETE");
-
-            return conn.getResponseCode() == 200;
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return false;
-        }
+        return sendHttpRequest("DELETE", "/locations/delete/" + locationId, "").contains("success");
     }
 }

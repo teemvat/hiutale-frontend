@@ -1,128 +1,92 @@
 package controller.api;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.Category;
+import utils.SessionManager;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
+// pitäis olla ok kaikki
+// todo: testaa postmanilla
 public class CategoryController {
+    private static final Gson gson = new Gson();
+    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
 
-    public static ArrayList<Category> getAllCategories() {
-        ArrayList<Category> categories = new ArrayList<>();
-
+    // pitäis olla ok kaikki
+    private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
-            URL url = new URL("http://localhost:8080/categories"); // Placeholder backend URL
+            URL url = new URL(BASE_URL + endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod(method);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
 
-            Scanner scanner = new Scanner(conn.getInputStream());
-            while (scanner.hasNext()) {
-                String[] categoryData = scanner.next().split(",");
-                categories.add(new Category(Integer.parseInt(categoryData[0]), categoryData[1], categoryData[2]));
+            if (SessionManager.getInstance().isLoggedIn()) {
+                String token = SessionManager.getInstance().getUser().getToken();
+                conn.setRequestProperty("Authorization", "Bearer " + token);
             }
 
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-        }
+            if (!requestBody.isEmpty()) {
+                try (OutputStream os = conn.getOutputStream()) {
+                    os.write(requestBody.getBytes());
+                }
+            }
 
-        return categories;
+            int responseCode = conn.getResponseCode();
+            InputStream is = (responseCode < 400) ? conn.getInputStream() : conn.getErrorStream();
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return "";
+        }
+    }
+
+    public static List<Category> getAllCategories() {
+        String response = sendHttpRequest("GET", "/categories/all", "");
+        return gson.fromJson(response, new TypeToken<ArrayList<Category>>() {}.getType());
     }
 
     public static Category getCategoryById(int categoryId) {
-        try {
-            URL url = new URL("http://localhost:8080/categories/" + categoryId); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            String[] categoryData = scanner.next().split(",");
-            return new Category(Integer.parseInt(categoryData[0]), categoryData[1], categoryData[2]);
-
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return null;
-        }
+        String response = sendHttpRequest("GET", "/categories/one/" + categoryId, "");
+        return gson.fromJson(response, Category.class);
     }
 
     public static boolean createCategory(String categoryName, String categoryDescription) {
-        try {
-            URL url = new URL("http://localhost:8080/categories/create"); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setDoOutput(true);
-
-            String requestBody = "categoryName=" + categoryName +
-                    "&categoryDescription=" + categoryDescription;
-
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(requestBody.getBytes());
-            }
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            String response = scanner.hasNext() ? scanner.next() : "";
-            scanner.close();
-
-            return response.contains("success");
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return false;
-        }
+        String requestBody = '{' +
+                "\"categoryName\": \"" + categoryName + "\"," +
+                "\"categoryDescription\": \"" + categoryDescription + "\"" +
+                '}';
+        return sendHttpRequest("POST", "/categories/create", requestBody).contains("success");
     }
 
     public static boolean editCategory(int categoryId, String categoryName, String categoryDescription) {
-        try {
-            URL url = new URL("http://localhost:8080/categories/edit"); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("PATCH");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setDoOutput(true);
-
-            String requestBody = "categoryId=" + categoryId +
-                    "&categoryName=" + categoryName +
-                    "&categoryDescription=" + categoryDescription;
-
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(requestBody.getBytes());
-            }
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            String response = scanner.hasNext() ? scanner.next() : "";
-            scanner.close();
-
-            return response.contains("success");
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return false;
-        }
+        String requestBody = '{' +
+                "\"categoryId\": \"" + categoryId + "\"," +
+                "\"categoryName\": \"" + categoryName + "\"," +
+                "\"categoryDescription\": \"" + categoryDescription + "\"" +
+                '}';
+        return sendHttpRequest("PUT", "/categories/update/" + categoryId, requestBody).contains("success");
     }
 
     public static boolean deleteCategory(int categoryId) {
-        try {
-            URL url = new URL("http://localhost:8080/categories/delete"); // Placeholder backend URL
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("DELETE");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            conn.setDoOutput(true);
-
-            String requestBody = "categoryId=" + categoryId;
-
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(requestBody.getBytes());
-            }
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            String response = scanner.hasNext() ? scanner.next() : "";
-            scanner.close();
-
-            return response.contains("success");
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-            return false;
-        }
+        return sendHttpRequest("DELETE", "/categories/delete/" + categoryId, "").contains("success");
     }
 
     public static ArrayList<Category> getPlaceholderCategories() {

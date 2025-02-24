@@ -18,6 +18,8 @@ public class AttendanceController {
     private static final Gson gson = new Gson();
     private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
 
+    // pitäis olla ok kaikki paits getUserAttendances
+    // todo: testaa postmanilla
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
             URL url = new URL(BASE_URL + endpoint);
@@ -59,16 +61,14 @@ public class AttendanceController {
         String requestBody = '{' +
                 "\"Id\": \"" + event.getEventId() + "\"," +
                 '}';
-        return sendHttpRequest("POST", "/attendance/delete", requestBody).contains("success");
+        return sendHttpRequest("POST", "/attendance/create", requestBody).contains("success");
     }
 
     public static boolean deleteAttendance(Event event) {
-        String requestBody = '{' +
-                "\"Id\": \"" + event.getEventId() + "\"," +
-                '}';
-        return sendHttpRequest("DELETE", "/attendance/delete", requestBody).contains("success");
+        return sendHttpRequest("DELETE", "/attendance/delete/" + event.getEventId(), "").contains("success");
     }
 
+    // todo: varmista toimivuus, endpoint puuttuu!
     public static List<Event> getUserAttendances() {
         String result = sendHttpRequest("GET", "/attendance/all", "");
         return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
