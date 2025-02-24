@@ -85,7 +85,7 @@ public class EventController {
         List<Event> searchResults = new ArrayList<>();
 
         for (Event event : allEvents) {
-            if (query != null && !event.getEventTitle().toLowerCase().contains(query.toLowerCase())) {
+            if (query != null && !event.getEventTitle().toLowerCase().contains(query.toLowerCase()) || !event.getEventDescription().toLowerCase().contains(query.toLowerCase())) {
                 continue;
             }
             if (category != null && !event.getEventCategories().toLowerCase().contains(category.toLowerCase())) {
