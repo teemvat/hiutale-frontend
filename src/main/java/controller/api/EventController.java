@@ -14,7 +14,7 @@ import java.util.*;
 
 public class EventController {
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "http://localhost:8080/api/events"; // Backend URL
+    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
 
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
@@ -64,57 +64,55 @@ public class EventController {
                                       double eventPrice) {
         Event event = new Event(null, eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventDate, startTime, endTime, eventPrice, 0, 0);
         String requestBody = gson.toJson(event);
-        String response = sendHttpRequest("POST", "", requestBody);
+        String response = sendHttpRequest("POST", "/event/create", requestBody);
         return response.contains("success");
     }
 
-    public static boolean editEvent(String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
-        Event event = new Event(null, eventTitle, eventDescription, eventLocationId, eventCapacity, eventCategories, eventDate, startTime, endTime, eventPrice);
+    public static boolean editEvent(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+        Event event = new Event(eventId, eventTitle, eventDescription, eventLocationId, eventCapacity, eventCategories, eventDate, startTime, endTime, eventPrice);
         String requestBody = gson.toJson(event);
-        String response = sendHttpRequest("PATCH", "", requestBody);
+        String response = sendHttpRequest("PUT", "/events/update/" + eventId, requestBody);
         return response.contains("success");
     }
 
     public static List<Event> getAllEvents() {
-        String response = sendHttpRequest("GET", "", "");
+        String response = sendHttpRequest("GET", "/events/all", "");
         return gson.fromJson(response, new TypeToken<List<Event>>(){}.getType());
     }
 
-    public static List<Event> searchEvents(String keyword, String category, String date, String location, String startPrice, String endPrice, String organizer) {
-        try {
-            StringBuilder query = new StringBuilder("?");
-            Map<String, String> params = new LinkedHashMap<>();
+    public static List<Event> searchEvents(String query, String category, String date, String location, String minPrice, String maxPrice, String organizerId) {
+        List<Event> allEvents = getAllEvents();
+        List<Event> searchResults = new ArrayList<>();
 
-            if (keyword != null && !keyword.isEmpty()) params.put("keyword", keyword);
-            if (category != null && !category.isEmpty()) params.put("category", category);
-            if (date != null && !date.isEmpty()) params.put("date", date);
-            if (location != null && !location.isEmpty()) params.put("location", location);
-            if (startPrice != null && !startPrice.isEmpty()) params.put("startPrice", startPrice);
-            if (endPrice != null && !endPrice.isEmpty()) params.put("endPrice", endPrice);
-            if (organizer != null && !organizer.isEmpty()) params.put("organizer", organizer);
-
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                query.append(URLEncoder.encode(entry.getKey(), "UTF-8"))
-                        .append("=")
-                        .append(URLEncoder.encode(entry.getValue(), "UTF-8"))
-                        .append("&");
+        for (Event event : allEvents) {
+            if (query != null && !event.getEventTitle().toLowerCase().contains(query.toLowerCase())) {
+                continue;
             }
-
-            if (query.length() > 1) {
-                query.setLength(query.length() - 1);
+            if (category != null && !event.getEventCategories().toLowerCase().contains(category.toLowerCase())) {
+                continue;
             }
-
-            String response = sendHttpRequest("GET", query.toString(), "");
-
-            return gson.fromJson(response, new TypeToken<List<Event>>(){}.getType());
-        } catch (UnsupportedEncodingException e) {
-            System.out.println("Encoding error: " + e.getMessage());
-            return new ArrayList<>();
+            if (date != null && !event.getEventDate().toString().equals(date)) {
+                continue;
+            }
+            if (location != null && !event.getEventLocationId().toLowerCase().contains(location.toLowerCase())) {
+                continue;
+            }
+            if (minPrice != null && event.getEventPrice() < Double.parseDouble(minPrice)) {
+                continue;
+            }
+            if (maxPrice != null && event.getEventPrice() > Double.parseDouble(maxPrice)) {
+                continue;
+            }
+            if (organizerId != null && !event.getEventOrganizerId().toLowerCase().contains(organizerId.toLowerCase())) {
+                continue;
+            }
+            searchResults.add(event);
         }
+        return searchResults;
     }
 
-    public static boolean deleteEvent(String eventName) {
-        String response = sendHttpRequest("DELETE", "/delete?eventName=" + eventName, "");
+    public static boolean deleteEvent(String eventId) {
+        String response = sendHttpRequest("DELETE", "/events/delete/" + eventId, "");
         return response.contains("success");
     }
 }

@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ImageController {
-    private static final String BASE_URL = "http://localhost:8081/api/images"; // Backend image API base URL
+    private static final String BASE_URL = "37.27.9.255:8080/images"; // Backend image API base URL
 
     public static String uploadImage(File imageFile) {
         String boundary = "===" + System.currentTimeMillis() + "===";
