@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.function.UnaryOperator;
@@ -60,6 +61,9 @@ public class HomeController {
     private ChoiceBox<String> calendarSortChoiceBox;
 
     @FXML
+    private FlowPane listViewPane;
+
+    @FXML
     private void initialize() {
         // Initialize ChoiceBox items
         sortChoiceBox.setItems(FXCollections.observableArrayList("Edullisin ensin", "Kallein ensin", "Päivämäärän mukaan", "Lajittele A-Ö, Lajittele Ö-A"));
@@ -67,6 +71,9 @@ public class HomeController {
 
         // Add a TextFormatter to ensure only numbers can be typed in the price fields
         configurePriceFields();
+
+        // Call the method to load event cards
+        loadEventCards();
     }
 
     private void configurePriceFields() {
@@ -82,6 +89,20 @@ public class HomeController {
         TextFormatter<String> maxFormatter = new TextFormatter<>(filter);
         minPriceField.setTextFormatter(minFormatter);
         maxPriceField.setTextFormatter(maxFormatter);
+    }
+
+    private void loadEventCards() {
+        // TODO: replace the placeholder function with the real one
+        // Placeholder: add 50 event cards
+        for (int i = 0; i < 50; i++) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
+                Parent eventCard = fxmlLoader.load();
+                listViewPane.getChildren().add(eventCard);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
