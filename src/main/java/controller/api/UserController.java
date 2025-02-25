@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class UserController {
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
+    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
@@ -60,7 +60,11 @@ public class UserController {
                 "\"password\": \"" + password + "\"" +
                 '}';
         String response = sendHttpRequest("POST", "/users/login", requestBody);
-        return gson.fromJson(response, User.class);
+        User user = gson.fromJson(response, User.class);
+        if (user != null) {
+            SessionManager.getInstance().login(user);
+        }
+        return user;
     }
 
     public static void logout() {
@@ -74,7 +78,11 @@ public class UserController {
                 "\"username\": \"" + username + "\"" +
                 '}';
         String response = sendHttpRequest("POST", "/users/register", requestBody);
-        return gson.fromJson(response, User.class);
+        User user = gson.fromJson(response, User.class);
+        if (user != null) {
+            SessionManager.getInstance().login(user);
+        }
+        return user;
     }
 
     public static User edit(String email, String password, String username) {
@@ -83,17 +91,22 @@ public class UserController {
                 "\"password\": \"" + password + "\"," +
                 "\"username\": \"" + username + "\"" +
                 '}';
-        String response = sendHttpRequest("PUT", "/users/edit", requestBody);
+        String response = sendHttpRequest("PUT", "/users/update/" + SessionManager.getInstance().getUser().getId(), requestBody);
+        User user = SessionManager.getInstance().getUser();
+        if (user != null) {
+            user.setUsername(username);
+            user.setEmail(email);
+        }
+        return user;
+    }
+
+    public static User getUser(int id) {
+        String response = sendHttpRequest("GET", "/users/" + id, "");
         return gson.fromJson(response, User.class);
     }
 
-    public static User getUser(String username) {
-        String response = sendHttpRequest("GET", "/users/" + username, "");
-        return gson.fromJson(response, User.class);
-    }
-
-    public static boolean deleteUser(String username) {
-        String response = sendHttpRequest("DELETE", "/users/" + username, "");
-        return response.contains("success");
+    public static void deleteUser(int id) {
+        sendHttpRequest("DELETE", "/users/" + id, "");
+        SessionManager.getInstance().logout();
     }
 }

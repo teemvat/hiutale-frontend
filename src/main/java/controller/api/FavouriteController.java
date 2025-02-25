@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class FavouriteController {
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
+    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
     // pitäis olla ok kaikki
     // todo: testaa postmanilla

@@ -1,11 +1,13 @@
 package model;
 
 public class User {
+    private int id;
     private String username;
     private String email;
     private String token;
 
-    public User(String username, String email, String token) {
+    public User(int id, String username, String email, String token) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.token = token;
@@ -35,4 +37,11 @@ public class User {
         this.token = token;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

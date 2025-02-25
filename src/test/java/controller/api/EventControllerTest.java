@@ -16,9 +16,9 @@ class EventControllerTest {
     @BeforeAll
     static void setUp() {
         // Log in a user to get a valid token for authentication
-        User user = UserController.login("testuser@example.com", "password");
+        UserController.login("testuser@example.com", "password");
+        User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
-        SessionManager.getInstance().login(user);
     }
 
     @Test
@@ -42,6 +42,7 @@ class EventControllerTest {
     @Order(2)
     void editEvent() {
         boolean success = EventController.editEvent(
+                "4",
                 "Testi",
                 "Tämä on muokattu testi",
                 "1",
