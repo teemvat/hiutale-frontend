@@ -101,8 +101,8 @@
                         </HBox>
                         <AnchorPane prefHeight="37.0" prefWidth="173.0">
                            <children>
-                              <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchAction" text="Hae" AnchorPane.leftAnchor="5.0" />
-                              <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleResetAction" text="Tyhjennä" AnchorPane.rightAnchor="5.0" />
+                              <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchAction" text="Hae" AnchorPane.leftAnchor="0.0" />
+                              <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleResetAction" text="Tyhjennä" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -132,28 +132,27 @@
       </VBox>
       <VBox prefHeight="373.0" prefWidth="390.0">
          <children>
+            <AnchorPane prefHeight="17.0" prefWidth="444.0">
+               <children>
+                  <ChoiceBox fx:id="sortChoiceBox" layoutY="15.0" onAction="#handleSortAction" prefHeight="10.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                     <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Aakkosjärjestys" />
+                        <String fx:value="Päivämäärän mukaan" />
+                     </FXCollections>
+                  </items>
+                  </ChoiceBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </AnchorPane>
             <TabPane prefHeight="432.0" prefWidth="316.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Listanäkymä">
                      <content>
                         <VBox>
                            <children>
-                              <AnchorPane prefHeight="17.0" prefWidth="444.0">
-                                 <children>
-                                    <ChoiceBox fx:id="sortChoiceBox" layoutY="15.0" onAction="#handleSortAction" prefHeight="10.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <items>
-                                       <FXCollections fx:factory="observableArrayList">
-                                          <String fx:value="A-Ö" />
-                                          <String fx:value="Ö-A" />
-                                          <String fx:value="Lajittele päivämäärän mukaan" />
-                                       </FXCollections>
-                                    </items>
-                                    </ChoiceBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </AnchorPane>
                               <ScrollPane fitToWidth="true" prefHeight="359.0" prefWidth="444.0">
                                  <content>
                                     <FlowPane fx:id="listViewPane" />
@@ -167,22 +166,6 @@
                      <content>
                         <VBox>
                            <children>
-                              <AnchorPane prefHeight="17.0" prefWidth="444.0">
-                                 <children>
-                                    <ChoiceBox fx:id="calendarSortChoiceBox" layoutY="15.0" onAction="#handleSortAction" prefHeight="10.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <items>
-                                          <FXCollections fx:factory="observableArrayList">
-                                             <String fx:value="A-Ö" />
-                                             <String fx:value="Ö-A" />
-                                             <String fx:value="Lajittele päivämäärän mukaan" />
-                                          </FXCollections>
-                                       </items>
-                                    </ChoiceBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </AnchorPane>
                               <GridPane gridLinesVisible="true" prefHeight="363.0" prefWidth="444.0">
                                 <columnConstraints>
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -199,77 +182,77 @@
                                  <children>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="25.0" prefWidth="44.0" text="10" />
                                           <Label alignment="CENTER" prefHeight="25.0" prefWidth="44.0" text="MA" wrapText="true" />
-                                          <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="63.0">
+                                          <Label fx:id="monDateLabel" alignment="CENTER" prefHeight="25.0" prefWidth="44.0" text="DD.MM" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="monVBox" prefHeight="451.0" prefWidth="61.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Label text="11" />
                                           <Label text="TI" />
-                                          <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="63.0">
+                                          <Label fx:id="tueDateLabel" text="DD.MM" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="tueVBox" prefHeight="451.0" prefWidth="61.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                                        <children>
-                                          <Label text="12" />
                                           <Label text="KE" />
-                                          <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="63.0">
+                                          <Label fx:id="wedDateLAbel" text="DD.MM" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="wedVBox" prefHeight="451.0" prefWidth="61.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
                                        <children>
-                                          <Label text="13" />
                                           <Label text="TO" />
-                                          <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="63.0">
+                                          <Label fx:id="thuDateLabel" text="DD.MM" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="thuVBox" prefHeight="451.0" prefWidth="61.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
                                        <children>
-                                          <Label text="14" />
                                           <Label text="PE" />
-                                          <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="63.0">
+                                          <Label fx:id="friDateLabel" text="DD.MM" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="friVBox" prefHeight="451.0" prefWidth="61.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5">
                                        <children>
-                                          <Label text="15" />
                                           <Label text="LA" />
-                                          <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="63.0">
+                                          <Label fx:id="satDateLabel" text="DD.MM" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="satVBox" prefHeight="451.0" prefWidth="61.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="6">
                                        <children>
-                                          <Label text="16" />
                                           <Label text="SU" />
-                                          <ScrollPane fitToWidth="true" prefHeight="336.0" prefWidth="63.0">
+                                          <Label fx:id="sunDateLabel" text="DD.MM" />
+                                          <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="sunVBox" prefHeight="451.0" prefWidth="61.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
