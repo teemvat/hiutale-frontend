@@ -32,33 +32,26 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventController">
-   <items>
-      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1078.0" prefWidth="500.0">
+<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventControllerUI">
+   <children>
+      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="199.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="572.0" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="500.0" spacing="10.0">
                <children>
-                  <ImageView fx:id="eventImage" fitHeight="55.0" fitWidth="61.0" pickOnBounds="true">
+                  <ImageView fx:id="eventImage" fitHeight="31.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../pictures/placeholder_event_picture.jpg" />
+                        <Image url="@../pictures/snowflake_dark.png" />
                      </image>
                   </ImageView>
                   <Label text="Hiutale.app">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                </children>
@@ -67,132 +60,105 @@
                </padding>
             </HBox>
             <Separator prefWidth="200.0" />
-            <VBox prefHeight="902.0" prefWidth="572.0" spacing="10.0">
+            <VBox prefHeight="902.0" prefWidth="572.0" spacing="5.0">
                <children>
-                  <Label text="Tapahtuman tiedot">
+                  <Label prefHeight="10.0" prefWidth="159.0" text="Tapahtuman tiedot">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="14.0" />
                      </font>
                      <padding>
-                        <Insets bottom="30.0" top="30.0" />
+                        <Insets bottom="10.0" />
                      </padding>
                   </Label>
-                  <HBox prefHeight="60.0" prefWidth="532.0" spacing="10.0">
+                  <Label fx:id="eventNameLabel" text="Tapahtuman nimi">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="11.0" prefWidth="460.0" spacing="10.0">
                      <children>
                         <Label text="Järjestäjä:">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Label fx:id="organizerLabel" text="Organizer name">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox prefHeight="60.0" prefWidth="532.0" spacing="10.0">
+                  <HBox prefHeight="10.0" prefWidth="460.0" spacing="5.0">
                      <children>
                         <Label fx:id="dateLabel" text="DD.MM.YYYY">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Label fx:id="startTimeLabel" text="00:00">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Label text="-">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Label fx:id="endTimeLabel" text="23:59">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox prefHeight="60.0" prefWidth="532.0" spacing="10.0">
+                  <HBox prefHeight="16.0" prefWidth="460.0" spacing="5.0">
                      <children>
                         <Label text="\@">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Label fx:id="locationLabel" text="Location">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+                  <HBox prefHeight="27.0" prefWidth="304.0" spacing="5.0">
                      <children>
                         <Label text="Hinta:">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Label fx:id="priceLabel" text="0">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                         <Label text="€">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
                </children>
                <padding>
-                  <Insets bottom="30.0" left="30.0" right="10.0" top="30.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <Separator prefWidth="200.0" />
-            <AnchorPane minHeight="-Infinity" prefHeight="100.0" prefWidth="572.0">
-               <children>
-                  <Button fx:id="profileButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleProfileAction" prefHeight="50.0" prefWidth="50.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0">
-                     <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../pictures/icons/user.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="logoutButton" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleProfileAction" prefHeight="50.0" prefWidth="50.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="120.0">
-                     <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../pictures/icons/sign-out-alt.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="addEventButton" layoutX="20.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleProfileAction" prefHeight="50.0" prefWidth="50.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0">
-                     <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../pictures/icons/add-document.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </AnchorPane>
          </children>
       </VBox>
-      <VBox prefHeight="1058.0" prefWidth="1299.0" spacing="10.0">
+      <VBox prefHeight="444.0" prefWidth="476.0" spacing="10.0">
          <children>
-            <ImageView fx:id="eventImageView" fitHeight="441.0" fitWidth="1343.0" pickOnBounds="true">
+            <ImageView fx:id="eventImageView" fitHeight="168.0" fitWidth="466.0" pickOnBounds="true">
                <image>
                   <Image url="@../pictures/placeholder_event_picture.jpg" />
                </image>
@@ -202,14 +168,14 @@
             </ImageView>
             <Label text="Tapahtuman kuvaus">
                <font>
-                  <Font size="24.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
-            <ScrollPane fitToWidth="true" prefHeight="563.0" prefWidth="1352.0">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="175.0" prefWidth="466.0" vbarPolicy="NEVER">
                <content>
-                  <Label fx:id="descriptionLabel" alignment="TOP_LEFT" prefHeight="307.0" prefWidth="1257.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." wrapText="true">
+                  <Label fx:id="descriptionLabel" alignment="TOP_LEFT" prefHeight="245.0" prefWidth="443.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." wrapText="true">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="11.0" />
                      </font>
                   </Label>
                </content>
@@ -220,15 +186,15 @@
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </padding>
             </ScrollPane>
-            <Button fx:id="buyTicketButton" mnemonicParsing="false" prefHeight="150.0" prefWidth="200.0" text="Osta lippu">
+            <Button fx:id="buyTicketButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="69.0" text="Osta lippu">
                <font>
-                  <Font size="18.0" />
+                  <Font size="11.0" />
                </font>
             </Button>
          </children>
          <padding>
-            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-   </items>
-</SplitPane>
+   </children>
+</HBox>
