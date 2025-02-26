@@ -1,5 +1,6 @@
 package controller.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,16 +13,14 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Event;
 
 import java.io.IOException;
 
 public class EventCardController {
 
     @FXML
-    private ImageView ticketImage;
-
-    @FXML
-    private ImageView favoriteImage;
+    private ImageView eventImage;
 
     @FXML
     private Label eventTitle;
@@ -36,15 +35,22 @@ public class EventCardController {
     private Button ticketButton;
 
     @FXML
+    private ImageView ticketImage;
+
+    @FXML
     private Button shareButton;
 
     @FXML
     private Button favoriteButton;
 
+    @FXML
+    private ImageView favoriteImage;
+
+    private Event event;
+    private Image image;
     private String title;
     private String date;
     private String location;
-
     private int totalTickets;
     private int ticketsLeft;
 
@@ -53,14 +59,16 @@ public class EventCardController {
         updateEventInformation();
     }
 
-    private void setEventDetails(String title, String date, String location) {
-        this.title = title;
-        this.date = date;
-        this.location = location;
-        updateEventInformation();
+    public void setEventData(Event event) {
+        this.event = event;
+        // TODO image
+        eventTitle.setText(event.getEventTitle());
+        eventDate.setText(event.getEventDate().toString());
+        eventLocation.setText(event.getEventLocationId());
     }
 
     private void updateEventInformation() {
+        eventImage.setImage(image);
         eventTitle.setText(title);
         eventDate.setText(date);
         eventLocation.setText(location);
@@ -115,17 +123,17 @@ public class EventCardController {
 
     @FXML
     private void handleCardClick() {
-        System.out.println("Event card clicked");
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/event.fxml"));
-            Parent newEventRoot = fxmlLoader.load();
-            Stage newEventStage = new Stage();
-            newEventStage.setTitle(eventTitle.getText());
-            newEventStage.setScene(new Scene(newEventRoot));
-            newEventStage.initModality(Modality.WINDOW_MODAL);
-            newEventStage.initOwner(eventTitle.getScene().getWindow());
-            newEventStage.setMaximized(true);   // Open the new page in full screen
-            newEventStage.showAndWait();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            Parent rsvpRoot = fxmlLoader.load();
+            RSVPController rsvpController = fxmlLoader.getController();
+            rsvpController.setEvent(event);
+            Stage rsvpStage = new Stage();
+            rsvpStage.setTitle("RSVP for " + event.getEventTitle());
+            rsvpStage.setScene(new Scene(rsvpRoot));
+            rsvpStage.initModality(Modality.WINDOW_MODAL);
+            rsvpStage.initOwner(eventTitle.getScene().getWindow());
+            rsvpStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
