@@ -32,13 +32,10 @@ public class SessionManager {
         return user != null;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public String getToken(){
         return token;
     }
+
     public String getUserName(){
         return user.getUsername();
     }

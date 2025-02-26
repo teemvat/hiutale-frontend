@@ -3,6 +3,7 @@ package controller.api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Event;
+import model.Notification;
 import utils.SessionManager;
 
 import java.io.BufferedReader;
@@ -13,12 +14,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class AttendanceController {
-    private static final Gson gson = new Gson();
+public class NotificationController {
+    private static Gson gson = new Gson();
     private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
 
-    // pitäis olla ok kaikki paits getUserAttendances
+    // tää pitää tutkia kuntoon!
     // todo: testaa postmanilla
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
@@ -57,20 +59,43 @@ public class AttendanceController {
         }
     }
 
-    public static boolean createAttendance(Event event) {
-        String requestBody = '{' +
-                "\"Id\": \"" + event.getEventId() + "\"," +
-                '}';
-        return sendHttpRequest("POST", "/attendance/create", requestBody).contains("success");
+    // varmista et hakee vain yhden käyttäjän, pitäis saada useri tokenista
+    public static List<Notification> getUserNotifications() {
+        String result = sendHttpRequest("GET", "/notifications/all", "");
+        return gson.fromJson(result, new TypeToken<ArrayList<Notification>>() {
+        }.getType());
     }
 
-    public static boolean deleteAttendance(Event event) {
-        return sendHttpRequest("DELETE", "/attendance/delete/" + event.getEventId(), "").contains("success");
+    public static boolean markNotificationAsRead(Notification notification) {
+        String requestBody = "{\"id\":" + notification.getId() + "," + "\"read\":true}";
+        return sendHttpRequest("PUT", "/notifications/update", requestBody).isEmpty();
     }
 
-    // todo: varmista toimivuus, endpoint puuttuu!
-    public static List<Event> getUserAttendances() {
-        String result = sendHttpRequest("GET", "/attendance/all", "");
-        return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
+    // todo: tää pitäis varmaan toteuttaa backendissä?
+    public static Notification createNotification(int userId, String message) {
+        try {
+            URL url = new URL("http://localhost:8080/notifications/create");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            String jsonInputString = "{\"user\":" + userId + ",\"message\":\"" + message + "\"}";
+            conn.getOutputStream().write(jsonInputString.getBytes());
+            conn.getResponseCode();
+
+            Scanner scanner = new Scanner(conn.getInputStream());
+            StringBuilder jsonResponse = new StringBuilder();
+            while (scanner.hasNext()) {
+                jsonResponse.append(scanner.next());
+            }
+            scanner.close();
+
+            return gson.fromJson(jsonResponse.toString(), Notification.class);
+        } catch (Exception e) {
+            System.out.println("Cannot connect to server.");
+        }
+
+        return null;
     }
 }

@@ -11,14 +11,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class AttendanceController {
+public class FavouriteController {
     private static final Gson gson = new Gson();
     private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
 
-    // pitäis olla ok kaikki paits getUserAttendances
+    // pitäis olla ok kaikki
     // todo: testaa postmanilla
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
@@ -57,20 +59,20 @@ public class AttendanceController {
         }
     }
 
-    public static boolean createAttendance(Event event) {
+    public static boolean createFavourite(Event event) {
         String requestBody = '{' +
                 "\"Id\": \"" + event.getEventId() + "\"," +
                 '}';
-        return sendHttpRequest("POST", "/attendance/create", requestBody).contains("success");
+        return sendHttpRequest("POST", "/favourite/create", requestBody).contains("success");
     }
 
-    public static boolean deleteAttendance(Event event) {
-        return sendHttpRequest("DELETE", "/attendance/delete/" + event.getEventId(), "").contains("success");
+    public static boolean deleteFavourite(Event event) {
+        return sendHttpRequest("DELETE", "/favourite/delete/" + event.getEventId(), "").contains("success");
     }
 
     // todo: varmista toimivuus, endpoint puuttuu!
-    public static List<Event> getUserAttendances() {
-        String result = sendHttpRequest("GET", "/attendance/all", "");
+    public static List<Event> getUserFavourites() {
+        String result = sendHttpRequest("GET", "/favourite/all", "");
         return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
     }
 }
