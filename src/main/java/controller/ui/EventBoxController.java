@@ -4,14 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Event;
 
 import java.io.IOException;
 
@@ -26,38 +22,21 @@ public class EventBoxController {
     @FXML
     private Label eventLocation;
 
-    @FXML
-    private ImageView ticketImage;
-
-    @FXML
-    private Button ticketButton;
-
-    @FXML
-    private Button shareButton;
-
-    @FXML
-    private Button favoriteButton;
-
-    @FXML
-    private ImageView favoriteImage;
-
+    private Event event;
     private String title;
     private String time;
     private String location;
 
-    private int totalTickets;
-    private int ticketsLeft;
-
     @FXML
     private void initialize() {
-        updateTicketIcon();
         updateEventInformation();
     }
 
-    public void setEventDetails(String title, String startTime, String location) {
-        this.title = title;
-        this.time = startTime;
-        this.location = location;
+    public void setEventData(Event event) {
+        this.event = event;
+        this.title = event.getEventTitle();
+        this.time = event.getStartTime();
+        this.location = event.getEventLocationId();
         updateEventInformation();
     }
 
@@ -67,66 +46,19 @@ public class EventBoxController {
         eventLocation.setText(location);
     }
 
-    public void setTotalTickets(int totalTickets) {
-        this.totalTickets = totalTickets;
-    }
-
-    public void setTicketsLeft(int ticketsLeft) {
-        this.ticketsLeft = ticketsLeft;
-        updateTicketIcon();
-    }
-
-    private void updateTicketIcon() {
-        if (totalTickets == 0) {
-            return;
-        }
-
-        double percentageLeft = (double) ticketsLeft / totalTickets * 100;
-        String iconPath;
-        if (percentageLeft > 75) {
-            iconPath = "../pictures/icons/ticket_green.png";
-        } else if (percentageLeft > 50) {
-            iconPath = "../pictures/icons/ticket_yellow.png";
-        } else if (percentageLeft > 25) {
-            iconPath = "../pictures/icons/ticket_orange.png";
-        } else {
-            iconPath = "../pictures/icons/ticket_red.png";
-        }
-        ticketImage.setImage(new Image(getClass().getResourceAsStream(iconPath)));
-    }
-
     @FXML
-    private void handleShareAction() {
-        // TODO: event description
-        String eventInfo = String.format("Event Title: %s\nDate: %s\nLocation: %s\nDescription: %s",
-                eventTitle.getText(), eventTime.getText(), eventLocation.getText(), "Event description here");
-
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(eventInfo);
-        clipboard.setContent(content);
-
-        System.out.println("Event information copied to clipboard");
-    }
-
-    @FXML
-    private void handleFavoriteAction() {
-        // TODO: Add event to favorites
-        System.out.println("Favorite button clicked");
-    }
-
-    @FXML
-    private void handleCardClick() {
-        System.out.println("Event card clicked");
+    private void handleBoxClick() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"));
-            Parent newEventRoot = fxmlLoader.load();
-            Stage newEventStage = new Stage();
-            newEventStage.setTitle(eventTitle.getText());
-            newEventStage.setScene(new Scene(newEventRoot));
-            newEventStage.initModality(Modality.WINDOW_MODAL);
-            newEventStage.initOwner(eventTitle.getScene().getWindow());
-            newEventStage.showAndWait();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            Parent rsvpRoot = fxmlLoader.load();
+            RSVPController rsvpController = fxmlLoader.getController();
+            rsvpController.setEvent(event);
+            Stage rsvpStage = new Stage();
+            rsvpStage.setTitle("RSVP for " + title);
+            rsvpStage.setScene(new Scene(rsvpRoot));
+            rsvpStage.initModality(Modality.WINDOW_MODAL);
+            rsvpStage.initOwner(eventTitle.getScene().getWindow());
+            rsvpStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
