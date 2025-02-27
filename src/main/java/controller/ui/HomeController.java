@@ -97,14 +97,18 @@ public class HomeController {
 
     private void addEventToCalendar(Event event, LocalDate startOfWeek) {
         try {
-            LocalDate eventDate = LocalDate.parse(event.getDate());
+            String eventDateStr = event.getDate();
+            if (eventDateStr == null || eventDateStr.isEmpty()) {
+                throw new DateTimeParseException("Date is null or empty", eventDateStr, 0);
+            }
+            LocalDate eventDate = LocalDate.parse(eventDateStr);
             int dayOffset = (int) ChronoUnit.DAYS.between(startOfWeek, eventDate);
 
             if (dayOffset >= 0 && dayOffset < 7) {
                 dayBoxes[dayOffset].getChildren().add(loadFXML("/fxml/eventbox.fxml", event));
             }
         } catch (DateTimeParseException e) {
-            System.err.println("Invalid date format for event: " +event.getTitle());
+            System.err.println("Invalid date format for event: " + event.getTitle());
         }
     }
 
