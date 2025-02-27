@@ -69,29 +69,27 @@ public class LocationController {
         return gson.fromJson(result, Location.class);
     }
 
-    public static boolean createLocation(String name, String address, String city, String postalCode) {
+    public static void createLocation(String name, String address, String city, String postalCode) {
         String requestBody = '{' +
                 "\"name\": \"" + name + "\"," +
                 "\"address\": \"" + address + "\"," +
                 "\"city\": \"" + city + "\"," +
                 "\"postalCode\": \"" + postalCode + "\"" +
                 '}';
-        String response = sendHttpRequest("POST", "/locations/create", requestBody);
-        return response.contains("success");
+        sendHttpRequest("POST", "/locations/create", requestBody);
     }
 
-    public static boolean editLocation(String locationId, String name, String address, String city, String postalCode) {
+    public static void editLocation(String locationId, String name, String address, String city, String postalCode) {
         String requestBody = '{' +
                 "\"name\": \"" + name + "\"," +
                 "\"address\": \"" + address + "\"," +
                 "\"city\": \"" + city + "\"," +
                 "\"postalCode\": \"" + postalCode + "\"" +
                 '}';
-        String response = sendHttpRequest("PUT", "/locations/update/" + locationId, requestBody);
-        return response.contains("success");
+        sendHttpRequest("PUT", "/locations/update/" + locationId, requestBody);
     }
 
-    public static boolean deleteLocation(String locationId) {
-        return sendHttpRequest("DELETE", "/locations/delete/" + locationId, "").contains("success");
+    public static void deleteLocation(String locationId) {
+        sendHttpRequest("DELETE", "/locations/delete/" + locationId, "");
     }
 }

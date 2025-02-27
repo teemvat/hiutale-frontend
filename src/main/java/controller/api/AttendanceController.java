@@ -59,7 +59,7 @@ public class AttendanceController {
 
     public static void createAttendance(String eventId) {
         String requestBody = '{' +
-                "\"Id\": \"" + eventId + "\"," +
+                "\"id\": \"" + eventId + "\"," +
                 '}';
         sendHttpRequest("POST", "/attendance/create", requestBody);
     }
@@ -70,7 +70,7 @@ public class AttendanceController {
 
     // todo: varmista toimivuus, endpoint puuttuu!
     public static List<Event> getUserAttendances() {
-        String result = sendHttpRequest("GET", "/attendance/all", "");
+        String result = sendHttpRequest("GET", "/attendance/user", "");
         return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
     }
 }

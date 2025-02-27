@@ -34,14 +34,12 @@ class CategoryControllerTest {
     }
 
     @Test
-    @Disabled
     void createCategory() {
         Category category = CategoryController.createCategory("Testi", "Tämä on testi");
         assertNotNull(category);
     }
 
     @Test
-    @Disabled
     void editCategory() {
         assertDoesNotThrow(() -> {
             CategoryController.editCategory("1", "Muokattu testi", "Tämä on muokattu testi");
