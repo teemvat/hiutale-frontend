@@ -1,8 +1,6 @@
 package controller.ui;
 
 import controller.api.EventController;
-import controller.api.UserController;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,353 +12,137 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
+import utils.FilterCriteria;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 import java.io.IOException;
 
 public class HomeController {
 
-    @FXML
-    private TextField searchField;
+    @FXML private TextField searchField, minPriceField, maxPriceField;
+    @FXML private DatePicker datePicker;
+    @FXML private ComboBox<String> eventTypeComboBox, locationComboBox, organizerComboBox;
+    @FXML private Button searchButton, resetButton, profileButton, addEventButton;
+    @FXML private ChoiceBox<String> sortChoiceBox;
+    @FXML private FlowPane listViewPane;
+    @FXML private Label monDateLabel, tueDateLabel, wedDateLabel, thuDateLabel, friDateLabel, satDateLabel, sunDateLabel;
+    @FXML private Label[] dayLabels;
+    @FXML private VBox monVBox, tueVBox, wedVBox, thuVBox, friVBox, satVBox, sunVBox;
+    @FXML private VBox[] dayBoxes;
 
-    @FXML
-    private DatePicker datePicker;
+    private List<Event> cachedEvents = new ArrayList<>();
 
-    @FXML
-    private ComboBox<String> eventTypeComboBox;
+    private enum SortType {
+        ALPHABETICAL, DATE
+    }
 
-    @FXML
-    private ComboBox<String> locationComboBox;
-
-    @FXML
-    private ComboBox<String> organizerComboBox;
-
-    @FXML
-    private TextField minPriceField;
-
-    @FXML
-    private TextField maxPriceField;
-
-    @FXML
-    private Button searchButton;
-
-    @FXML
-    private Button resetButton;
-
-    @FXML
-    private Button profileButton;
-
-    @FXML
-    private Button addEventButton;
-
-    @FXML
-    private ChoiceBox<String> sortChoiceBox;
-
-    @FXML
-    private FlowPane listViewPane;
-
-    @FXML
-    private Label monDateLabel;
-
-    @FXML
-    private Label tueDateLabel;
-
-    @FXML
-    private Label wedDateLabel;
-
-    @FXML
-    private Label thuDateLabel;
-
-    @FXML
-    private Label friDateLabel;
-
-    @FXML
-    private Label satDateLabel;
-
-    @FXML
-    private Label sunDateLabel;
-
-    @FXML
-    private VBox monVBox;
-
-    @FXML
-    private VBox tueVBox;
-
-    @FXML
-    private VBox wedVBox;
-
-    @FXML
-    private VBox thuVBox;
-
-    @FXML
-    private VBox friVBox;
-
-    @FXML
-    private VBox satVBox;
-
-    @FXML
-    private VBox sunVBox;
+    private static final Map<String, SortType> SORT_MAP = Map.of(
+            "Aakkosjärjestys", SortType.ALPHABETICAL,
+            "Päivämäärän mukaan", SortType.DATE
+    );
 
     @FXML
     private void initialize() {
-        // TODO: tutki onko tämä alustus tarpeellinen
-        // Initialize ChoiceBox items
-        //sortChoiceBox.setItems(FXCollections.observableArrayList("Aakkosjärjestys", "Päivämäärän mukaan"));
+        cachedEvents = Optional.ofNullable(EventController.getAllEvents()).orElse(new ArrayList<>());
 
-        // Add a TextFormatter to ensure only numbers can be typed in the price fields
+        dayLabels = new Label[]{monDateLabel, tueDateLabel, wedDateLabel, thuDateLabel, friDateLabel, satDateLabel, sunDateLabel};
+        dayBoxes = new VBox[]{monVBox, tueVBox, wedVBox, thuVBox, friVBox, satVBox, sunVBox};
+
         configurePriceFields();
-
-        // Load events for the calendar view
         LocalDate today = LocalDate.now();
-        LocalDate startOfWeek = getStartOfWeek(today);
-        updateCalendarLabels(startOfWeek);
-        loadEventsForWeek(startOfWeek);
+        updateCalendar(getStartOfWeek(today));
 
-        // Load events for the list view
-        loadEventCards();
-
-        // Add listener to DatePicker
-        datePicker.setOnAction(this::handleDatePickerAction);
+        datePicker.setOnAction(event -> updateCalendar(getStartOfWeek(datePicker.getValue())));
     }
 
     private void configurePriceFields() {
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
-            if (newText.matches("\\d*(\\.\\d{0,2})?")) { // Vain numerot ja max 2 desimaalia
-                return change;
-            }
-            return null;
-        };
-        TextFormatter<String> minFormatter = new TextFormatter<>(filter);
-        TextFormatter<String> maxFormatter = new TextFormatter<>(filter);
-        minPriceField.setTextFormatter(minFormatter);
-        maxPriceField.setTextFormatter(maxFormatter);
+        // Add a TextFormatter to ensure only numbers can be typed in the price fields
+        UnaryOperator<TextFormatter.Change> filter = change ->
+                change.getControlNewText().matches("\\d*(\\.\\d{0,2})?") ? change : null;
+
+        minPriceField.setTextFormatter(new TextFormatter<>(filter));
+        maxPriceField.setTextFormatter(new TextFormatter<>(filter));
     }
 
     private LocalDate getStartOfWeek(LocalDate date) {
         return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
 
-    private void updateCalendarLabels(LocalDate startOfWeek) {
-        monDateLabel.setText(startOfWeek.toString());
-        tueDateLabel.setText(startOfWeek.plusDays(1).toString());
-        wedDateLabel.setText(startOfWeek.plusDays(2).toString());
-        thuDateLabel.setText(startOfWeek.plusDays(3).toString());
-        friDateLabel.setText(startOfWeek.plusDays(4).toString());
-        satDateLabel.setText(startOfWeek.plusDays(5).toString());
-        sunDateLabel.setText(startOfWeek.plusDays(6).toString());
+    private void updateCalendar(LocalDate startOfWeek) {
+        for (int i = 0; i < 7; i++) {
+            dayLabels[i].setText(startOfWeek.plusDays(i).toString());
+        }
+
+        loadEventsForWeek(startOfWeek);
     }
 
     private void loadEventsForWeek(LocalDate startOfWeek) {
-
-        // Placeholder functions: add 10 event cards to each day
-
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                monVBox.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                tueVBox.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                wedVBox.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                thuVBox.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                friVBox.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                satVBox.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                sunVBox.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-        // Real function
-
-        List<Event> events = EventController.getAllEvents();
         clearCalendar();
-        for (Event event : events) {
-            LocalDate eventDate = LocalDate.parse(event.getDate());
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-                Parent eventBox = fxmlLoader.load();
-                EventBoxController controller = fxmlLoader.getController();
-                controller.setEventData(event);
+        cachedEvents.forEach(event -> addEventToCalendar(event, startOfWeek));
+    }
 
-                if (eventDate.equals(startOfWeek)) {
-                    monVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(1))) {
-                    tueVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(2))) {
-                    wedVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(3))) {
-                    thuVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(4))) {
-                    friVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(5))) {
-                    satVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(6))) {
-                    sunVBox.getChildren().add(eventBox);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+    private void addEventToCalendar(Event event, LocalDate startOfWeek) {
+        try {
+            LocalDate eventDate = LocalDate.parse(event.getDate());
+            int dayOffset = (int) ChronoUnit.DAYS.between(startOfWeek, eventDate);
+
+            if (dayOffset >= 0 && dayOffset < 7) {
+                dayBoxes[dayOffset].getChildren().add(loadFXML("/fxml/eventbox.fxml", event));
             }
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid date format for event: " +event.getTitle());
         }
     }
 
     private void loadEventCards() {
-
-        // Placeholder function: add 20 event cards
-
-//        for (int i = 0; i < 20; i++) {
-//            try {
-//                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-//                Parent eventCard = fxmlLoader.load();
-//                listViewPane.getChildren().add(eventCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-        // Real function
-
-        List<Event> events = EventController.getAllEvents();
         listViewPane.getChildren().clear();
+        if (cachedEvents.isEmpty()) {
+            listViewPane.getChildren().add(new Label("No events found"));
+        } else {
+            cachedEvents.forEach(event -> listViewPane.getChildren().add(loadFXML("/fxml/eventcard.fxml", event)));
+        }
+    }
 
-        for (Event event : events) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
-                controller.setEventData(event);
-                listViewPane.getChildren().add(eventCard);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    private Parent loadFXML(String resource, Event event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
+            Parent node = fxmlLoader.load();
+            ((EventBoxController) fxmlLoader.getController()).setEventData(event);
+            return node;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Label("Error loading event");
         }
     }
 
     @FXML
     private void handleSearchAction(ActionEvent event) {
-        String searchQuery = searchField.getText();
-        String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "";
-        String eventType = eventTypeComboBox.getValue();
-        String location = locationComboBox.getValue();
-        String organizer = organizerComboBox.getValue();
-        String minPrice = minPriceField.getText();
-        String maxPrice = maxPriceField.getText();
+        FilterCriteria criteria = new FilterCriteria(
+                searchField.getText(),
+                datePicker.getValue() != null ? datePicker.getValue().toString() : "",
+                eventTypeComboBox.getValue(),
+                locationComboBox.getValue(),
+                organizerComboBox.getValue(),
+                minPriceField.getText(),
+                maxPriceField.getText()
+        );
 
-        // Filter events based on search criteria
-        List<Event> events = EventController.searchEvents(searchQuery, eventType, date, location, minPrice, maxPrice, organizer);
+        updateListView(cachedEvents.stream().filter(criteria::matches).toList());
+    }
 
-        // Update list view
+    private void updateListView(List<Event> events) {
         listViewPane.getChildren().clear();
-        for (Event ev : events) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
-                controller.setEventData(ev);
-                listViewPane.getChildren().add(eventCard);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Update calendar view
-        LocalDate today = LocalDate.now();
-        LocalDate startOfWeek = getStartOfWeek(today);
-        updateCalendarWithFilteredEvents(startOfWeek, events);
-    }
-
-    private void updateCalendarWithFilteredEvents(LocalDate startOfWeek, List<Event> events) {
-        clearCalendar();
-        for (Event event : events) {
-            LocalDate eventDate = LocalDate.parse(event.getDate());
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
-                Parent eventBox = fxmlLoader.load();
-                EventBoxController controller = fxmlLoader.getController();
-                controller.setEventData(event);
-
-                if (eventDate.equals(startOfWeek)) {
-                    monVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(1))) {
-                    tueVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(2))) {
-                    wedVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(3))) {
-                    thuVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(4))) {
-                    friVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(5))) {
-                    satVBox.getChildren().add(eventBox);
-                } else if (eventDate.equals(startOfWeek.plusDays(6))) {
-                    sunVBox.getChildren().add(eventBox);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @FXML
-    private void handleDatePickerAction(ActionEvent event) {
-        LocalDate selectedDate = datePicker.getValue();
-        if (selectedDate != null) {
-            LocalDate startOfWeek = getStartOfWeek(selectedDate);
-            updateCalendarLabels(startOfWeek);
-            loadEventsForWeek(startOfWeek);
+        if (events.isEmpty()) {
+            listViewPane.getChildren().add(new Label("No events found"));
+        } else {
+            events.forEach(event -> listViewPane.getChildren().add(loadFXML("/fxml/eventcard.fxml", event)));
         }
     }
 
@@ -378,76 +160,42 @@ public class HomeController {
 
     @FXML
     private void handleProfileAction(ActionEvent event) {
-        // Open the profile window
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/profile.fxml"));
-            Parent newEventRoot = fxmlLoader.load();
-            Stage newEventStage = new Stage();
-            newEventStage.setTitle("User profile");
-            newEventStage.setScene(new Scene(newEventRoot));
-            newEventStage.initModality(Modality.WINDOW_MODAL);
-            newEventStage.initOwner(profileButton.getScene().getWindow());
-            newEventStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        openNewWindow("/fxml/profile.fxml", "User Profile", profileButton);
     }
 
     @FXML
     private void handleAddEventAction(ActionEvent event) {
+        openNewWindow("/fxml/newevent.fxml", "Add New Event", addEventButton);
+    }
+
+    private void openNewWindow(String resource, String title, Button ownerButton) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/newevent.fxml"));
-            Parent newEventRoot = fxmlLoader.load();
-            Stage newEventStage = new Stage();
-            newEventStage.setTitle("Add New Event");
-            newEventStage.setScene(new Scene(newEventRoot));
-            newEventStage.initModality(Modality.WINDOW_MODAL);
-            newEventStage.initOwner(addEventButton.getScene().getWindow());
-            newEventStage.showAndWait();
+            Parent root = FXMLLoader.load(getClass().getResource(resource));
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(ownerButton.getScene().getWindow());
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    private void handleSortAction(ActionEvent event) {
-        String selectedSortMethod = sortChoiceBox.getValue();
-        sortEvents(selectedSortMethod);
+    private void sortEvents(SortType sortMethod) {
+        cachedEvents.sort(switch (sortMethod) {
+            case ALPHABETICAL -> Comparator.comparing(Event::getTitle);
+            case DATE -> Comparator.comparing(Event::getDate);
+        });
+        updateListView(cachedEvents);
     }
 
-    private void sortEvents(String sortMethod) {
-        List<Event> events = EventController.getAllEvents();
-
-        switch (sortMethod) {
-            case "Aakkosjärjestys":
-                events.sort(Comparator.comparing(Event::getTitle));
-                break;
-            case "Päivämäärän mukaan":
-                events.sort(Comparator.comparing(Event::getDate));
-                break;
-        }
-
-        listViewPane.getChildren().clear();
-        for (Event event : events) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
-                controller.setEventData(event);
-                listViewPane.getChildren().add(eventCard);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    @FXML
+    private void handleSortAction(ActionEvent event) {
+        Optional.ofNullable(SORT_MAP.get(sortChoiceBox.getValue())).ifPresent(this::sortEvents);
     }
 
     private void clearCalendar() {
-        monVBox.getChildren().clear();
-        tueVBox.getChildren().clear();
-        wedVBox.getChildren().clear();
-        thuVBox.getChildren().clear();
-        friVBox.getChildren().clear();
-        satVBox.getChildren().clear();
-        sunVBox.getChildren().clear();
+        Arrays.stream(dayBoxes).forEach(vbox -> vbox.getChildren().clear());
     }
 }
