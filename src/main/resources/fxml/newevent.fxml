@@ -74,7 +74,7 @@
             <RowConstraints fillHeight="false" minHeight="20.0" prefHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#handleSelectImageAction" text="Valitse kuva" />
+            <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectEventImage" text="Valitse kuva" />
             <Label fx:id="eventImageError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="1" />
             <TextField fx:id="eventNameField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman nimi" GridPane.rowIndex="2" />
             <Label fx:id="eventNameError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="3" />
@@ -97,7 +97,7 @@
                </children>
             </HBox>
             <Label fx:id="timeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#handleAddEventAction" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#addEvent" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="9" />
          </children>
       </GridPane>

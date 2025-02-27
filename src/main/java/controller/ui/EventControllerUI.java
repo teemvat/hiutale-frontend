@@ -18,50 +18,13 @@ import java.io.IOException;
 
 public class EventControllerUI {
 
-    @FXML
-    private Label eventNameLabel;
-
-    @FXML
-    private Label organizerLabel;
-
-    @FXML
-    private Label dateLabel;
-
-    @FXML
-    private Label startTimeLabel;
-
-    @FXML
-    private Label endTimeLabel;
-
-    @FXML
-    private Label locationLabel;
-
-    @FXML
-    private Label priceLabel;
-
-    @FXML
-    private ImageView eventImage;
-
-    @FXML
-    private Label descriptionLabel;
-
-    @FXML
-    private Button buyTicketButton;
+    @FXML private Label eventNameLabel, organizerLabel, dateLabel, startTimeLabel, endTimeLabel, locationLabel, priceLabel, descriptionLabel;
+    @FXML private ImageView eventImage;
+    @FXML private Button buyTicketButton;
 
     @FXML
     private void handleBuyTicketAction(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
-            Parent newEventRoot = fxmlLoader.load();
-            Stage newEventStage = new Stage();
-            newEventStage.setTitle("Buy ticket");
-            newEventStage.setScene(new Scene(newEventRoot));
-            newEventStage.initModality(Modality.WINDOW_MODAL);
-            newEventStage.initOwner(buyTicketButton.getScene().getWindow());
-            newEventStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        showModalWindow("/fxml/rsvp.fxml", "Buy ticket", buyTicketButton);
     }
 
     public void setEventDetails(Event event) {
@@ -73,6 +36,25 @@ public class EventControllerUI {
         locationLabel.setText(LocationController.getLocationById(event.getLocationId()).getName());
         priceLabel.setText(Double.toString(event.getPrice()));
         descriptionLabel.setText(event.getDescription());
-        //eventImage.setImage(new Image(imageUrl)); // TODO
+
+//        if (event.getImageUrl() != null && !event.getImageUrl().isEmpty()) {
+//            eventImage.setImage(new Image(event.getImageUrl())); // TODO
+//        }
+    }
+
+    private void showModalWindow(String fxmlPath, String title, Button ownerButton) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(ownerButton.getScene().getWindow());
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.err.println("Error loading window: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

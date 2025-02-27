@@ -34,9 +34,9 @@
                     </rowConstraints>
                      <children>
                         <Label text="Käyttäjänimi:" />
-                        <Label fx:id="username" text="username" GridPane.columnIndex="1" />
+                        <Label fx:id="usernameLabel" text="username" GridPane.columnIndex="1" />
                         <Label text="Sähköpostiosoite:" GridPane.rowIndex="1" />
-                        <Label fx:id="email" text="email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="emailLabel" text="email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                   <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogoutAction" prefHeight="25.0" prefWidth="150.0" text="Kirjaudu ulos" />
@@ -62,7 +62,7 @@
                   </Label>
                   <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="352.0" prefWidth="580.0" vbarPolicy="NEVER">
                      <content>
-                        <VBox fx:id="favoriteVBox" prefHeight="368.0" prefWidth="578.0" spacing="10.0" />
+                        <VBox fx:id="favoriteEventsVBox" prefHeight="368.0" prefWidth="578.0" spacing="10.0" />
                      </content>
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
@@ -89,7 +89,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                      <content>
-                        <VBox fx:id="upcomingVBox" prefHeight="400.0" prefWidth="580.0" spacing="10.0" />
+                        <VBox fx:id="upcomingEventsVBox" prefHeight="400.0" prefWidth="580.0" spacing="10.0" />
                      </content>
                   </ScrollPane>
                </children>
@@ -110,7 +110,7 @@
                   </Label>
                   <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="358.0" prefWidth="580.0" vbarPolicy="NEVER">
                     <content>
-                        <VBox fx:id="myeventsVBox" spacing="10.0" />
+                        <VBox fx:id="organizedEventsVBox" spacing="10.0" />
                     </content>
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
