@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.FavouriteController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,109 +16,64 @@ import javafx.stage.Stage;
 import model.Event;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class EventCardController {
 
-    @FXML
-    private ImageView eventImage;
-
-    @FXML
-    private Label eventTitle;
-
-    @FXML
-    private Label eventDate;
-
-    @FXML
-    private Label eventLocation;
-
-    @FXML
-    private Button ticketButton;
-
-    @FXML
-    private ImageView ticketImage;
-
-    @FXML
-    private Button shareButton;
-
-    @FXML
-    private Button favoriteButton;
-
-    @FXML
-    private ImageView favoriteImage;
+    @FXML private ImageView eventImage, ticketImage, favoriteImage;
+    @FXML private Label eventTitle, eventDate, eventLocation;
+    @FXML private Button ticketButton, shareButton, favoriteButton;
 
     private Event event;
-    private Image image;
-    private String title;
-    private String date;
-    private String location;
-    private int totalTickets;
-    private int ticketsLeft;
-
-    private void initialize() {
-        updateTicketIcon();
-        updateEventInformation();
-    }
 
     public void setEventData(Event event) {
         this.event = event;
-        // TODO image
+
+        //eventImage.setImage(loadImage(event.getImagePath(), "../pictures/placeholder_event_picture.png"));   // TODO image
         eventTitle.setText(event.getTitle());
         eventDate.setText(event.getDate());
         eventLocation.setText(event.getLocationId());
-    }
 
-    private void updateEventInformation() {
-        eventImage.setImage(image);
-        eventTitle.setText(title);
-        eventDate.setText(date);
-        eventLocation.setText(location);
-    }
-
-    private void setTotalTickets(int totalTickets) {
-        this.totalTickets = totalTickets;
-    }
-
-    public void setTicketsLeft(int ticketsLeft) {
-        this.ticketsLeft = ticketsLeft;
         updateTicketIcon();
+        updateFavouriteIcon();
     }
 
     private void updateTicketIcon() {
-        if (totalTickets == 0) {
-            return;
-        }
+        int totalTickets = event.getCapacity();
+        int ticketsLeft = totalTickets - event.getAttendanceCount();
 
-        double percentageLeft = (double) ticketsLeft / totalTickets * 100;
-        String iconPath;
-        if (percentageLeft > 75) {
-            iconPath = "../pictures/icons/ticket_green.png";
-        } else if (percentageLeft > 50) {
-            iconPath = "../pictures/icons/ticket_yellow.png";
-        } else if (percentageLeft > 25) {
-            iconPath = "../pictures/icons/ticket_orange.png";
-        } else {
-            iconPath = "../pictures/icons/ticket_red.png";
+        if (totalTickets > 0) {
+            double percentageLeft = (double) ticketsLeft / totalTickets * 100;
+            String iconPath = percentageLeft > 75 ? "../pictures/icons/ticket_green.png" : percentageLeft > 50 ? "../pictures/icons/ticket_yellow.png" : percentageLeft > 25 ? "../pictures/icons/ticket_orange.png" : "../pictures/icons/ticket_red.png";
+            ticketImage.setImage(loadImage(iconPath));
         }
-        ticketImage.setImage(new Image(getClass().getResourceAsStream(iconPath)));
+    }
+
+    private void updateFavouriteIcon() {
+        boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
+        favoriteImage.setImage(loadImage(isFavourite ? "../pictures/icons/star_filled.png" : "../pictures/icons/star.png"));
     }
 
     @FXML
     private void handleShareAction() {
         String eventInfo = String.format("Event Title: %s\nDate: %s\nLocation: %s\nDescription: %s",
-                eventTitle.getText(), eventDate.getText(), eventLocation.getText(), "Event description here");
+                eventTitle.getText(), eventDate.getText(), eventLocation.getText(), event.getDescription());
 
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         content.putString(eventInfo);
         clipboard.setContent(content);
-
         System.out.println("Event information copied to clipboard");
     }
 
     @FXML
     private void handleFavoriteAction() {
-        // TODO: Add event to favorites
-        System.out.println("Favorite button clicked");
+        if (FavouriteController.getUserFavourites().contains(this.event)) {
+            FavouriteController.deleteFavourite(this.event);
+        } else {
+            FavouriteController.createFavourite(this.event);
+        }
+        updateFavouriteIcon();
     }
 
     @FXML
@@ -134,7 +90,19 @@ public class EventCardController {
             rsvpStage.initOwner(eventTitle.getScene().getWindow());
             rsvpStage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Failed to open RSVP window: " + e.getMessage());
+        }
+    }
+
+    private Image loadImage(String path) {
+        return loadImage(path, null);
+    }
+
+    private Image loadImage(String path, String fallbackpath) {
+        try {
+            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+        } catch (NullPointerException e) {
+            return fallbackpath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackpath))) : null;
         }
     }
 }
