@@ -230,7 +230,7 @@ public class HomeController {
         List<Event> events = EventController.getAllEvents();
         clearCalendar();
         for (Event event : events) {
-            LocalDate eventDate = event.getEventDate();
+            LocalDate eventDate = LocalDate.parse(event.getDate());
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
                 Parent eventBox = fxmlLoader.load();
@@ -326,7 +326,7 @@ public class HomeController {
     private void updateCalendarWithFilteredEvents(LocalDate startOfWeek, List<Event> events) {
         clearCalendar();
         for (Event event : events) {
-            LocalDate eventDate = event.getEventDate();
+            LocalDate eventDate = LocalDate.parse(event.getDate());
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventbox.fxml"));
                 Parent eventBox = fxmlLoader.load();
@@ -420,10 +420,10 @@ public class HomeController {
 
         switch (sortMethod) {
             case "Aakkosjärjestys":
-                events.sort(Comparator.comparing(Event::getEventTitle));
+                events.sort(Comparator.comparing(Event::getTitle));
                 break;
             case "Päivämäärän mukaan":
-                events.sort(Comparator.comparing(Event::getEventDate));
+                events.sort(Comparator.comparing(Event::getDate));
                 break;
         }
 

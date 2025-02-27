@@ -21,7 +21,7 @@ public class RSVPController {
     @FXML
     private void handleRSVPAction(ActionEvent event) {
         if (this.event != null) {
-            AttendanceController.createAttendance(this.event.getEventId(), SessionManager.getInstance().getUser().getId());
+            AttendanceController.createAttendance(this.event);
         } else {
             System.out.println("Event is not set.");
         }

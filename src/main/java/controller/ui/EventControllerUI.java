@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.LocationController;
 import controller.api.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,14 +65,14 @@ public class EventControllerUI {
     }
 
     public void setEventDetails(Event event) {
-        eventNameLabel.setText(event.getEventTitle());
-        organizerLabel.setText(UserController.getUser(event.getEventOrganizerId()).getUsername());
-        dateLabel.setText(event.getEventDate().toString());
-        startTimeLabel.setText(event.getStartTime());
-        endTimeLabel.setText(event.getEndTime());
-        //locationLabel.setText(event.getEventLocationId().getLocationName());    // TODO
-        priceLabel.setText(Double.toString(event.getEventPrice()));
-        descriptionLabel.setText(event.getEventDescription());
-        //eventImage.setImage(new Image(imageUrl));                               // TODO
+        eventNameLabel.setText(event.getTitle());
+        organizerLabel.setText(UserController.getUser(Integer.parseInt(event.getOrganizerId())).toString());    // <3
+        dateLabel.setText(event.getDate());
+        startTimeLabel.setText(event.getStart());
+        endTimeLabel.setText(event.getEnd());
+        locationLabel.setText(LocationController.getLocationById(event.getLocationId()).getName());
+        priceLabel.setText(Double.toString(event.getPrice()));
+        descriptionLabel.setText(event.getDescription());
+        //eventImage.setImage(new Image(imageUrl)); // TODO
     }
 }

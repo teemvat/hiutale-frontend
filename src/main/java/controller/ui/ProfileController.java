@@ -94,7 +94,7 @@ public class ProfileController {
     }
 
     private void loadOrganizerCards() {
-        List<Event> myEvents = EventController.getEventsByOrganizer();
+        List<Event> myEvents = EventController.getEventsByOrganizer(Integer.toString(SessionManager.getInstance().getUser().getId()));
         myeventsVBox.getChildren().clear();
 
         for (Event event : myEvents) {
@@ -136,13 +136,10 @@ public class ProfileController {
     @FXML
     private void handleRemoveUserAction() {
         // Delete the user
-        boolean isDeleted = UserController.deleteUser(username.getText());
+        UserController.deleteUser(SessionManager.getInstance().getUser().getId());
 
         // Logout (to clean SessionManager) and load the login page
-        if (isDeleted) {
-            handleLogoutAction();
-        } else {
-            System.out.println("User deletion failed.");
-        }
+        handleLogoutAction();
+        System.out.println("User deletion failed.");
     }
 }

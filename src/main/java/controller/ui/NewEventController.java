@@ -135,7 +135,7 @@ public class NewEventController {
         String eventName = eventNameField.getText();
         String eventDescription = eventDescriptionField.getText();
         String eventType = eventTypeComboBox.getValue();
-        String eventDate = eventDatePicker.getValue().toString(); //toimiiko näin? Lisäsin toString - Teemu
+        String eventDate = eventDatePicker.getValue().toString();
         String eventLocation = eventLocationComboBox.getValue();
         String eventCapacity = eventCapacityField.getText();
         String eventPrice = eventPriceField.getText();
@@ -210,8 +210,6 @@ public class NewEventController {
         if(isValid) {
             try {
                 // TODO: send image as well
-                // TODO: check if its possible to return boolean from the createEvent method (now returns only false/value)
-                // Säädin tätä, oli ennen boolean - Teemu
                 Event isEventCreated = EventController.createEvent(
                         eventName,
                         eventDescription,

@@ -1,6 +1,5 @@
 package controller.ui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -62,9 +61,9 @@ public class EventCardController {
     public void setEventData(Event event) {
         this.event = event;
         // TODO image
-        eventTitle.setText(event.getEventTitle());
-        eventDate.setText(event.getEventDate().toString());
-        eventLocation.setText(event.getEventLocationId());
+        eventTitle.setText(event.getTitle());
+        eventDate.setText(event.getDate());
+        eventLocation.setText(event.getLocationId());
     }
 
     private void updateEventInformation() {
@@ -129,7 +128,7 @@ public class EventCardController {
             RSVPController rsvpController = fxmlLoader.getController();
             rsvpController.setEvent(event);
             Stage rsvpStage = new Stage();
-            rsvpStage.setTitle("RSVP for " + event.getEventTitle());
+            rsvpStage.setTitle("RSVP for " + event.getTitle());
             rsvpStage.setScene(new Scene(rsvpRoot));
             rsvpStage.initModality(Modality.WINDOW_MODAL);
             rsvpStage.initOwner(eventTitle.getScene().getWindow());
