@@ -157,7 +157,7 @@ public class HomeController {
     private void handleResetAction(ActionEvent event) {
         // Reset all fields
         searchField.clear();
-        datePicker.setValue(null);
+        datePicker.setValue(LocalDate.now());
         eventTypeComboBox.getSelectionModel().clearSelection();
         locationComboBox.getSelectionModel().clearSelection();
         organizerComboBox.getSelectionModel().clearSelection();
