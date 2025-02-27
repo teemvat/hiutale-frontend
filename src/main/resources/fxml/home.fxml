@@ -187,7 +187,7 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                                        <children>
                                           <Label text="KE" />
-                                          <Label fx:id="wedDateLAbel" text="DD.MM" />
+                                          <Label fx:id="wedDateLabel" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
                                                 <VBox fx:id="wedVBox" prefHeight="451.0" prefWidth="61.0" />
