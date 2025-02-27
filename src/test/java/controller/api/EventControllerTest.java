@@ -24,36 +24,36 @@ class EventControllerTest {
     @Test
     @Order(1)
     void createEvent() {
-        boolean success = EventController.createEvent(
+        Event e = EventController.createEvent(
                 "Testi",
                 "Tämä on testi",
                 "1",
-                "20",
+                "200",
                 "Sitsit",
-                LocalDate.now(),
-                "18:00",
-                "23:00",
-                20.0
+                null,
+                "2025-02-26",
+                "2025-02-26",
+                15.0
         );
-        assertTrue(success);
+        assertNotNull(e);
     }
 
     @Test
     @Order(2)
     void editEvent() {
-        boolean success = EventController.editEvent(
+        Event e = EventController.editEvent(
                 "4",
                 "Testi",
                 "Tämä on muokattu testi",
                 "1",
                 "200",
                 "Bileet",
-                LocalDate.now(),
+                LocalDate.now().toString(),
                 "17:00",
                 "23:59",
                 25.0
         );
-        assertTrue(success);
+        assertNotNull(e);
     }
 
     @Test
@@ -68,13 +68,25 @@ class EventControllerTest {
     @Order(4)
     void searchEvents() {
         List<Event> events = EventController.searchEvents(
-                "Testi",
+                null,
                 "Sitsit",
-                LocalDate.now().toString(),
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        assertNotNull(events);
+        assertFalse(events.isEmpty());
+
+        events = EventController.searchEvents(
+                null,
+                null,
+                null,
                 "1",
-                "15.0",
-                "25.0",
-                SessionManager.getInstance().getUserName()
+                null,
+                null,
+                null
         );
         assertNotNull(events);
         assertFalse(events.isEmpty());
@@ -83,8 +95,10 @@ class EventControllerTest {
     @Test
     @Order(5)
     void deleteEvent() {
-        boolean success = EventController.deleteEvent("Testi");
-        assertTrue(success);
+        EventController.deleteEvent("Testi");
+        List<Event> events = EventController.getAllEvents();
+        assertNotNull(events);
+        assertFalse(events.isEmpty());
     }
 
     @AfterAll

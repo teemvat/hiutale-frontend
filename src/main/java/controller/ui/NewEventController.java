@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.Event;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -134,7 +135,7 @@ public class NewEventController {
         String eventName = eventNameField.getText();
         String eventDescription = eventDescriptionField.getText();
         String eventType = eventTypeComboBox.getValue();
-        LocalDate eventDate = eventDatePicker.getValue();
+        String eventDate = eventDatePicker.getValue().toString(); //toimiiko näin? Lisäsin toString - Teemu
         String eventLocation = eventLocationComboBox.getValue();
         String eventCapacity = eventCapacityField.getText();
         String eventPrice = eventPriceField.getText();
@@ -210,7 +211,8 @@ public class NewEventController {
             try {
                 // TODO: send image as well
                 // TODO: check if its possible to return boolean from the createEvent method (now returns only false/value)
-                boolean isEventCreated = EventController.createEvent(
+                // Säädin tätä, oli ennen boolean - Teemu
+                Event isEventCreated = EventController.createEvent(
                         eventName,
                         eventDescription,
                         eventLocation,
@@ -221,7 +223,7 @@ public class NewEventController {
                         endTime,
                         Double.parseDouble(eventPrice)
                 );
-                if (isEventCreated) {
+                if (isEventCreated != null) {
                     System.out.println("Event created successfully");
                     // Close the new event window
                     Stage stage = (Stage) addEventButton.getScene().getWindow();

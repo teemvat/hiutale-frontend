@@ -96,6 +96,9 @@ public class UserController {
         if (user != null) {
             user.setUsername(username);
             user.setEmail(email);
+        } else {
+            user = gson.fromJson(response, User.class);
+            SessionManager.getInstance().login(user);
         }
         return user;
     }
