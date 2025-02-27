@@ -29,7 +29,7 @@ class EventControllerTest {
                 "Tämä on testi",
                 "1",
                 "200",
-                "Sitsit",
+                "1",
                 null,
                 "2025-02-26",
                 "2025-02-26",
@@ -47,7 +47,7 @@ class EventControllerTest {
                 "Tämä on muokattu testi",
                 "1",
                 "200",
-                "Bileet",
+                "1",
                 LocalDate.now().toString(),
                 "17:00",
                 "23:59",
@@ -67,19 +67,20 @@ class EventControllerTest {
     @Test
     @Order(4)
     void searchEvents() {
-        List<Event> events = EventController.searchEvents(
+        EventController.getAllEvents();
+        List<Event> results = EventController.searchEvents(
+                "Vappu",
                 null,
-                "Sitsit",
                 null,
                 null,
                 null,
                 null,
                 null
         );
-        assertNotNull(events);
-        assertFalse(events.isEmpty());
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
 
-        events = EventController.searchEvents(
+        results = EventController.searchEvents(
                 null,
                 null,
                 null,
@@ -88,8 +89,20 @@ class EventControllerTest {
                 null,
                 null
         );
-        assertNotNull(events);
-        assertFalse(events.isEmpty());
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
+
+        results = EventController.searchEvents(
+                null,
+                "1",
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
     }
 
     @Test
@@ -97,6 +110,21 @@ class EventControllerTest {
     void deleteEvent() {
         EventController.deleteEvent("Testi");
         List<Event> events = EventController.getAllEvents();
+        assertNotNull(events);
+        assertFalse(events.isEmpty());
+    }
+
+    @Test
+    @Order(6)
+    void getEvent() {
+        Event e = EventController.getEvent("4");
+        assertNotNull(e);
+    }
+
+    @Test
+    @Order(7)
+    void getEventsByOrganizer() {
+        List<Event> events = EventController.getEventsByOrganizer("19");
         assertNotNull(events);
         assertFalse(events.isEmpty());
     }

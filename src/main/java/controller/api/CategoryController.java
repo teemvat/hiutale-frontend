@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 // pitäis olla ok kaikki
-// todo: testaa postmanilla
 public class CategoryController {
     private static final Gson gson = new Gson();
     private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
@@ -63,37 +62,27 @@ public class CategoryController {
         return gson.fromJson(response, new TypeToken<ArrayList<Category>>() {}.getType());
     }
 
-    public static Category getCategoryById(int categoryId) {
+    public static Category getCategoryById(String categoryId) {
         String response = sendHttpRequest("GET", "/categories/one/" + categoryId, "");
         return gson.fromJson(response, Category.class);
     }
 
-    public static boolean createCategory(String categoryName, String categoryDescription) {
+    public static Category createCategory(String categoryName, String categoryDescription) {
         String requestBody = '{' +
                 "\"categoryName\": \"" + categoryName + "\"," +
                 "\"categoryDescription\": \"" + categoryDescription + "\"" +
                 '}';
-        return sendHttpRequest("POST", "/categories/create", requestBody).contains("success");
+        String response = sendHttpRequest("POST", "/categories/create", requestBody);
+        return gson.fromJson(response, Category.class);
     }
 
-    public static boolean editCategory(int categoryId, String categoryName, String categoryDescription) {
+    public static void editCategory(String categoryId, String categoryName, String categoryDescription) {
         String requestBody = '{' +
                 "\"categoryId\": \"" + categoryId + "\"," +
                 "\"categoryName\": \"" + categoryName + "\"," +
                 "\"categoryDescription\": \"" + categoryDescription + "\"" +
                 '}';
-        return sendHttpRequest("PUT", "/categories/update/" + categoryId, requestBody).contains("success");
+        sendHttpRequest("PUT", "/categories/update/" + categoryId, requestBody);
     }
 
-    public static boolean deleteCategory(int categoryId) {
-        return sendHttpRequest("DELETE", "/categories/delete/" + categoryId, "").contains("success");
-    }
-
-    public static ArrayList<Category> getPlaceholderCategories() {
-        ArrayList<Category> categories = new ArrayList<>();
-        categories.add(new Category(1, "Sitsit", "Istutaan ja ryypätään"));
-        categories.add(new Category(2, "Bileet", "Ryypätään baarissa"));
-        categories.add(new Category(3, "Rastikierros", "Kävellään ja ryypätään"));
-        return categories;
-    }
 }

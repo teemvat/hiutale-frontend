@@ -63,7 +63,7 @@ public class EventController {
                                       double price) {
         Event event = new Event(null, title, description, locationId, capacity, null, categories, date, start, end, price, 0, 0);
         String requestBody = gson.toJson(event);
-        String response = sendHttpRequest("POST", "/event/create", requestBody);
+        String response = sendHttpRequest("POST", "/events/create", requestBody);
         Event newEvent = gson.fromJson(response, Event.class);
         events.add(newEvent);
         return newEvent;
@@ -72,7 +72,9 @@ public class EventController {
     public static Event editEvent(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice) {
         Event event = new Event(eventId, eventTitle, eventDescription, eventLocationId, eventCapacity, eventCategories, eventDate, startTime, endTime, eventPrice);
         String requestBody = gson.toJson(event);
+        System.out.println(requestBody);
         String response = sendHttpRequest("PUT", "/events/update/" + eventId, requestBody);
+        System.out.println(response);
         return gson.fromJson(response, Event.class);
     }
 
@@ -91,7 +93,7 @@ public class EventController {
             if (query != null && !event.getTitle().toLowerCase().contains(query.toLowerCase())) {
                 continue;
             }
-            if (category != null && event.getCategories() != null && !Arrays.asList(event.getCategories()).contains(category.toLowerCase())) {
+            if (category != null && event.getEventCategoryIds() != null && !event.getEventCategoryIds().contains(Integer.parseInt(category))) {
                 continue;
             }
             if (date != null && !event.getDate().equals(date)) {
