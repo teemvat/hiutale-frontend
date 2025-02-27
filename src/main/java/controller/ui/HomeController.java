@@ -57,9 +57,6 @@ public class HomeController {
     private Button profileButton;
 
     @FXML
-    private Button logoutButton;
-
-    @FXML
     private Button addEventButton;
 
     @FXML
@@ -391,19 +388,6 @@ public class HomeController {
             newEventStage.initModality(Modality.WINDOW_MODAL);
             newEventStage.initOwner(profileButton.getScene().getWindow());
             newEventStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void handleLogoutAction(ActionEvent event) {
-        UserController.logout();
-        try {
-            Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
-            Scene homeScene = new Scene(homePage);
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.setScene(homeScene);
         } catch (IOException e) {
             e.printStackTrace();
         }
