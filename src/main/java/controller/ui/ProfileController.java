@@ -63,16 +63,20 @@ public class ProfileController {
         List<Event> favorites = FavouriteController.getUserFavourites();
         favoriteVBox.getChildren().clear();
 
-        for (Event event : favorites) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
-                controller.setEventData(event);
-                favoriteVBox.getChildren().add(eventCard);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (favorites != null) {
+            for (Event event : favorites) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
+                    Parent eventCard = fxmlLoader.load();
+                    EventCardController controller = fxmlLoader.getController();
+                    controller.setEventData(event);
+                    favoriteVBox.getChildren().add(eventCard);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            favoriteVBox.getChildren().add(new Label("No favorite events found"));
         }
     }
 
@@ -80,33 +84,42 @@ public class ProfileController {
         List<Event> upcoming = AttendanceController.getUserAttendances();
         upcomingVBox.getChildren().clear();
 
-        for (Event event : upcoming) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
-                controller.setEventData(event);
-                upcomingVBox.getChildren().add(eventCard);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (upcoming != null) {
+            for (Event event : upcoming) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
+                    Parent eventCard = fxmlLoader.load();
+                    EventCardController controller = fxmlLoader.getController();
+                    controller.setEventData(event);
+                    upcomingVBox.getChildren().add(eventCard);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            upcomingVBox.getChildren().add(new Label("No events found"));
         }
+
     }
 
     private void loadOrganizerCards() {
         List<Event> myEvents = EventController.getEventsByOrganizer(Integer.toString(SessionManager.getInstance().getUser().getId()));
         myeventsVBox.getChildren().clear();
 
-        for (Event event : myEvents) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
-                controller.setEventData(event);
-                myeventsVBox.getChildren().add(eventCard);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (myEvents != null) {
+            for (Event event : myEvents) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
+                    Parent eventCard = fxmlLoader.load();
+                    EventCardController controller = fxmlLoader.getController();
+                    controller.setEventData(event);
+                    myeventsVBox.getChildren().add(eventCard);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            myeventsVBox.getChildren().add(new Label("No events found"));
         }
     }
 

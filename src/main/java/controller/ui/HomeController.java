@@ -50,7 +50,8 @@ public class HomeController {
 
     @FXML
     private void initialize() {
-        cachedEvents = Optional.ofNullable(EventController.getAllEvents()).orElse(new ArrayList<>());
+        List<Event> allEvents = EventController.getAllEvents();
+        cachedEvents = Optional.ofNullable(allEvents).orElse(new ArrayList<>());
 
         dayLabels = new Label[]{monDateLabel, tueDateLabel, wedDateLabel, thuDateLabel, friDateLabel, satDateLabel, sunDateLabel};
         dayBoxes = new VBox[]{monVBox, tueVBox, wedVBox, thuVBox, friVBox, satVBox, sunVBox};
@@ -60,6 +61,8 @@ public class HomeController {
         updateCalendar(getStartOfWeek(today));
 
         datePicker.setOnAction(event -> updateCalendar(getStartOfWeek(datePicker.getValue())));
+
+        loadEventCards();
     }
 
     private void configurePriceFields() {
@@ -85,7 +88,11 @@ public class HomeController {
 
     private void loadEventsForWeek(LocalDate startOfWeek) {
         clearCalendar();
-        cachedEvents.forEach(event -> addEventToCalendar(event, startOfWeek));
+        if (cachedEvents.isEmpty()) {
+            listViewPane.getChildren().add(new Label("No events found for this week"));
+        } else {
+            cachedEvents.forEach(event -> addEventToCalendar(event, startOfWeek));
+        }
     }
 
     private void addEventToCalendar(Event event, LocalDate startOfWeek) {
