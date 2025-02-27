@@ -1,156 +1,165 @@
 package model;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Event {
-    private String eventId;
-    private String eventTitle;
-    private String eventDescription;
-    private String eventLocationId;
-    private int eventCapacity;
-    private String eventOrganizerId;
-    private String eventCategories;
-    private String eventStatus;
-    private LocalDate eventDate;
-    private String startTime;
-    private String endTime;
-    private double eventPrice;
-    private int attendeeCount;
+    private String id;
+    private String title;
+    private String description;
+    private String locationId;
+    private int capacity;
+    private String organizerId;
+    private List<String> categories;
+    private String status;
+    private String date;
+    private String start;
+    private String end;
+    private double price;
+    private int attendanceCount;
     private int favouriteCount;
 
     // for new event and getting events from database
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
-        this.eventId = eventId;
-        this.eventTitle = eventTitle;
-        this.eventDescription = eventDescription;
-        this.eventLocationId = eventLocationId;
-        this.eventCapacity = Integer.parseInt(eventCapacity);
-        this.eventOrganizerId = eventOrganizerId;
-        this.eventCategories = eventCategories;
-        this.eventStatus = "Default";
-        this.eventDate = eventDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.eventPrice = eventPrice;
-        this.attendeeCount = attendeeCount;
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
+        this.id = eventId;
+        this.title = eventTitle;
+        this.description = eventDescription;
+        this.locationId = eventLocationId;
+        this.capacity = Integer.parseInt(eventCapacity);
+        this.organizerId = eventOrganizerId;
+
+        this.categories = new ArrayList<>(); //todo: tää kusee, fiksaa!
+        for (String category : eventCategories.split(",")) {
+            this.categories.add(category.trim());
+        }
+        this.status = "Default";
+        this.date = eventDate;
+        this.start = startTime;
+        this.end = endTime;
+        this.price = eventPrice;
+        this.attendanceCount = attendeeCount;
     }
 
     // for editing events
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
-        this.eventId = eventId;
-        this.eventTitle = eventTitle;
-        this.eventDescription = eventDescription;
-        this.eventLocationId = eventLocationId;
-        this.eventCapacity = Integer.parseInt(eventCapacity);
-        this.eventCategories = eventCategories;
-        this.eventDate = eventDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.eventPrice = eventPrice;
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice) {
+        this.id = eventId;
+        this.title = eventTitle;
+        this.description = eventDescription;
+        this.locationId = eventLocationId;
+        this.capacity = Integer.parseInt(eventCapacity);
+        this.categories.clear();
+        this.categories.add(eventCategories);
+        this.date = eventDate;
+        this.start = startTime;
+        this.end = endTime;
+        this.price = eventPrice;
     }
 
-    public String getEventTitle() {
-        return eventTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getEventDescription() {
-        return eventDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getEventLocationId() {
-        return eventLocationId;
+    public String getLocationId() {
+        return locationId;
     }
 
-    public void setEventLocationId(String eventLocationId) {
-        this.eventLocationId = eventLocationId;
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
     }
 
-    public int getEventCapacity() {
-        return eventCapacity;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setEventCapacity(int eventCapacity) {
-        this.eventCapacity = eventCapacity;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
-    public String getEventOrganizerId() {
-        return eventOrganizerId;
+    public String getOrganizerId() {
+        return organizerId;
     }
 
-    public void setEventOrganizerId(String eventOrganizerId) {
-        this.eventOrganizerId = eventOrganizerId;
+    public void setOrganizerId(String organizerId) {
+        this.organizerId = organizerId;
     }
 
-    public String getEventCategories() {
-        return eventCategories;
+    public String[] getCategories() {
+        return categories.toArray(new String[0]);
     }
 
-    public void setEventCategories(String eventCategories) {
-        this.eventCategories = eventCategories;
+    public void setCategories(String categories) {
+        this.categories.clear();
+        for (String category : categories.split(",")) {
+            this.categories.add(category.trim());
+        }
     }
 
-    public String getEventStatus() {
-        return eventStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setEventStatus(String eventStatus) {
-        this.eventStatus = eventStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public LocalDate getEventDate() {
-        return eventDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getStart() {
+        return start;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getEnd() {
+        return end;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setEnd(String end) {
+        this.end = end;
     }
 
-    public double getEventPrice() {
-        return eventPrice;
+    public double getPrice() {
+        return price;
     }
 
-    public void setEventPrice(double eventPrice) {
-        this.eventPrice = eventPrice;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public String getEventId() {
-        return eventId;
+    public String getId() {
+        return id;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getAttendeeCount() {
-        return attendeeCount;
+    public int getAttendanceCount() {
+        return attendanceCount;
     }
 
-    public void setAttendeeCount(int attendeeCount) {
-        this.attendeeCount = attendeeCount;
+    public void setAttendanceCount(int attendanceCount) {
+        this.attendanceCount = attendanceCount;
     }
 
     public int getFavouriteCount() {

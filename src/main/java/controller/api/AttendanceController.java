@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AttendanceController {
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
+    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
     // pitäis olla ok kaikki paits getUserAttendances
     // todo: testaa postmanilla
@@ -59,13 +59,13 @@ public class AttendanceController {
 
     public static boolean createAttendance(Event event) {
         String requestBody = '{' +
-                "\"Id\": \"" + event.getEventId() + "\"," +
+                "\"Id\": \"" + event.getId() + "\"," +
                 '}';
         return sendHttpRequest("POST", "/attendance/create", requestBody).contains("success");
     }
 
     public static boolean deleteAttendance(Event event) {
-        return sendHttpRequest("DELETE", "/attendance/delete/" + event.getEventId(), "").contains("success");
+        return sendHttpRequest("DELETE", "/attendance/delete/" + event.getId(), "").contains("success");
     }
 
     // todo: varmista toimivuus, endpoint puuttuu!

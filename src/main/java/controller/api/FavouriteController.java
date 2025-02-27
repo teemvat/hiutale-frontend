@@ -11,14 +11,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class FavouriteController {
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
+    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
     // pitäis olla ok kaikki
     // todo: testaa postmanilla
@@ -61,13 +59,13 @@ public class FavouriteController {
 
     public static boolean createFavourite(Event event) {
         String requestBody = '{' +
-                "\"Id\": \"" + event.getEventId() + "\"," +
+                "\"Id\": \"" + event.getId() + "\"," +
                 '}';
         return sendHttpRequest("POST", "/favourite/create", requestBody).contains("success");
     }
 
     public static boolean deleteFavourite(Event event) {
-        return sendHttpRequest("DELETE", "/favourite/delete/" + event.getEventId(), "").contains("success");
+        return sendHttpRequest("DELETE", "/favourite/delete/" + event.getId(), "").contains("success");
     }
 
     // todo: varmista toimivuus, endpoint puuttuu!

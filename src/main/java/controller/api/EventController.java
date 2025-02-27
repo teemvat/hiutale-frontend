@@ -8,13 +8,12 @@ import utils.SessionManager;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.time.LocalDate;
 import java.util.*;
 
 public class EventController {
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
+    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
+    private static final List<Event> events = new ArrayList<>();
 
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
@@ -53,57 +52,61 @@ public class EventController {
         }
     }
 
-    public static boolean createEvent(String eventTitle,
-                                      String eventDescription,
-                                      String eventLocationId,
-                                      String eventCapacity,
-                                      String eventCategories,
-                                      LocalDate eventDate,
-                                      String startTime,
-                                      String endTime,
-                                      double eventPrice) {
-        Event event = new Event(null, eventTitle, eventDescription, eventLocationId, eventCapacity, SessionManager.getInstance().getUserName(), eventCategories, eventDate, startTime, endTime, eventPrice, 0, 0);
+    public static Event createEvent(String title,
+                                      String description,
+                                      String locationId,
+                                      String capacity,
+                                      String categories,
+                                      String date,
+                                      String start,
+                                      String end,
+                                      double price) {
+        Event event = new Event(null, title, description, locationId, capacity, null, categories, date, start, end, price, 0, 0);
         String requestBody = gson.toJson(event);
         String response = sendHttpRequest("POST", "/event/create", requestBody);
-        return response.contains("success");
+        Event newEvent = gson.fromJson(response, Event.class);
+        events.add(newEvent);
+        return newEvent;
     }
 
-    public static boolean editEvent(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, LocalDate eventDate, String startTime, String endTime, double eventPrice) {
+    public static Event editEvent(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice) {
         Event event = new Event(eventId, eventTitle, eventDescription, eventLocationId, eventCapacity, eventCategories, eventDate, startTime, endTime, eventPrice);
         String requestBody = gson.toJson(event);
         String response = sendHttpRequest("PUT", "/events/update/" + eventId, requestBody);
-        return response.contains("success");
+        return gson.fromJson(response, Event.class);
     }
 
     public static List<Event> getAllEvents() {
         String response = sendHttpRequest("GET", "/events/all", "");
-        return gson.fromJson(response, new TypeToken<List<Event>>(){}.getType());
+        List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {
+        }.getType());
+        events.addAll(allEvents);
+        return allEvents;
     }
 
     public static List<Event> searchEvents(String query, String category, String date, String location, String minPrice, String maxPrice, String organizerId) {
-        List<Event> allEvents = getAllEvents();
         List<Event> searchResults = new ArrayList<>();
 
-        for (Event event : allEvents) {
-            if (query != null && !event.getEventTitle().toLowerCase().contains(query.toLowerCase()) || !event.getEventDescription().toLowerCase().contains(query.toLowerCase())) {
+        for (Event event : events) {
+            if (query != null && !event.getTitle().toLowerCase().contains(query.toLowerCase())) {
                 continue;
             }
-            if (category != null && !event.getEventCategories().toLowerCase().contains(category.toLowerCase())) {
+            if (category != null && event.getCategories() != null && !Arrays.asList(event.getCategories()).contains(category.toLowerCase())) {
                 continue;
             }
-            if (date != null && !event.getEventDate().toString().equals(date)) {
+            if (date != null && !event.getDate().equals(date)) {
                 continue;
             }
-            if (location != null && !event.getEventLocationId().toLowerCase().contains(location.toLowerCase())) {
+            if (location != null && !event.getLocationId().toLowerCase().contains(location.toLowerCase())) {
                 continue;
             }
-            if (minPrice != null && event.getEventPrice() < Double.parseDouble(minPrice)) {
-                continue;
-            }
-            if (maxPrice != null && event.getEventPrice() > Double.parseDouble(maxPrice)) {
-                continue;
-            }
-            if (organizerId != null && !event.getEventOrganizerId().toLowerCase().contains(organizerId.toLowerCase())) {
+//            if (minPrice != null && event.getPrice() < Double.parseDouble(minPrice)) {
+//                continue;
+//            }
+//            if (maxPrice != null && event.getPrice() > Double.parseDouble(maxPrice)) {
+//                continue;
+//            }
+            if (organizerId != null && !event.getOrganizerId().toLowerCase().contains(organizerId.toLowerCase())) {
                 continue;
             }
             searchResults.add(event);
@@ -111,8 +114,26 @@ public class EventController {
         return searchResults;
     }
 
-    public static boolean deleteEvent(String eventId) {
-        String response = sendHttpRequest("DELETE", "/events/delete/" + eventId, "");
-        return response.contains("success");
+    public static void deleteEvent(String eventId) {
+        sendHttpRequest("DELETE", "/events/delete/" + eventId, "");
+    }
+
+    public static Event getEvent(String eventId) {
+        for (Event event : events) {
+            if (event.getId().equals(eventId)) {
+                return event;
+            }
+        }
+        return null;
+    }
+
+    public static List<Event> getEventsByOrganizer(String organizerId) {
+        List<Event> organizerEvents = new ArrayList<>();
+        for (Event event : events) {
+            if (event.getOrganizerId().equals(organizerId)) {
+                organizerEvents.add(event);
+            }
+        }
+        return organizerEvents;
     }
 }

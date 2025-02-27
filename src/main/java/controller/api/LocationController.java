@@ -20,7 +20,7 @@ import java.util.Scanner;
 // todo: testaa postmanilla
 public class LocationController {
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "37.27.9.255:8080"; // Backend URL
+    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
