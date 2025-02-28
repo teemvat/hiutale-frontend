@@ -62,6 +62,7 @@ public class EventController {
                                       String end,
                                       double price) {
         Event event = new Event(null, title, description, locationId, capacity, null, categories, date, start, end, price, 0, 0);
+        event.reformatDateForBE();
         String requestBody = gson.toJson(event);
         String response = sendHttpRequest("POST", "/events/create", requestBody);
         Event newEvent = gson.fromJson(response, Event.class);
@@ -75,7 +76,9 @@ public class EventController {
         System.out.println(requestBody);
         String response = sendHttpRequest("PUT", "/events/update/" + eventId, requestBody);
         System.out.println(response);
-        return gson.fromJson(response, Event.class);
+        Event updatedEvent = gson.fromJson(response, Event.class);
+        updatedEvent.reformatDateForFE();
+        return updatedEvent;
     }
 
     public static List<Event> getAllEvents() {
@@ -83,6 +86,9 @@ public class EventController {
         List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {
         }.getType());
         events.addAll(allEvents);
+        for (Event event : events) {
+            event.reformatDateForFE();
+        }
         return allEvents;
     }
 
@@ -123,6 +129,7 @@ public class EventController {
     public static Event getEvent(String eventId) {
         for (Event event : events) {
             if (event.getId().equals(eventId)) {
+                event.reformatDateForFE();
                 return event;
             }
         }
@@ -133,9 +140,11 @@ public class EventController {
         List<Event> organizerEvents = new ArrayList<>();
         for (Event event : events) {
             if (event.getOrganizerId().equals(organizerId)) {
+                event.reformatDateForFE();
                 organizerEvents.add(event);
             }
         }
         return organizerEvents;
     }
+
 }

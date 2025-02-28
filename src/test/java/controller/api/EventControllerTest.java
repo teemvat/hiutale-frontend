@@ -30,9 +30,9 @@ class EventControllerTest {
                 "1",
                 "200",
                 "1",
-                null,
                 "2025-02-26",
-                "2025-02-26",
+                "17:00",
+                "19:00",
                 15.0
         );
         assertNotNull(e);
@@ -60,6 +60,7 @@ class EventControllerTest {
     @Order(3)
     void getAllEvents() {
         List<Event> events = EventController.getAllEvents();
+        System.out.println(events);
         assertNotNull(events);
         assertFalse(events.isEmpty());
     }
@@ -108,10 +109,11 @@ class EventControllerTest {
     @Test
     @Order(5)
     void deleteEvent() {
-        EventController.deleteEvent("Testi");
         List<Event> events = EventController.getAllEvents();
+        int lastEventIndex = events.size() - 1;
+        EventController.deleteEvent(String.valueOf(lastEventIndex));
         assertNotNull(events);
-        assertFalse(events.isEmpty());
+        assertEquals(lastEventIndex, EventController.getAllEvents().size());
     }
 
     @Test

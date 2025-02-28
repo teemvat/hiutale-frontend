@@ -13,8 +13,8 @@ public class Event {
     private List<Integer> eventCategoryIds;
     private String status;
     private String date;
-    private String start;
-    private String end;
+    private String startTime;
+    private String endTime;
     private double price;
     private int attendanceCount;
     private int favouriteCount;
@@ -33,8 +33,8 @@ public class Event {
         }
         this.status = "Default";
         this.date = eventDate;
-        this.start = startTime;
-        this.end = endTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.price = eventPrice;
         this.attendanceCount = attendeeCount;
     }
@@ -49,9 +49,20 @@ public class Event {
         this.eventCategoryIds = new ArrayList<>();
         this.eventCategoryIds.add(Integer.valueOf(eventCategories));
         this.date = eventDate;
-        this.start = startTime;
-        this.end = endTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.price = eventPrice;
+    }
+
+    public void reformatDateForBE() {
+        this.startTime = this.date + "T" + this.startTime;
+        this.endTime = this.date + "T" + this.endTime;
+    }
+
+    public void reformatDateForFE() {
+        this.date = this.startTime.split("T")[0];
+        this.startTime = this.startTime.split("T")[1];
+        this.endTime = this.endTime.split("T")[1];
     }
 
     public String getTitle() {
@@ -124,20 +135,20 @@ public class Event {
         this.date = date;
     }
 
-    public String getStart() {
-        return start;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String getEnd() {
-        return end;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public double getPrice() {
