@@ -18,6 +18,7 @@ import model.User;
 import utils.SessionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileController {
@@ -68,7 +69,8 @@ public class ProfileController {
     }
 
     private void closeAllWindows() {
-        for (Window window : Stage.getWindows()) {
+        List<Window> windows = new ArrayList<>(Stage.getWindows());
+        for (Window window : windows) {
             if (window instanceof Stage) {
                 ((Stage) window).close();
             }
