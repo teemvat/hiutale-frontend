@@ -10,11 +10,11 @@ public class Event {
     private String locationId;
     private int capacity;
     private String organizerId;
-    private List<String> categories;
+    private List<Integer> eventCategoryIds;
     private String status;
     private String date;
-    private String start;
-    private String end;
+    private String startTime;
+    private String endTime;
     private double price;
     private int attendanceCount;
     private int favouriteCount;
@@ -27,32 +27,42 @@ public class Event {
         this.locationId = eventLocationId;
         this.capacity = Integer.parseInt(eventCapacity);
         this.organizerId = eventOrganizerId;
-
-        this.categories = new ArrayList<>(); //todo: tää kusee, fiksaa!
+        this.eventCategoryIds = new ArrayList<>();
         for (String category : eventCategories.split(",")) {
-            this.categories.add(category.trim());
+            this.eventCategoryIds.add(Integer.valueOf(category.trim()));
         }
         this.status = "Default";
         this.date = eventDate;
-        this.start = startTime;
-        this.end = endTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.price = eventPrice;
         this.attendanceCount = attendeeCount;
     }
 
-    // for editing events
+    // for editing events only
     public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice) {
         this.id = eventId;
         this.title = eventTitle;
         this.description = eventDescription;
         this.locationId = eventLocationId;
         this.capacity = Integer.parseInt(eventCapacity);
-        this.categories.clear();
-        this.categories.add(eventCategories);
+        this.eventCategoryIds = new ArrayList<>();
+        this.eventCategoryIds.add(Integer.valueOf(eventCategories));
         this.date = eventDate;
-        this.start = startTime;
-        this.end = endTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.price = eventPrice;
+    }
+
+    public void reformatDateForBE() {
+        this.startTime = this.date + "T" + this.startTime;
+        this.endTime = this.date + "T" + this.endTime;
+    }
+
+    public void reformatDateForFE() {
+        this.date = this.startTime.split("T")[0];
+        this.startTime = this.startTime.split("T")[1];
+        this.endTime = this.endTime.split("T")[1];
     }
 
     public String getTitle() {
@@ -95,14 +105,17 @@ public class Event {
         this.organizerId = organizerId;
     }
 
-    public String[] getCategories() {
-        return categories.toArray(new String[0]);
+    public List<Integer> getEventCategoryIds() {
+        if (eventCategoryIds == null) {
+            return new ArrayList<>();
+        }
+        return eventCategoryIds;
     }
 
-    public void setCategories(String categories) {
-        this.categories.clear();
-        for (String category : categories.split(",")) {
-            this.categories.add(category.trim());
+    public void setEventCategoryIds(String eventCategoryIds) {
+        this.eventCategoryIds.clear();
+        for (String category : eventCategoryIds.split(",")) {
+            this.eventCategoryIds.add(Integer.valueOf(category.trim()));
         }
     }
 
@@ -122,20 +135,20 @@ public class Event {
         this.date = date;
     }
 
-    public String getStart() {
-        return start;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String getEnd() {
-        return end;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public double getPrice() {

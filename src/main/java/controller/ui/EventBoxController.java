@@ -24,7 +24,7 @@ public class EventBoxController {
         this.event = event;
 
         eventTitle.setText(event.getTitle());
-        eventTime.setText(event.getStart());
+        eventTime.setText(event.getStartTime());
         eventLocation.setText(LocationController.getLocationById(event.getLocationId()).getName());
     }
 
