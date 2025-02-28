@@ -57,20 +57,20 @@ public class AttendanceController {
         }
     }
 
-    public static boolean createAttendance(Event event) {
+    public static void createAttendance(String eventId) {
         String requestBody = '{' +
-                "\"Id\": \"" + event.getId() + "\"," +
+                "\"id\": \"" + eventId + "\"," +
                 '}';
-        return sendHttpRequest("POST", "/attendance/create", requestBody).contains("success");
+        sendHttpRequest("POST", "/attendance/create", requestBody);
     }
 
-    public static boolean deleteAttendance(Event event) {
-        return sendHttpRequest("DELETE", "/attendance/delete/" + event.getId(), "").contains("success");
+    public static void deleteAttendance(String eventId) {
+        sendHttpRequest("DELETE", "/attendance/delete/" + eventId, "");
     }
 
     // todo: varmista toimivuus, endpoint puuttuu!
     public static List<Event> getUserAttendances() {
-        String result = sendHttpRequest("GET", "/attendance/all", "");
+        String result = sendHttpRequest("GET", "/attendance/user", "");
         return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
     }
 }

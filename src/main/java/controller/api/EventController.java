@@ -62,8 +62,9 @@ public class EventController {
                                       String end,
                                       double price) {
         Event event = new Event(null, title, description, locationId, capacity, null, categories, date, start, end, price, 0, 0);
+        event.reformatDateForBE();
         String requestBody = gson.toJson(event);
-        String response = sendHttpRequest("POST", "/event/create", requestBody);
+        String response = sendHttpRequest("POST", "/events/create", requestBody);
         Event newEvent = gson.fromJson(response, Event.class);
         events.add(newEvent);
         return newEvent;
@@ -72,21 +73,23 @@ public class EventController {
     public static Event editEvent(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice) {
         Event event = new Event(eventId, eventTitle, eventDescription, eventLocationId, eventCapacity, eventCategories, eventDate, startTime, endTime, eventPrice);
         String requestBody = gson.toJson(event);
+        System.out.println(requestBody);
         String response = sendHttpRequest("PUT", "/events/update/" + eventId, requestBody);
-        return gson.fromJson(response, Event.class);
+        System.out.println(response);
+        Event updatedEvent = gson.fromJson(response, Event.class);
+        updatedEvent.reformatDateForFE();
+        return updatedEvent;
     }
 
     public static List<Event> getAllEvents() {
         String response = sendHttpRequest("GET", "/events/all", "");
-        List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {}.getType());
-
-        if (allEvents != null) {
-            events.addAll(allEvents);
+        List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {
+        }.getType());
+        events.addAll(allEvents);
+        for (Event event : events) {
+            event.reformatDateForFE();
         }
-
-        return allEvents != null ? allEvents : new ArrayList<>();
-
-        // Lisäsin virheenkäsittelyn -mira
+        return allEvents;
     }
 
     public static List<Event> searchEvents(String query, String category, String date, String location, String minPrice, String maxPrice, String organizerId) {
@@ -96,7 +99,7 @@ public class EventController {
             if (query != null && !event.getTitle().toLowerCase().contains(query.toLowerCase())) {
                 continue;
             }
-            if (category != null && event.getCategories() != null && !Arrays.asList(event.getCategories()).contains(category.toLowerCase())) {
+            if (category != null && event.getEventCategoryIds() != null && !event.getEventCategoryIds().contains(Integer.parseInt(category))) {
                 continue;
             }
             if (date != null && !event.getDate().equals(date)) {
@@ -126,6 +129,7 @@ public class EventController {
     public static Event getEvent(String eventId) {
         for (Event event : events) {
             if (event.getId().equals(eventId)) {
+                event.reformatDateForFE();
                 return event;
             }
         }
@@ -136,9 +140,11 @@ public class EventController {
         List<Event> organizerEvents = new ArrayList<>();
         for (Event event : events) {
             if (event.getOrganizerId().equals(organizerId)) {
+                event.reformatDateForFE();
                 organizerEvents.add(event);
             }
         }
         return organizerEvents;
     }
+
 }

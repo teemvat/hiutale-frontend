@@ -57,20 +57,20 @@ public class FavouriteController {
         }
     }
 
-    public static boolean createFavourite(Event event) {
+    public static boolean createFavourite(String eventId) {
         String requestBody = '{' +
-                "\"Id\": \"" + event.getId() + "\"," +
+                "\"id\": \"" + eventId + "\"," +
                 '}';
         return sendHttpRequest("POST", "/favourite/create", requestBody).contains("success");
     }
 
-    public static boolean deleteFavourite(Event event) {
-        return sendHttpRequest("DELETE", "/favourite/delete/" + event.getId(), "").contains("success");
+    public static boolean deleteFavourite(String eventId) {
+        return sendHttpRequest("DELETE", "/favourite/delete/" + eventId, "").contains("success");
     }
 
     // todo: varmista toimivuus, endpoint puuttuu!
     public static List<Event> getUserFavourites() {
-        String result = sendHttpRequest("GET", "/favourite/all", "");
+        String result = sendHttpRequest("GET", "/favourite/user", "");
         return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
     }
 }

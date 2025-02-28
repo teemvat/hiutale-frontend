@@ -35,7 +35,7 @@ public class EventBoxController {
     public void setEventData(Event event) {
         this.event = event;
         this.title = event.getTitle();
-        this.time = event.getStart();
+        this.time = event.getStartTime();
         this.location = event.getLocationId();
         updateEventInformation();
     }
