@@ -99,7 +99,7 @@ public class EventController {
             if (query != null && !event.getTitle().toLowerCase().contains(query.toLowerCase())) {
                 continue;
             }
-            if (category != null && event.getEventCategoryIds() != null && !event.getEventCategoryIds().contains(Integer.parseInt(category))) {
+            if (category != null && event.getCategories() != null && !event.getCategories().contains(Integer.parseInt(category))) {
                 continue;
             }
             if (date != null && !event.getDate().equals(date)) {
@@ -146,5 +146,4 @@ public class EventController {
         }
         return organizerEvents;
     }
-
 }

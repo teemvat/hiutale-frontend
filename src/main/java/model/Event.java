@@ -105,7 +105,7 @@ public class Event {
         this.organizerId = organizerId;
     }
 
-    public List<Integer> getEventCategoryIds() {
+    public List<Integer> getCategories() {
         if (eventCategoryIds == null) {
             return new ArrayList<>();
         }
