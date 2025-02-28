@@ -69,9 +69,9 @@ public class EventCardController {
     @FXML
     private void handleFavoriteAction() {
         if (FavouriteController.getUserFavourites().contains(this.event)) {
-            FavouriteController.deleteFavourite(this.event);
+            FavouriteController.deleteFavourite(this.event.getId());
         } else {
-            FavouriteController.createFavourite(this.event);
+            FavouriteController.createFavourite(this.event.getId());
         }
         updateFavouriteIcon();
     }
