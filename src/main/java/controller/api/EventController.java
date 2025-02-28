@@ -83,13 +83,17 @@ public class EventController {
 
     public static List<Event> getAllEvents() {
         String response = sendHttpRequest("GET", "/events/all", "");
-        List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {
-        }.getType());
-        events.addAll(allEvents);
-        for (Event event : events) {
-            event.reformatDateForFE();
+        if (response.isEmpty()) {
+            return new ArrayList<>();
         }
-        return allEvents;
+        List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {}.getType());
+        if (allEvents != null) {
+            events.addAll(allEvents);
+            for (Event event : events) {
+                event.reformatDateForFE();
+            }
+        }
+        return allEvents != null ? allEvents : new ArrayList<>();
     }
 
     public static List<Event> searchEvents(String query, String category, String date, String location, String minPrice, String maxPrice, String organizerId) {
