@@ -79,16 +79,6 @@ public class LocationController {
         sendHttpRequest("POST", "/locations/create", requestBody);
     }
 
-    public static void editLocation(String locationId, String name, String address, String city, String postalCode) {
-        String requestBody = '{' +
-                "\"name\": \"" + name + "\"," +
-                "\"address\": \"" + address + "\"," +
-                "\"city\": \"" + city + "\"," +
-                "\"postalCode\": \"" + postalCode + "\"" +
-                '}';
-        sendHttpRequest("PUT", "/locations/update/" + locationId, requestBody);
-    }
-
     public static void deleteLocation(String locationId) {
         sendHttpRequest("DELETE", "/locations/delete/" + locationId, "");
     }

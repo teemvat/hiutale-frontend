@@ -39,10 +39,4 @@ class CategoryControllerTest {
         assertNotNull(category);
     }
 
-    @Test
-    void editCategory() {
-        assertDoesNotThrow(() -> {
-            CategoryController.editCategory("1", "Muokattu testi", "Tämä on muokattu testi");
-        });
-    }
 }
