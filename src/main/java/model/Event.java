@@ -1,5 +1,8 @@
 package model;
 
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +16,8 @@ public class Event {
     private List<Integer> eventCategoryIds;
     private String status;
     private String date;
-    private String startTime;
-    private String endTime;
+    private String start;
+    private String end;
     private double price;
     private int attendanceCount;
     private int favouriteCount;
@@ -33,36 +36,33 @@ public class Event {
         }
         this.status = "Default";
         this.date = eventDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.start = startTime;
+        this.end = endTime;
         this.price = eventPrice;
         this.attendanceCount = attendeeCount;
     }
 
-    // for editing events only
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice) {
-        this.id = eventId;
-        this.title = eventTitle;
-        this.description = eventDescription;
-        this.locationId = eventLocationId;
-        this.capacity = Integer.parseInt(eventCapacity);
-        this.eventCategoryIds = new ArrayList<>();
-        this.eventCategoryIds.add(Integer.valueOf(eventCategories));
-        this.date = eventDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.price = eventPrice;
-    }
-
     public void reformatDateForBE() {
-        this.startTime = this.date + "T" + this.startTime;
-        this.endTime = this.date + "T" + this.endTime;
+        this.start = this.date + "T" + this.start + ":00";
+        this.end = this.date + "T" + this.end + ":00";
     }
 
     public void reformatDateForFE() {
-        this.date = this.startTime.split("T")[0];
-        this.startTime = this.startTime.split("T")[1];
-        this.endTime = this.endTime.split("T")[1];
+        this.date = this.start.split("T")[0];
+        this.start = getTime(this.start);
+        this.end = getTime(this.end);
+    }
+
+    private String getTime(String input) {
+        String formattedTime;
+        if (input.contains("T")) { // Full timestamp
+            OffsetDateTime dateTime = OffsetDateTime.parse(input);
+            formattedTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+        } else { // Just time
+            LocalTime time = LocalTime.parse(input, DateTimeFormatter.ofPattern("HH:mm"));
+            formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        }
+        return formattedTime;
     }
 
     public String getTitle() {
@@ -135,20 +135,20 @@ public class Event {
         this.date = date;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getStart() {
+        return start;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getEnd() {
+        return end;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public double getPrice() {

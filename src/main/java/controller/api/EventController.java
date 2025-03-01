@@ -64,21 +64,11 @@ public class EventController {
         Event event = new Event(null, title, description, locationId, capacity, null, categories, date, start, end, price, 0, 0);
         event.reformatDateForBE();
         String requestBody = gson.toJson(event);
+        System.out.println(requestBody);
         String response = sendHttpRequest("POST", "/events/create", requestBody);
         Event newEvent = gson.fromJson(response, Event.class);
         events.add(newEvent);
         return newEvent;
-    }
-
-    public static Event editEvent(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice) {
-        Event event = new Event(eventId, eventTitle, eventDescription, eventLocationId, eventCapacity, eventCategories, eventDate, startTime, endTime, eventPrice);
-        String requestBody = gson.toJson(event);
-        System.out.println(requestBody);
-        String response = sendHttpRequest("PUT", "/events/update/" + eventId, requestBody);
-        System.out.println(response);
-        Event updatedEvent = gson.fromJson(response, Event.class);
-        updatedEvent.reformatDateForFE();
-        return updatedEvent;
     }
 
     public static List<Event> getAllEvents() {
@@ -108,12 +98,12 @@ public class EventController {
             if (location != null && !event.getLocationId().toLowerCase().contains(location.toLowerCase())) {
                 continue;
             }
-//            if (minPrice != null && event.getPrice() < Double.parseDouble(minPrice)) {
-//                continue;
-//            }
-//            if (maxPrice != null && event.getPrice() > Double.parseDouble(maxPrice)) {
-//                continue;
-//            }
+            if (minPrice != null && event.getPrice() < Double.parseDouble(minPrice)) {
+                continue;
+            }
+            if (maxPrice != null && event.getPrice() > Double.parseDouble(maxPrice)) {
+                continue;
+            }
             if (organizerId != null && !event.getOrganizerId().toLowerCase().contains(organizerId.toLowerCase())) {
                 continue;
             }
@@ -129,7 +119,6 @@ public class EventController {
     public static Event getEvent(String eventId) {
         for (Event event : events) {
             if (event.getId().equals(eventId)) {
-                event.reformatDateForFE();
                 return event;
             }
         }
@@ -140,7 +129,7 @@ public class EventController {
         List<Event> organizerEvents = new ArrayList<>();
         for (Event event : events) {
             if (event.getOrganizerId().equals(organizerId)) {
-                event.reformatDateForFE();
+                //event.reformatDateForFE();
                 organizerEvents.add(event);
             }
         }
