@@ -21,12 +21,15 @@ public class EventPageController {
     @FXML private Label eventNameLabel, organizerLabel, dateLabel, startTimeLabel, endTimeLabel, locationLabel, priceLabel, descriptionLabel;
     @FXML private ImageView eventImage;
     @FXML private Button buyTicketButton;
+    private Event event;
 
     @FXML
     private void handleBuyTicketAction(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
             Parent root = loader.load();
+            RSVPController controller = loader.getController();
+            controller.setEvent(this.event);
             Stage stage = new Stage();
             stage.setTitle("Buy ticket");
             stage.setScene(new Scene(root));
@@ -39,7 +42,8 @@ public class EventPageController {
         }
     }
 
-    public void setEventDetails(Event event) {
+    public void setEventDetails(Event e) {
+        this.event = e;
         eventNameLabel.setText(event.getTitle());
         organizerLabel.setText(UserController.getUser(Integer.parseInt(event.getOrganizerId())).toString());
         dateLabel.setText(event.getDate());
