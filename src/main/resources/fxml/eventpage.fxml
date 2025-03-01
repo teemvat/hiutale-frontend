@@ -186,7 +186,7 @@
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </padding>
             </ScrollPane>
-            <Button fx:id="buyTicketButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="69.0" text="Osta lippu">
+            <Button fx:id="buyTicketButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="69.0" text="Osta lippu" onAction="#handleBuyTicketAction">
                <font>
                   <Font size="11.0" />
                </font>
