@@ -160,7 +160,7 @@
          <children>
             <ImageView fx:id="eventImageView" fitHeight="168.0" fitWidth="466.0" pickOnBounds="true">
                <image>
-                  <Image url="@../pictures/placeholder_event_picture.jpg" />
+                  <Image url="@../pictures/placeholder_event.jpg" />
                </image>
                <VBox.margin>
                   <Insets />
