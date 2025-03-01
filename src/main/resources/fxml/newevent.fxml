@@ -41,68 +41,77 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="376.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.NewEventController">
+<VBox alignment="CENTER" prefHeight="582.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.NewEventController">
    <children>
-      <ImageView fx:id="eventImageView" fitHeight="114.0" fitWidth="411.0" pickOnBounds="true">
+      <ImageView fx:id="eventImageView" fitHeight="213.0" fitWidth="516.0" pickOnBounds="true">
          <image>
-            <Image url="@../pictures/placeholder_image_portrait.png" />
+            <Image url="@../pictures/placeholder_image.png" />
          </image>
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </ImageView>
-      <GridPane alignment="CENTER" hgap="10.0" prefHeight="166.0" prefWidth="554.0">
+      <GridPane alignment="CENTER" hgap="10.0" prefHeight="286.0" prefWidth="540.0">
         <columnConstraints>
-            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="212.5" />
-          <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="SOMETIMES" maxWidth="401.5" minWidth="10.0" prefWidth="205.0" />
+            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" />
+          <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="ALWAYS" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
-          <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" minHeight="15.0" prefHeight="15.0" valignment="TOP" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" minHeight="20.0" prefHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
-            <RowConstraints fillHeight="false" minHeight="20.0" prefHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
+          <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectEventImage" text="Valitse kuva" />
-            <Label fx:id="eventImageError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="1" />
-            <TextField fx:id="eventNameField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman nimi" GridPane.rowIndex="2" />
-            <Label fx:id="eventNameError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="3" />
-            <TextField fx:id="eventDescriptionField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman kuvaus" GridPane.rowIndex="4" />
-            <Label fx:id="eventDescriptionError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="5" />
-            <ComboBox fx:id="eventTypeComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumatyyppi" GridPane.rowIndex="6" />
-            <Label fx:id="eventTypeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="7" />
-            <DatePicker fx:id="eventDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumapäivä" showWeekNumbers="true" GridPane.rowIndex="8" />
-            <Label fx:id="eventDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="9" />
-            <ComboBox fx:id="eventLocationComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Sijainti" GridPane.columnIndex="1" />
-            <Label fx:id="eventLocationError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="eventCapacityField" prefHeight="25.0" prefWidth="250.0" promptText="Kapasiteetti (kpl)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="eventCapacityError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="eventPriceField" prefHeight="25.0" prefWidth="250.0" promptText="Hinta (€)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label fx:id="eventPriceError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <HBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="248.0" GridPane.rowIndex="12">
                <children>
-                  <TextField fx:id="startTimeField" promptText="Alkamisaika" />
-                  <TextField fx:id="endTimeField" promptText="Päättymisaika" />
+                  <FlowPane fx:id="categoryFlowPane" prefHeight="200.0" prefWidth="200.0" />
+                  <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Valitse kuva" />
                </children>
             </HBox>
-            <Label fx:id="timeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#addEvent" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#addEvent" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+            <TextField fx:id="titleField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman nimi" />
+            <TextField fx:id="descriptionField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman kuvaus" GridPane.rowIndex="4" />
+            <TextField fx:id="capacityField" prefHeight="25.0" prefWidth="250.0" promptText="Henkilömäärä" GridPane.rowIndex="8" />
+            <TextField fx:id="priceField" prefHeight="25.0" prefWidth="250.0" promptText="Hinta (€)" GridPane.columnIndex="1" />
+            <TextField fx:id="startTimeField" prefHeight="25.0" prefWidth="250.0" promptText="Alkamisaika" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="endTimeField" prefHeight="25.0" prefWidth="250.0" promptText="Päättymisaika" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <ComboBox fx:id="locationComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Sijainti" GridPane.rowIndex="6" />
+            <ComboBox fx:id="categoriesComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumatyyppi" GridPane.rowIndex="10" />
+            <DatePicker fx:id="startDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Aloituspäivä" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <DatePicker fx:id="endDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Päättymispäivä" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="imageError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="13" />
+            <Label fx:id="titleError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="1" />
+            <Label fx:id="descriptionError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="5" />
+            <Label fx:id="categoriesError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="11" />
+            <Label fx:id="startDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label fx:id="locationError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="7" />
+            <Label fx:id="capacityError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="9" />
+            <Label fx:id="priceError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="startTimeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+            <Label fx:id="endDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label fx:id="endTimeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="11" />
          </children>
       </GridPane>
    </children>
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="50.0" left="50.0" right="50.0" top="20.0" />
    </padding>
 </VBox>
