@@ -29,10 +29,11 @@ public class EventControllerUI {
 
     public void setEventDetails(Event event) {
         eventNameLabel.setText(event.getTitle());
-        organizerLabel.setText(UserController.getUser(Integer.parseInt(event.getOrganizerId())).toString());    // <3
+        organizerLabel.setText(UserController.getUser(Integer.parseInt(event.getOrganizerId())).toString());
         dateLabel.setText(event.getDate());
-        startTimeLabel.setText(event.getStartTime());
-        endTimeLabel.setText(event.getEndTime());
+        // endDate
+        startTimeLabel.setText(event.getStart());
+        endTimeLabel.setText(event.getEnd());
         locationLabel.setText(LocationController.getLocationById(event.getLocationId()).getName());
         priceLabel.setText(Double.toString(event.getPrice()));
         descriptionLabel.setText(event.getDescription());
