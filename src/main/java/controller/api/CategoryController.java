@@ -76,13 +76,4 @@ public class CategoryController {
         return gson.fromJson(response, Category.class);
     }
 
-    public static void editCategory(String categoryId, String categoryName, String categoryDescription) {
-        String requestBody = '{' +
-                "\"categoryId\": \"" + categoryId + "\"," +
-                "\"categoryName\": \"" + categoryName + "\"," +
-                "\"categoryDescription\": \"" + categoryDescription + "\"" +
-                '}';
-        sendHttpRequest("PUT", "/categories/update/" + categoryId, requestBody);
-    }
-
 }

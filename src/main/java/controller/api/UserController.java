@@ -9,9 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+
 
 public class UserController {
     private static final Gson gson = new Gson();
@@ -85,26 +83,8 @@ public class UserController {
         return user;
     }
 
-    public static User edit(String email, String password, String username) {
-        String requestBody = '{' +
-                "\"email\": \"" + email + "\"," +
-                "\"password\": \"" + password + "\"," +
-                "\"username\": \"" + username + "\"" +
-                '}';
-        String response = sendHttpRequest("PUT", "/users/update/" + SessionManager.getInstance().getUser().getId(), requestBody);
-        User user = SessionManager.getInstance().getUser();
-        if (user != null) {
-            user.setUsername(username);
-            user.setEmail(email);
-        } else {
-            user = gson.fromJson(response, User.class);
-            SessionManager.getInstance().login(user);
-        }
-        return user;
-    }
-
     public static User getUser(int id) {
-        String response = sendHttpRequest("GET", "/users/" + id, "");
+        String response = sendHttpRequest("GET", "/users/one/" + id, "");
         return gson.fromJson(response, User.class);
     }
 
