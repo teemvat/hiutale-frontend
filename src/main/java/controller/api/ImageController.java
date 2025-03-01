@@ -7,11 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ImageController {
-    private static final String BASE_URL = "http://37.27.9.255:8080/images";
+    private static final String BASE_URL = "http://37.27.9.255:8080/files";
 
-    public static void uploadEventFile(long eventId, File file) {
+    public static String uploadImage(long eventId, File file) {
         if (file == null) {
-            return;
+            return "File is null";
         }
 
         String boundary = "===" + System.currentTimeMillis() + "===";
@@ -19,6 +19,7 @@ public class ImageController {
         HttpURLConnection conn = null;
 
         try {
+            // Make a connection to the upload endpoint
             URL url = new URL(BASE_URL + "/upload");
             conn = (HttpURLConnection) url.openConnection();
             conn.setUseCaches(false);
@@ -33,6 +34,7 @@ public class ImageController {
                 conn.setRequestProperty("Authorization", "Bearer " + token);
             }
 
+            // Get the output stream to write the data to the server
             OutputStream outputStream = conn.getOutputStream();
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
 
@@ -43,8 +45,8 @@ public class ImageController {
             writer.append(LINE_FEED).append(String.valueOf(eventId)).append(LINE_FEED);
             writer.flush();
 
-            // Add the file part
-            String fieldName = "file";
+            // Add the file field
+            String fieldName = "file";  // The key expected by the backend
             String fileName = file.getName();
             writer.append("--" + boundary).append(LINE_FEED);
             writer.append("Content-Disposition: form-data; name=\"" + fieldName + "\"; filename=\"" + fileName + "\"")
@@ -64,11 +66,12 @@ public class ImageController {
             outputStream.flush();
             inputStream.close();
 
+            // Final boundary
             writer.append(LINE_FEED).flush();
             writer.append("--" + boundary + "--").append(LINE_FEED);
             writer.close();
 
-            // Read response
+            // Read the response from the server
             int status = conn.getResponseCode();
             InputStream is = (status < HttpURLConnection.HTTP_BAD_REQUEST) ? conn.getInputStream() : conn.getErrorStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -79,21 +82,28 @@ public class ImageController {
             }
             reader.close();
             conn.disconnect();
+
+            System.out.println("Response: " + response.toString());
+
+            // Return the response
+            return response.toString();
         } catch (Exception e) {
             e.printStackTrace();
             if (conn != null) {
                 conn.disconnect();
             }
+            return "Error: " + e.getMessage();
         }
     }
 
-    public static File getImage(String filename) {
+
+    public static File getImage(String eventId) {
         HttpURLConnection conn = null;
         InputStream inputStream = null;
         File outputFile = null;
         try {
-            // Set up the connection to the server
-            URL url = new URL(BASE_URL + "/" + filename);
+            // Set up the connection to the server using eventId in URL
+            URL url = new URL(BASE_URL + "/one/" + eventId);  // Use eventId in URL
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -107,7 +117,7 @@ public class ImageController {
             if (status == HttpURLConnection.HTTP_OK) {
                 // Create a file to save the downloaded image
                 String tempDir = System.getProperty("java.io.tmpdir");
-                outputFile = new File(tempDir, filename);
+                outputFile = new File(tempDir, eventId + ".jpg");  // Save the file with eventId as the name
 
                 // Read the image data and save it to the file
                 inputStream = conn.getInputStream();
@@ -139,10 +149,11 @@ public class ImageController {
         return null;
     }
 
-    public static void deleteImage(String filename) {
+    public static String deleteImage(String imageId) {
         HttpURLConnection conn = null;
+        String output = null;
         try {
-            URL url = new URL(BASE_URL + "/" + filename);
+            URL url = new URL(BASE_URL + "/delete/" + imageId);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
 
@@ -153,6 +164,8 @@ public class ImageController {
             }
 
             int responseCode = conn.getResponseCode();
+            output = conn.getResponseMessage() + " (" + responseCode + ")";
+            System.out.println("Response: " + output);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -160,5 +173,6 @@ public class ImageController {
                 conn.disconnect();
             }
         }
+        return output;
     }
 }
