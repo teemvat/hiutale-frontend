@@ -5,12 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import model.Event;
-import utils.SessionManager;
 
 public class RSVPController {
 
-    @FXML
-    private Button rsvpButton;
+    @FXML private Button rsvpButton;
 
     private Event event;
 

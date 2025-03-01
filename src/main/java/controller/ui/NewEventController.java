@@ -1,241 +1,172 @@
 package controller.ui;
 
+import controller.api.CategoryController;
 import controller.api.EventController;
+import controller.api.LocationController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.Category;
 import model.Event;
+import model.Location;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 public class NewEventController {
 
-    @FXML
-    private ImageView eventImageView;
+    @FXML private ImageView eventImageView;
+    @FXML private TextField titleField, descriptionField, capacityField, startTimeField, endTimeField, priceField;
+    @FXML private ComboBox<String> categoriesComboBox, locationComboBox;
+    @FXML private DatePicker startDatePicker, endDatePicker;
+    @FXML private Label imageError, titleError, descriptionError, categoriesError, startDateError, endDateError, locationError, capacityError, priceError, addEventError, startTimeError, endTimeError;
+    @FXML private Button selectImageButton, addEventButton;
+    @FXML private FlowPane categoryFlowPane;
 
-    @FXML
-    private TextField eventNameField;
-
-    @FXML
-    private TextField eventDescriptionField;
-
-    @FXML
-    private ComboBox<String> eventTypeComboBox;
-
-    @FXML
-    private DatePicker eventDatePicker;
-
-    @FXML
-    private ComboBox<String> eventLocationComboBox;
-
-    @FXML
-    private TextField eventCapacityField;
-
-    @FXML
-    private TextField startTimeField;
-
-    @FXML
-    private TextField endTimeField;
-
-    @FXML
-    private TextField eventPriceField;
-
-    @FXML
-    private Label eventImageError;
-
-    @FXML
-    private Label eventNameError;
-
-    @FXML
-    private Label eventDescriptionError;
-
-    @FXML
-    private Label eventTypeError;
-
-    @FXML
-    private Label eventDateError;
-
-    @FXML
-    private Label eventLocationError;
-
-    @FXML
-    private Label eventCapacityError;
-
-    @FXML
-    private Label eventPriceError;
-
-    @FXML
-    private Label addEventError;
-
-    @FXML
-    private Label timeError;
-
-    @FXML
-    private Button selectImageButton;
-
-    @FXML
-    private Button addEventButton;
+    private File eventImage, placeholderImage;
+    private final ObservableList<String> selectedCategories = FXCollections.observableArrayList();
+    private final List<Category> allCategories = new ArrayList<>();
 
     @FXML
     private void initialize() {
-        // Add a TextFormatter to ensure only numbers can be typed in the price field
-        configureNumberFields();
+        configureInputFormatters();
+        loadCategories();
+        loadLocations();
+        eventImage = placeholderImage = new File("/pictures/placeholder_event.jpg");
+        setupCategorySelection();
     }
 
-    private void configureNumberFields() {
-        // UnaryOperator to filter the input
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
-            if (newText.matches("\\d*(\\.\\d{0,2})?")) { // Vain numerot ja max 2 desimaalia
-                return change;
+    private void configureInputFormatters() {
+        UnaryOperator<TextFormatter.Change> filter = change -> change.getControlNewText().matches("\\d*(\\.\\d{0,2})?") ? change : null;
+        priceField.setTextFormatter(new TextFormatter<>(filter));
+        capacityField.setTextFormatter(new TextFormatter<>(filter));
+        startTimeField.setTextFormatter(new TextFormatter<>(filter));
+        endTimeField.setTextFormatter(new TextFormatter<>(filter));
+    }
+
+    private void loadCategories() {
+        allCategories.addAll(CategoryController.getAllCategories());
+        categoriesComboBox.getItems().addAll(allCategories.stream().map(Category::getName).toList());
+    }
+
+    private void setupCategorySelection() {
+        categoriesComboBox.setOnAction(event -> {
+            String selectedCategory = categoriesComboBox.getValue();
+            if (selectedCategory != null && !selectedCategories.contains(selectedCategory)) {
+                selectedCategories.add(selectedCategory);
             }
-            return null;
-        };
+        });
+    }
 
-        TextFormatter<String> priceFormatter = new TextFormatter<>(filter);
-        TextFormatter<String> capacityFormatter = new TextFormatter<>(filter);
-        TextFormatter<String> startTimeFormatter = new TextFormatter<>(filter);
-        TextFormatter<String> endTimeFormatter = new TextFormatter<>(filter);
+    private void addCategoryTag(String category) {
+        Label tag = new Label(category);
+        Button removeBtn = new Button("X");
+        removeBtn.setOnAction(event -> {
+            selectedCategories.remove(category);
+            categoryFlowPane.getChildren().removeAll(tag, removeBtn);
+        });
+        //tag.setStyle("-fx-background-color: lightblue; -fx-padding: 5px");
+        categoryFlowPane.getChildren().addAll(tag, removeBtn);
+    }
 
-        eventPriceField.setTextFormatter(priceFormatter);
-        eventCapacityField.setTextFormatter(capacityFormatter);
-        startTimeField.setTextFormatter(startTimeFormatter);
-        endTimeField.setTextFormatter(endTimeFormatter);
+    private String[] getCategoryIds() {
+        return selectedCategories.stream()
+                .map(name -> allCategories.stream()
+                        .filter(c -> c.getName().equals(name))
+                        .findFirst()
+                        .orElse(null))
+                .filter(Objects::nonNull)
+                .map(c -> String.valueOf(c.getId()))
+                .toArray(String[]::new);
+    }
+
+    private void loadLocations() {
+        List<Location> locations = LocationController.getAllLocations();
+        locationComboBox.getItems().addAll(locations.stream().map(Location::getName).toList());
     }
 
     @FXML
-    private void handleSelectImageAction(ActionEvent event) {
+    private void selectImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
-        );
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         File selectedFile = fileChooser.showOpenDialog(null);
+
         if (selectedFile != null) {
+            eventImage = selectedFile;
             try {
-                Image image = new Image(new FileInputStream(selectedFile));
-                eventImageView.setImage(image);
+                eventImageView.setImage(new Image(new FileInputStream(eventImage)));
             } catch (FileNotFoundException e) {
-                eventImageError.setText("Image not found");
+                eventImage = placeholderImage;
+                imageError.setText("Image not found");
                 e.printStackTrace();
             }
         }
     }
 
     @FXML
-    private void handleAddEventAction(ActionEvent event) {
-        Image eventImage = eventImageView.getImage();
-        String eventName = eventNameField.getText();
-        String eventDescription = eventDescriptionField.getText();
-        String eventType = eventTypeComboBox.getValue();
-        String eventDate = eventDatePicker.getValue().toString();
-        String eventLocation = eventLocationComboBox.getValue();
-        String eventCapacity = eventCapacityField.getText();
-        String eventPrice = eventPriceField.getText();
-        String startTime = startTimeField.getText();
-        String endTime = endTimeField.getText();
+    private void addEvent(ActionEvent event) {
+        if (!validateInput()) return;
 
-        boolean isValid = true;
+        try {
+            Event createdEvent = EventController.createEvent(
+                    //eventImage,
+                    titleField.getText(),
+                    descriptionField.getText(),
+                    locationComboBox.getValue(),
+                    capacityField.getText(),
+                    getCategoryIds()[0],    // TODO poista indeksi sitten kun api on päivitetty
+                    startDatePicker.getValue().toString(),
+                    endDatePicker.getValue().toString(),
+                    startTimeField.getText(),
+                    endTimeField.getText(),
+                    Double.parseDouble(priceField.getText())
+            );
 
-        if (eventName.isEmpty()) {
-            eventNameError.setText("Event name is required");
-            isValid = false;
-        } else {
-            eventNameError.setText("");
-        }
-
-        if (eventDescription.isEmpty()) {
-            eventDescriptionError.setText("Event description is required");
-            isValid = false;
-        } else {
-            eventDescriptionError.setText("");
-        }
-
-        if (eventType == null || eventTypeComboBox.getValue().isEmpty()) {
-            eventTypeError.setText("Event type is required");
-            isValid = false;
-        } else {
-            eventTypeError.setText("");
-        }
-
-        if (eventDate == null) {
-            eventDateError.setText("Event date is required");
-            isValid = false;
-        } else {
-            eventDateError.setText("");
-        }
-
-        if (startTime.isEmpty()) {
-            timeError.setText("Time information is required");
-            isValid = false;
-        } else {
-            timeError.setText("");
-        }
-
-        if (endTime.isEmpty()) {
-            timeError.setText("Time information is required");
-            isValid = false;
-        } else {
-            timeError.setText("");
-        }
-
-        if (eventLocation == null || eventLocationComboBox.getValue().isEmpty()) {
-            eventLocationError.setText("Event location is required");
-            isValid = false;
-        } else {
-            eventLocationError.setText("");
-        }
-
-        if (eventCapacity.isEmpty()) {
-            eventCapacityError.setText("Event capacity is required");
-            isValid = false;
-        } else {
-            eventCapacityError.setText("");
-        }
-
-        if (eventPrice.isEmpty()) {
-            eventPriceError.setText("Event price is required");
-            isValid = false;
-        } else {
-            eventPriceError.setText("");
-        }
-
-        if(isValid) {
-            try {
-                // TODO: send image as well
-                Event isEventCreated = EventController.createEvent(
-                        eventName,
-                        eventDescription,
-                        eventLocation,
-                        eventCapacity,
-                        eventType,
-                        eventDate,
-                        eventDate,
-                        startTime,
-                        endTime,
-                        Double.parseDouble(eventPrice)
-                );
-                if (isEventCreated != null) {
-                    System.out.println("Event created successfully");
-                    // Close the new event window
-                    Stage stage = (Stage) addEventButton.getScene().getWindow();
-                    stage.close();
-                } else {
-                    System.out.println("Event creation failed");
-                    addEventError.setText("Event creation failed");
-                }
-            } catch (Exception e) {
-                System.out.println("Event creation failed");
-                addEventError.setText("Event creation failed");
-                e.printStackTrace();
+            if (createdEvent != null) {
+                System.out.println("Event created successfully");
+                ((Stage) addEventButton.getScene().getWindow()).close();
+            } else {
+                addEventError.setText("Event creation failed.");
             }
+        } catch (Exception e) {
+            addEventError.setText("Error: Event creation failed.");
         }
+    }
+
+    private boolean validateInput() {
+        boolean isValid = true;
+        isValid &= validateField(titleField, titleError, "Event name is required");
+        isValid &= validateField(descriptionField, descriptionError, "Event description is required");
+        isValid &= validateField(categoriesComboBox, categoriesError, "Event type is required");
+        isValid &= validateField(locationComboBox, locationError, "Event location is required");
+        isValid &= validateField(startDatePicker, startDateError, "Start date is required");
+        isValid &= validateField(endDatePicker, endDateError, "End date is required");
+        isValid &= validateField(startTimeField, startTimeError, "Start time is required");
+        isValid &= validateField(endTimeField, endTimeError, "End time is required");
+        isValid &= validateField(capacityField, capacityError, "Event capacity is required");
+        isValid &= validateField(priceField, priceError, "Event price is required");
+        return isValid;
+    }
+
+    private boolean validateField(Control field, Label errorLabel, String errorMessage) {
+        boolean isValid = true;
+        if (field instanceof TextField && ((TextField) field).getText().isEmpty()) isValid = false;
+        if (field instanceof ComboBox && ((ComboBox<?>) field).getValue() == null) isValid = false;
+        if (field instanceof DatePicker && ((DatePicker) field).getValue() == null) isValid = false;
+
+        errorLabel.setText(isValid ? "" : errorMessage);
+        return isValid;
     }
 }

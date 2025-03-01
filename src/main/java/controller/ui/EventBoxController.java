@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.LocationController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,37 +14,18 @@ import java.io.IOException;
 
 public class EventBoxController {
 
-    @FXML
-    private Label eventTitle;
-
-    @FXML
-    private Label eventTime;
-
-    @FXML
-    private Label eventLocation;
+    @FXML private Label eventTitle;
+    @FXML private Label eventTime;
+    @FXML private Label eventLocation;
 
     private Event event;
-    private String title;
-    private String time;
-    private String location;
-
-    @FXML
-    private void initialize() {
-        updateEventInformation();
-    }
 
     public void setEventData(Event event) {
         this.event = event;
-        this.title = event.getTitle();
-        this.time = event.getStart();
-        this.location = event.getLocationId();
-        updateEventInformation();
-    }
 
-    private void updateEventInformation() {
-        eventTitle.setText(title);
-        eventTime.setText(time);
-        eventLocation.setText(location);
+        eventTitle.setText(event.getTitle());
+        eventTime.setText(event.getStart());
+        eventLocation.setText(LocationController.getLocationById(event.getLocationId()).getName());
     }
 
     @FXML
@@ -54,7 +36,7 @@ public class EventBoxController {
             RSVPController rsvpController = fxmlLoader.getController();
             rsvpController.setEvent(event);
             Stage rsvpStage = new Stage();
-            rsvpStage.setTitle("RSVP for " + title);
+            rsvpStage.setTitle("RSVP for " + event.getTitle());
             rsvpStage.setScene(new Scene(rsvpRoot));
             rsvpStage.initModality(Modality.WINDOW_MODAL);
             rsvpStage.initOwner(eventTitle.getScene().getWindow());

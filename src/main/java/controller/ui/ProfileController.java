@@ -4,7 +4,6 @@ import controller.api.AttendanceController;
 import controller.api.EventController;
 import controller.api.FavouriteController;
 import controller.api.UserController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Event;
@@ -20,138 +18,80 @@ import model.User;
 import utils.SessionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileController {
 
-    @FXML
-    private Label username;
-
-    @FXML
-    private Label email;
-
-    @FXML
-    private Button logoutButton;
-
-    @FXML
-    private Button removeUserButton;
-
-    @FXML
-    private VBox favoriteVBox;
-
-    @FXML
-    private VBox upcomingVBox;
-
-    @FXML
-    private VBox myeventsVBox;
+    @FXML private Label usernameLabel, emailLabel;
+    @FXML private Button logoutButton, removeUserButton;
+    @FXML private VBox favoriteEventsVBox, upcomingEventsVBox, organizedEventsVBox;
 
     @FXML
     private void initialize() {
-        setUserInformation();
-        loadFavoriteCards();
-        loadUpcomingCards();
-        loadOrganizerCards();
+        loadEventCards(favoriteEventsVBox, FavouriteController.getUserFavourites(), "No favourite events found");
+        loadEventCards(upcomingEventsVBox, AttendanceController.getUserAttendances(), "No upcoming events found");
+        loadEventCards(organizedEventsVBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), "No organized events found");
     }
 
     private void setUserInformation() {
         User user = SessionManager.getInstance().getUser();
-        username.setText(user.getUsername());
-        email.setText(user.getEmail());
+        usernameLabel.setText(user.getUsername());
+        emailLabel.setText(user.getEmail());
     }
 
-    private void loadFavoriteCards() {
-        List<Event> favorites = FavouriteController.getUserFavourites();
-        favoriteVBox.getChildren().clear();
-
-        if (favorites != null) {
-            for (Event event : favorites) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                    Parent eventCard = fxmlLoader.load();
-                    EventCardController controller = fxmlLoader.getController();
-                    controller.setEventData(event);
-                    favoriteVBox.getChildren().add(eventCard);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            favoriteVBox.getChildren().add(new Label("No favorite events found"));
-        }
-    }
-
-    private void loadUpcomingCards() {
-        List<Event> upcoming = AttendanceController.getUserAttendances();
-        upcomingVBox.getChildren().clear();
-
-        if (upcoming != null) {
-            for (Event event : upcoming) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                    Parent eventCard = fxmlLoader.load();
-                    EventCardController controller = fxmlLoader.getController();
-                    controller.setEventData(event);
-                    upcomingVBox.getChildren().add(eventCard);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            upcomingVBox.getChildren().add(new Label("No events found"));
+    private void loadEventCards(VBox container, List<Event> events, String emptyMessage) {
+        container.getChildren().clear();
+        if (events == null || events.isEmpty()) {
+            container.getChildren().add(new Label(emptyMessage));
+            return;
         }
 
-    }
-
-    private void loadOrganizerCards() {
-        List<Event> myEvents = EventController.getEventsByOrganizer(Integer.toString(SessionManager.getInstance().getUser().getId()));
-        myeventsVBox.getChildren().clear();
-
-        if (myEvents != null) {
-            for (Event event : myEvents) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                    Parent eventCard = fxmlLoader.load();
-                    EventCardController controller = fxmlLoader.getController();
-                    controller.setEventData(event);
-                    myeventsVBox.getChildren().add(eventCard);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        for (Event event : events) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
+                Parent eventCard = fxmlLoader.load();
+                EventCardController controller = fxmlLoader.getController();
+                controller.setEventData(event);
+                container.getChildren().add(eventCard);
+            } catch (IOException e) {
+                System.err.println("Failed to load event card for: " + event.getTitle());
+                e.printStackTrace();
             }
-        } else {
-            myeventsVBox.getChildren().add(new Label("No events found"));
         }
     }
 
     @FXML
     private void handleLogoutAction() {
         UserController.logout();
+        closeAllWindows();
+        openLoginPage();
+    }
 
-        // Close all open windows
-        for (Window window : Stage.getWindows()) {
+    private void closeAllWindows() {
+        List<Window> windows = new ArrayList<>(Stage.getWindows());
+        for (Window window : windows) {
             if (window instanceof Stage) {
                 ((Stage) window).close();
             }
         }
+    }
 
-        // Open the login page
+    private void openLoginPage() {
         try {
             Parent loginPage = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
-            Scene loginScene = new Scene(loginPage);
             Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.setScene(loginScene);
+            stage.setScene(new Scene(loginPage));
             stage.show();
         } catch (IOException e) {
+            System.err.println("Failed to open login page.");
             e.printStackTrace();
         }
     }
 
     @FXML
     private void handleRemoveUserAction() {
-        // Delete the user
         UserController.deleteUser(SessionManager.getInstance().getUser().getId());
-
-        // Logout (to clean SessionManager) and load the login page
         handleLogoutAction();
         System.out.println("User deletion failed.");
     }

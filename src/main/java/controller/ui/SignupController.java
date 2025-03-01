@@ -13,38 +13,11 @@ import java.io.IOException;
 
 public class SignupController {
 
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private TextField emailField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private PasswordField confirmPasswordField;
-
-    @FXML
-    private Label usernameError;
-
-    @FXML
-    private Label emailError;
-
-    @FXML
-    private Label passwordError;
-
-    @FXML
-    private Label confirmPasswordError;
-
-    @FXML
-    private Label signupError;
-
-    @FXML
-    private Button signupButton;
-
-    @FXML
-    private Hyperlink loginLink;
+    @FXML private TextField usernameField, emailField;
+    @FXML private PasswordField passwordField, confirmPasswordField;
+    @FXML private Label usernameError, emailError, passwordError, confirmPasswordError, signupError;
+    @FXML private Button signupButton;
+    @FXML private Hyperlink loginLink;
 
     @FXML
     private void handleSignupAction(ActionEvent event) {
@@ -103,9 +76,5 @@ public class SignupController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void initialize() {
-        // TODO: Initialization logic if needed
     }
 }
