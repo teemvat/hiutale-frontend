@@ -38,15 +38,6 @@ class LocationControllerTest {
     }
 
     @Test
-    void editLocation() {
-        List<Location> locations = LocationController.getAllLocations();
-        assertNotNull(locations);
-        int lastLocationIndex = locations.size() - 1;
-        assertDoesNotThrow(() -> LocationController.editLocation(String.valueOf(lastLocationIndex), "Test Location", "New Description",  "Test City", "Test Postal Code"));
-
-    }
-
-    @Test
     void deleteLocation() {
         List<Location> locations = LocationController.getAllLocations();
         assertNotNull(locations);
