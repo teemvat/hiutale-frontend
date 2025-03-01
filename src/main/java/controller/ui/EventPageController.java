@@ -16,7 +16,7 @@ import model.Event;
 
 import java.io.IOException;
 
-public class EventControllerUI {
+public class EventPageController {
 
     @FXML private Label eventNameLabel, organizerLabel, dateLabel, startTimeLabel, endTimeLabel, locationLabel, priceLabel, descriptionLabel;
     @FXML private ImageView eventImage;
