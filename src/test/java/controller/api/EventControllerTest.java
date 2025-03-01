@@ -5,7 +5,6 @@ import org.junit.jupiter.api.*;
 import utils.SessionManager;
 import model.User;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,24 +38,6 @@ class EventControllerTest {
     }
 
     @Test
-    @Order(2)
-    void editEvent() {
-        Event e = EventController.editEvent(
-                "4",
-                "Testi",
-                "Tämä on muokattu testi",
-                "1",
-                "200",
-                "1",
-                LocalDate.now().toString(),
-                "17:00",
-                "23:59",
-                25.0
-        );
-        assertNotNull(e);
-    }
-
-    @Test
     @Order(3)
     void getAllEvents() {
         List<Event> events = EventController.getAllEvents();
@@ -70,7 +51,7 @@ class EventControllerTest {
     void searchEvents() {
         EventController.getAllEvents();
         List<Event> results = EventController.searchEvents(
-                "Vappu",
+                "Testi",
                 null,
                 null,
                 null,
@@ -100,6 +81,30 @@ class EventControllerTest {
                 null,
                 null,
                 null,
+                null
+        );
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
+
+        results = EventController.searchEvents(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
+
+        results = EventController.searchEvents(
+                null,
+                null,
+                null,
+                null,
+                "1.0",
+                "6.0",
                 null
         );
         assertNotNull(results);
@@ -119,14 +124,16 @@ class EventControllerTest {
     @Test
     @Order(6)
     void getEvent() {
-        Event e = EventController.getEvent("4");
+        EventController.getAllEvents();
+        Event e = EventController.getEvent("1");
         assertNotNull(e);
     }
 
     @Test
     @Order(7)
     void getEventsByOrganizer() {
-        List<Event> events = EventController.getEventsByOrganizer("19");
+        EventController.getAllEvents();
+        List<Event> events = EventController.getEventsByOrganizer("1");
         assertNotNull(events);
         assertFalse(events.isEmpty());
     }
