@@ -70,7 +70,8 @@ public class FavouriteController {
 
     // todo: varmista toimivuus, endpoint puuttuu!
     public static List<Event> getUserFavourites() {
-        String result = sendHttpRequest("GET", "/favourite/user", "");
+        String result = sendHttpRequest("GET", "/favourite/me", "");
+        System.out.println("Result: " + result);
         return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
     }
 }
