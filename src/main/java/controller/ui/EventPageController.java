@@ -24,7 +24,19 @@ public class EventPageController {
 
     @FXML
     private void handleBuyTicketAction(ActionEvent event) {
-        showModalWindow("/fxml/rsvp.fxml", "Buy ticket", buyTicketButton);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Buy ticket");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buyTicketButton.getScene().getWindow());
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.err.println("Error loading RSVP window: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void setEventDetails(Event event) {
@@ -42,19 +54,4 @@ public class EventPageController {
 //        }
     }
 
-    private void showModalWindow(String fxmlPath, String title, Button ownerButton) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(ownerButton.getScene().getWindow());
-            stage.showAndWait();
-        } catch (IOException e) {
-            System.err.println("Error loading window: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }
