@@ -15,7 +15,8 @@ public class Event {
     private String organizerId;
     private List<Integer> eventCategoryIds;
     private String status;
-    private String date;
+    private String startDate;
+    private String endDate;
     private String start;
     private String end;
     private double price;
@@ -23,7 +24,7 @@ public class Event {
     private int favouriteCount;
 
     // for new event and getting events from database
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, String eventDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
         this.id = eventId;
         this.title = eventTitle;
         this.description = eventDescription;
@@ -35,7 +36,8 @@ public class Event {
             this.eventCategoryIds.add(Integer.valueOf(category.trim()));
         }
         this.status = "Default";
-        this.date = eventDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.start = startTime;
         this.end = endTime;
         this.price = eventPrice;
@@ -43,12 +45,13 @@ public class Event {
     }
 
     public void reformatDateForBE() {
-        this.start = this.date + "T" + this.start + ":00";
-        this.end = this.date + "T" + this.end + ":00";
+        this.start = this.startDate + "T" + this.start + ":00";
+        this.end = this.endDate + "T" + this.end + ":00";
     }
 
     public void reformatDateForFE() {
-        this.date = this.start.split("T")[0];
+        this.startDate = this.start.split("T")[0];
+        this.endDate = this.end.split("T")[0];
         this.start = getTime(this.start);
         this.end = getTime(this.end);
     }
@@ -123,40 +126,20 @@ public class Event {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+        return startDate;
     }
 
     public String getStart() {
         return start;
     }
 
-    public void setStart(String start) {
-        this.start = start;
-    }
-
     public String getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
-    }
-
     public double getPrice() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getId() {

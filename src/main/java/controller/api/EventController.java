@@ -57,11 +57,12 @@ public class EventController {
                                       String locationId,
                                       String capacity,
                                       String categories,
-                                      String date,
-                                      String start,
-                                      String end,
+                                      String startDate,
+                                      String endDate,
+                                      String startTime,
+                                      String endTime,
                                       double price) {
-        Event event = new Event(null, title, description, locationId, capacity, null, categories, date, start, end, price, 0, 0);
+        Event event = new Event(null, title, description, locationId, capacity, null, categories, startDate, endDate, startTime, endTime, price, 0, 0);
         event.reformatDateForBE();
         String requestBody = gson.toJson(event);
         System.out.println(requestBody);

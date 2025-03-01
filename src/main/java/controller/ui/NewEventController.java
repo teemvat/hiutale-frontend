@@ -217,6 +217,7 @@ public class NewEventController {
                         eventCapacity,
                         eventType,
                         eventDate,
+                        eventDate,
                         startTime,
                         endTime,
                         Double.parseDouble(eventPrice)
