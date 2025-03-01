@@ -31,7 +31,6 @@ public class EventControllerUI {
         eventNameLabel.setText(event.getTitle());
         organizerLabel.setText(UserController.getUser(Integer.parseInt(event.getOrganizerId())).toString());
         dateLabel.setText(event.getDate());
-        // endDate
         startTimeLabel.setText(event.getStart());
         endTimeLabel.setText(event.getEnd());
         locationLabel.setText(LocationController.getLocationById(event.getLocationId()).getName());

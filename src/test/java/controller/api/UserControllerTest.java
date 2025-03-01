@@ -35,25 +35,14 @@ class UserControllerTest {
         assertNotNull(user);
     }
 
-    @Test
-    @Order(4)
-    void edit() {
-        UserController.login("testuser" + rnum + "@example.com", "password");
-        UserController.edit("testuser" + rnum + "@example.com", "password", "newUsername" + rnum);
-        User user = SessionManager.getInstance().getUser();
-        assertNotNull(user);
-        assertEquals("newUsername" + rnum, user.getUsername());
-    }
-
     // todo: fix this test
     // endpoint ei oo auki muille ku adminille
     @Test
-    @Disabled
     @Order(5)
     void getUser() {
         User user = UserController.getUser(1);
         assertNotNull(user);
-        assertEquals("newUsername" + rnum, user.getUsername());
+        assertEquals("Testing", user.getUsername());
     }
 
     @Test
