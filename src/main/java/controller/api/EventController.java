@@ -1,8 +1,10 @@
 package controller.api;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Event;
+import utils.FileTypeAdapter;
 import utils.SessionManager;
 
 import java.io.*;
@@ -11,7 +13,9 @@ import java.net.URL;
 import java.util.*;
 
 public class EventController {
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(File.class, new FileTypeAdapter())
+            .create();
     private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
     private static final List<Event> events = new ArrayList<>();
 
@@ -61,13 +65,16 @@ public class EventController {
                                       String endDate,
                                       String startTime,
                                       String endTime,
-                                      double price) {
+                                      double price,
+                                    File image) {
         Event event = new Event(null, title, description, locationId, capacity, null, categories, startDate, endDate, startTime, endTime, price, 0, 0);
         event.reformatDateForBE();
         String requestBody = gson.toJson(event);
         System.out.println(requestBody);
         String response = sendHttpRequest("POST", "/events/create", requestBody);
         Event newEvent = gson.fromJson(response, Event.class);
+        ImageController.uploadImage(Long.parseLong(newEvent.getId()), image);
+
         events.add(newEvent);
         return newEvent;
     }
@@ -80,6 +87,7 @@ public class EventController {
         events.addAll(allEvents);
         for (Event event : events) {
             event.reformatDateForFE();
+            event.setImage(ImageController.getImage(event.getId()));
         }
         return allEvents;
     }
@@ -116,11 +124,14 @@ public class EventController {
 
     public static void deleteEvent(String eventId) {
         sendHttpRequest("DELETE", "/events/delete/" + eventId, "");
+        events.removeIf(event -> event.getId().equals(eventId));
+        ImageController.deleteImage(eventId);
     }
 
     public static Event getEvent(String eventId) {
         for (Event event : events) {
             if (event.getId().equals(eventId)) {
+                event.setImage(ImageController.getImage(eventId));
                 return event;
             }
         }
@@ -131,7 +142,6 @@ public class EventController {
         List<Event> organizerEvents = new ArrayList<>();
         for (Event event : events) {
             if (event.getOrganizerId().equals(organizerId)) {
-                //event.reformatDateForFE();
                 organizerEvents.add(event);
             }
         }
