@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,9 +23,10 @@ public class Event {
     private double price;
     private int attendanceCount;
     private int favouriteCount;
+    private File image;
 
     // for new event and getting events from database
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String[] eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
         this.id = eventId;
         this.title = eventTitle;
         this.description = eventDescription;
@@ -32,7 +34,7 @@ public class Event {
         this.capacity = Integer.parseInt(eventCapacity);
         this.organizerId = eventOrganizerId;
         this.eventCategoryIds = new ArrayList<>();
-        for (String category : eventCategories.split(",")) {
+        for (String category : eventCategories) {
             this.eventCategoryIds.add(Integer.valueOf(category.trim()));
         }
         this.status = "Default";
@@ -42,6 +44,7 @@ public class Event {
         this.end = endTime;
         this.price = eventPrice;
         this.attendanceCount = attendeeCount;
+        this.image = null;
     }
 
     public void reformatDateForBE() {
@@ -164,5 +167,13 @@ public class Event {
 
     public void setFavouriteCount(int favouriteCount) {
         this.favouriteCount = favouriteCount;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
+    }
+
+    public File getImage() {
+        return image;
     }
 }

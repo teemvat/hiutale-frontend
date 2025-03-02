@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import utils.SessionManager;
 import model.User;
 
+import java.io.File;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,17 +24,20 @@ class EventControllerTest {
     @Test
     @Order(1)
     void createEvent() {
+        String[] categories = {"1", "2"};
+        File file = new File("src/test/resources/test.png");
         Event e = EventController.createEvent(
                 "Testi",
                 "Tämä on testi",
                 "1",
                 "200",
-                "1",
+                categories,
                 "2025-02-26",
                 "2025-02-26",
                 "17:00",
                 "19:00",
-                15.0
+                15.0,
+                file
         );
         assertNotNull(e);
     }
