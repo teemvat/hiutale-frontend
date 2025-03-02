@@ -38,6 +38,7 @@ public class NewEventController {
     private File eventImage, placeholderImage;
     private final ObservableList<String> selectedCategories = FXCollections.observableArrayList();
     private final List<Category> allCategories = new ArrayList<>();
+    private final List<Location> allLocations = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -65,7 +66,9 @@ public class NewEventController {
         categoriesComboBox.setOnAction(event -> {
             String selectedCategory = categoriesComboBox.getValue();
             if (selectedCategory != null && !selectedCategories.contains(selectedCategory)) {
+                CategoryController.createCategory(selectedCategory, "Description");
                 selectedCategories.add(selectedCategory);
+                addCategoryTag(selectedCategory);
             }
         });
     }
@@ -93,8 +96,17 @@ public class NewEventController {
     }
 
     private void loadLocations() {
-        List<Location> locations = LocationController.getAllLocations();
-        locationComboBox.getItems().addAll(locations.stream().map(Location::getName).toList());
+        allLocations.addAll(LocationController.getAllLocations());
+        locationComboBox.getItems().addAll(allLocations.stream().map(Location::getName).toList());
+    }
+
+    private String getSelectedLocationId() {
+        String selectedLocationName = locationComboBox.getValue();
+        return allLocations.stream()
+                .filter(loc -> loc.getName().equals(selectedLocationName))
+                .findFirst()
+                .map(loc -> String.valueOf(loc.getLocationId()))
+                .orElse(null);
     }
 
     @FXML
@@ -124,7 +136,7 @@ public class NewEventController {
                     //eventImage,
                     titleField.getText(),
                     descriptionField.getText(),
-                    locationComboBox.getValue(),
+                    getSelectedLocationId(),
                     capacityField.getText(),
                     getCategoryIds()[0],    // TODO poista indeksi sitten kun api on päivitetty
                     startDatePicker.getValue().toString(),
@@ -133,6 +145,7 @@ public class NewEventController {
                     endTimeField.getText(),
                     Double.parseDouble(priceField.getText())
             );
+            System.out.println("NewEventController, created event: " + createdEvent);
 
             if (createdEvent != null) {
                 System.out.println("Event created successfully");
