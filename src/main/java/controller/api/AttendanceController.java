@@ -1,6 +1,9 @@
 package controller.api;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import model.Event;
 import utils.SessionManager;
@@ -18,8 +21,6 @@ public class AttendanceController {
     private static final Gson gson = new Gson();
     private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
-    // pitäis olla ok kaikki paits getUserAttendances
-    // todo: testaa postmanilla
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
             URL url = new URL(BASE_URL + endpoint);
@@ -61,16 +62,22 @@ public class AttendanceController {
         String requestBody = '{' +
                 "\"id\": \"" + eventId + "\"," +
                 '}';
-        sendHttpRequest("POST", "/attendance/create", requestBody);
+        sendHttpRequest("POST", "/attendances/create", requestBody);
     }
 
     public static void deleteAttendance(String eventId) {
-        sendHttpRequest("DELETE", "/attendance/delete/" + eventId, "");
+        sendHttpRequest("DELETE", "/attendances/delete/" + eventId, "");
     }
 
-    // todo: varmista toimivuus, endpoint puuttuu!
+    // todo: palauttaa väärän id:n, vaatii muokkausta
     public static List<Event> getUserAttendances() {
-        String result = sendHttpRequest("GET", "/attendance/user", "");
-        return gson.fromJson(result, new TypeToken<ArrayList<Event>>(){}.getType());
+        List<Event> events = new ArrayList<>();
+        String result = sendHttpRequest("GET", "/attendances/me", "");
+        JsonArray jsonArray = JsonParser.parseString(result).getAsJsonArray();
+        for (JsonElement element : jsonArray) {
+            String id = element.getAsJsonObject().get("id").getAsString();
+            events.add(EventController.getEvent(id));
+        }
+        return events;
     }
 }
