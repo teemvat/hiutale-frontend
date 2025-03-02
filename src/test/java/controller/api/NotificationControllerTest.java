@@ -26,7 +26,6 @@ class NotificationControllerTest {
         UserController.login("testuser@example.com", "password");
         User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
-        System.out.println("UserId: " + user.getId()); // Debugging
         // Construct JSON using Gson
         JsonObject userObject = new JsonObject();
         userObject.addProperty("userId", user.getId());
@@ -39,8 +38,6 @@ class NotificationControllerTest {
 
         // Convert to String
         String requestBody = new Gson().toJson(requestBodyJson);
-        System.out.println("Request Body: " + requestBody); // Debugging
-
 
         // create a notification
         try {
