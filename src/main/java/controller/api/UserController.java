@@ -59,8 +59,9 @@ public class UserController {
                 '}';
         String response = sendHttpRequest("POST", "/users/login", requestBody);
         User user = gson.fromJson(response, User.class);
-        if (user != null) {
+        if (user != null && user.getToken() != null) {
             SessionManager.getInstance().login(user);
+            SessionManager.getInstance().setToken(user.getToken());
         }
         return user;
     }

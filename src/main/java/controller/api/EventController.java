@@ -74,6 +74,7 @@ public class EventController {
 
     public static List<Event> getAllEvents() {
         String response = sendHttpRequest("GET", "/events/all", "");
+        System.out.println("Response: " + response);
         List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {
         }.getType());
         events.addAll(allEvents);
