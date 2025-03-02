@@ -60,6 +60,14 @@ public class UserController {
                 "\"password\": \"" + password + "\"" +
                 '}';
         String response = sendHttpRequest("POST", "/users/login", requestBody);
+
+        // Check for error response
+        if (response.contains("Could not authenticate user; incorrect email or password")) {
+            // Handle invalid login (incorrect email/password)
+            System.out.println("Error: Incorrect email or password.");
+            return null;  // Return null or throw an exception as needed
+        }
+
         User user = parseUserFromJson(response);
         if (user != null && user.getToken() != null) {
             SessionManager.getInstance().login(user);

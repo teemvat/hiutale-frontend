@@ -36,7 +36,7 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     void getUser() {
         User user = UserController.getUser(1);
         assertNotNull(user);
@@ -44,9 +44,17 @@ class UserControllerTest {
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     void deleteUser() {
         UserController.deleteUser(SessionManager.getInstance().getUser().getId());
         assertNull(SessionManager.getInstance().getUser());
     }
+
+    @Test
+    @Order(6)
+    void loginFail() {
+        UserController.login("testuser" + rnum + "@example.com", "wrongpassword");
+        assertNull(SessionManager.getInstance().getUser());
+    }
+
 }
