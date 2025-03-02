@@ -18,7 +18,6 @@ class UserControllerTest {
         UserController.login("testuser@example.com", "password");
         User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
-        System.out.println("userName: " + user.getUsername());
     }
 
     @Test

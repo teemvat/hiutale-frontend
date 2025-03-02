@@ -42,7 +42,6 @@ class EventControllerTest {
     @Order(3)
     void getAllEvents() {
         List<Event> events = EventController.getAllEvents();
-        System.out.println(events);
         assertNotNull(events);
         assertFalse(events.isEmpty());
     }
