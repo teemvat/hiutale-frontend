@@ -30,7 +30,7 @@ class UserControllerTest {
     @Test
     @Order(3)
     void register() {
-        UserController.register("testuser" + rnum + "@example.com", "password", "testuser" + rnum);
+        UserController.register("testuser" + rnum, "password", "testuser" + rnum + "@example.com");
         User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
     }

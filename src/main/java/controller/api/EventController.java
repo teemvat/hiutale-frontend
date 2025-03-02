@@ -27,11 +27,15 @@ public class EventController {
             if (SessionManager.getInstance().isLoggedIn()) {
                 String token = SessionManager.getInstance().getUser().getToken();
                 conn.setRequestProperty("Authorization", "Bearer " + token);
+                System.out.println("User is logged in, token set");
+            } else {
+                System.out.println("User is not logged in");
             }
 
             if (!requestBody.isEmpty()) {
                 try (OutputStream os = conn.getOutputStream()) {
                     os.write(requestBody.getBytes());
+                    System.out.println("Request body is not empty");
                 }
             }
 

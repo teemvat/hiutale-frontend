@@ -1,5 +1,8 @@
 package controller.api;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import model.User;
 import utils.SessionManager;
 
@@ -9,7 +12,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 
 public class UserController {
     private static final Gson gson = new Gson();
@@ -58,25 +60,49 @@ public class UserController {
                 "\"password\": \"" + password + "\"" +
                 '}';
         String response = sendHttpRequest("POST", "/users/login", requestBody);
-        User user = gson.fromJson(response, User.class);
-        if (user != null && user.getToken() != null) {
-            SessionManager.getInstance().login(user);
-            SessionManager.getInstance().setToken(user.getToken());
+        System.out.println("Login response: " + response);
+
+        if (response.contains("Could not authenticate user")) {
+            System.out.println("Login failed: " + response);
+            SessionManager.getInstance().logout();
+            return null;
         }
-        return user;
+
+        try {
+            JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
+            if (jsonResponse.has("token") && jsonResponse.has("user")) {
+                String token = jsonResponse.get("token").getAsString();
+                User user = gson.fromJson(jsonResponse.get("user"), User.class);
+                user.setToken(token);
+
+                SessionManager.getInstance().login(user);
+                SessionManager.getInstance().setToken(token);
+                System.out.println("User logged in: " + user.getUsername());
+                return user;
+            } else {
+                System.out.println("Login failed: " + response);
+                SessionManager.getInstance().logout();
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Error parsing login response: " + e.getMessage());
+            return null;
+        }
     }
 
     public static void logout() {
         SessionManager.getInstance().logout();
     }
 
-    public static User register(String email, String password, String username) {
+    public static User register(String username, String password, String email) {
         String requestBody = '{' +
-                "\"email\": \"" + email + "\"," +
+                "\"username\": \"" + username + "\"," +
                 "\"password\": \"" + password + "\"," +
-                "\"username\": \"" + username + "\"" +
+                "\"email\": \"" + email + "\"," +
+                "\"role\": \"USER\"" +
                 '}';
         String response = sendHttpRequest("POST", "/users/register", requestBody);
+        System.out.println("Registration response: " + response);
         User user = gson.fromJson(response, User.class);
         if (user != null) {
             SessionManager.getInstance().login(user);
