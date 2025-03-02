@@ -56,7 +56,7 @@ public class EventController {
                                       String description,
                                       String locationId,
                                       String capacity,
-                                      String categories,
+                                      String[] categories,
                                       String startDate,
                                       String endDate,
                                       String startTime,

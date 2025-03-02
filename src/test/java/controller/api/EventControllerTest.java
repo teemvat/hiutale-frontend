@@ -23,12 +23,13 @@ class EventControllerTest {
     @Test
     @Order(1)
     void createEvent() {
+        String[] categories = {"1", "2"};
         Event e = EventController.createEvent(
                 "Testi",
                 "Tämä on testi",
                 "1",
                 "200",
-                "1",
+                categories,
                 "2025-02-26",
                 "2025-02-26",
                 "17:00",

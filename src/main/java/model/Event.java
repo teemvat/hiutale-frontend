@@ -24,7 +24,7 @@ public class Event {
     private int favouriteCount;
 
     // for new event and getting events from database
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
+    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String[] eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
         this.id = eventId;
         this.title = eventTitle;
         this.description = eventDescription;
@@ -32,7 +32,7 @@ public class Event {
         this.capacity = Integer.parseInt(eventCapacity);
         this.organizerId = eventOrganizerId;
         this.eventCategoryIds = new ArrayList<>();
-        for (String category : eventCategories.split(",")) {
+        for (String category : eventCategories) {
             this.eventCategoryIds.add(Integer.valueOf(category.trim()));
         }
         this.status = "Default";
