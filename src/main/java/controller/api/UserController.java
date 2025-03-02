@@ -1,5 +1,7 @@
 package controller.api;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import model.User;
 import utils.SessionManager;
 
@@ -58,7 +60,7 @@ public class UserController {
                 "\"password\": \"" + password + "\"" +
                 '}';
         String response = sendHttpRequest("POST", "/users/login", requestBody);
-        User user = gson.fromJson(response, User.class);
+        User user = parseUserFromJson(response);
         if (user != null && user.getToken() != null) {
             SessionManager.getInstance().login(user);
             SessionManager.getInstance().setToken(user.getToken());
@@ -77,7 +79,7 @@ public class UserController {
                 "\"username\": \"" + username + "\"" +
                 '}';
         String response = sendHttpRequest("POST", "/users/register", requestBody);
-        User user = gson.fromJson(response, User.class);
+        User user = parseUserFromJson(response);
         if (user != null) {
             SessionManager.getInstance().login(user);
         }
@@ -92,5 +94,21 @@ public class UserController {
     public static void deleteUser(int id) {
         sendHttpRequest("DELETE", "/users/" + id, "");
         SessionManager.getInstance().logout();
+    }
+
+    public static User parseUserFromJson(String json) {
+        Gson gson = new Gson();
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+
+        // Extract token
+        String token = jsonObject.get("token").getAsString();
+
+        // Extract user details and parse into User object
+        User user = gson.fromJson(jsonObject.getAsJsonObject("user"), User.class);
+
+        // Manually set the token since it's outside the user object in the JSON
+        user.setToken(token);
+
+        return user;
     }
 }

@@ -75,7 +75,7 @@ public class FavouriteController {
         String result = sendHttpRequest("GET", "/favourites/me", "");
         JsonArray jsonArray = JsonParser.parseString(result).getAsJsonArray();
         for (JsonElement element : jsonArray) {
-            String id = element.getAsJsonObject().get("id").getAsString();
+            String id = element.getAsJsonObject().get("eventId").getAsString();
             events.add(EventController.getEvent(id));
         }
         return events;

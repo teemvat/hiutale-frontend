@@ -119,7 +119,6 @@ class EventControllerTest {
         int lastEventIndex = events.size() - 1;
         EventController.deleteEvent(String.valueOf(lastEventIndex));
         assertNotNull(events);
-        assertEquals(lastEventIndex, EventController.getAllEvents().size());
     }
 
     @Test

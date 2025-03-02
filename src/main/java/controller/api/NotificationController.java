@@ -59,43 +59,13 @@ public class NotificationController {
         }
     }
 
-    // varmista et hakee vain yhden käyttäjän, pitäis saada useri tokenista
     public static List<Notification> getUserNotifications() {
-        String result = sendHttpRequest("GET", "/notifications/all", "");
+        String result = sendHttpRequest("GET", "/notifications/me", "");
         return gson.fromJson(result, new TypeToken<ArrayList<Notification>>() {
         }.getType());
     }
 
-    public static boolean markNotificationAsRead(Notification notification) {
-        String requestBody = "{\"id\":" + notification.getId() + "," + "\"read\":true}";
-        return sendHttpRequest("PUT", "/notifications/update", requestBody).isEmpty();
-    }
-
-    // todo: tää pitäis varmaan toteuttaa backendissä?
-    public static Notification createNotification(int userId, String message) {
-        try {
-            URL url = new URL("http://localhost:8080/notifications/create");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
-
-            String jsonInputString = "{\"user\":" + userId + ",\"message\":\"" + message + "\"}";
-            conn.getOutputStream().write(jsonInputString.getBytes());
-            conn.getResponseCode();
-
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder jsonResponse = new StringBuilder();
-            while (scanner.hasNext()) {
-                jsonResponse.append(scanner.next());
-            }
-            scanner.close();
-
-            return gson.fromJson(jsonResponse.toString(), Notification.class);
-        } catch (Exception e) {
-            System.out.println("Cannot connect to server.");
-        }
-
-        return null;
+    public static void markNotificationAsRead(String notificationId) {
+        sendHttpRequest("PUT", "/notifications/" + notificationId + "/read", "");
     }
 }
