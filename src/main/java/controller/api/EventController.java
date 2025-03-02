@@ -68,10 +68,13 @@ public class EventController {
                                       double price) {
         Event event = new Event(null, title, description, locationId, capacity, null, categories, startDate, endDate, startTime, endTime, price, 0, 0);
         event.reformatDateForBE();
+        System.out.println("EventController, created event: " + event);
         String requestBody = gson.toJson(event);
-        System.out.println(requestBody);
+        System.out.println("EventController, request: " + requestBody);
         String response = sendHttpRequest("POST", "/events/create", requestBody);
+        System.out.println("EventController, response: " + response);
         Event newEvent = gson.fromJson(response, Event.class);
+        System.out.println("EventController, new event: " + newEvent);
         events.add(newEvent);
         return newEvent;
     }
