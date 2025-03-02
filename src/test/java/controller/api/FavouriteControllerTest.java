@@ -3,13 +3,16 @@ package controller.api;
 import model.Event;
 import model.User;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import utils.SessionManager;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 class FavouriteControllerTest {
 
     @BeforeAll
@@ -21,19 +24,23 @@ class FavouriteControllerTest {
     }
 
     @Test
+    @Order(1)
     void createFavourite() {
         assertDoesNotThrow(() -> FavouriteController.createFavourite("1"));
     }
 
     @Test
-    void deleteFavourite() {
-        assertDoesNotThrow(() -> FavouriteController.deleteFavourite("1"));
-    }
-
-    @Test
+    @Order(2)
     void getUserFavourites() {
         List<Event> favourites = FavouriteController.getUserFavourites();
         assertNotNull(favourites);
         assertFalse(favourites.isEmpty());
     }
+
+    @Test
+    @Order(3)
+    void deleteFavourite() {
+        assertDoesNotThrow(() -> FavouriteController.deleteFavourite("1"));
+    }
+
 }
