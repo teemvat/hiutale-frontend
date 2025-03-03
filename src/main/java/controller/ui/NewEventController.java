@@ -133,17 +133,17 @@ public class NewEventController {
 
         try {
             Event createdEvent = EventController.createEvent(
-                    //eventImage,
                     titleField.getText(),
                     descriptionField.getText(),
                     getSelectedLocationId(),
                     capacityField.getText(),
-                    getCategoryIds()[0],    // TODO poista indeksi sitten kun api on päivitetty
+                    getCategoryIds(),
                     startDatePicker.getValue().toString(),
                     endDatePicker.getValue().toString(),
                     startTimeField.getText(),
                     endTimeField.getText(),
-                    Double.parseDouble(priceField.getText())
+                    Double.parseDouble(priceField.getText()),
+                    eventImage
             );
             System.out.println("NewEventController, created event: " + createdEvent);
 
