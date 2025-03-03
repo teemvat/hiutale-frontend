@@ -126,12 +126,13 @@ public class NewEventController {
                     descriptionField.getText(),
                     locationComboBox.getValue(),
                     capacityField.getText(),
-                    getCategoryIds()[0],    // TODO poista indeksi sitten kun api on päivitetty
+                    getCategoryIds(),    // TODO poista indeksi sitten kun api on päivitetty
                     startDatePicker.getValue().toString(),
                     endDatePicker.getValue().toString(),
                     startTimeField.getText(),
                     endTimeField.getText(),
-                    Double.parseDouble(priceField.getText())
+                    Double.parseDouble(priceField.getText()),
+                    eventImage
             );
 
             if (createdEvent != null) {
