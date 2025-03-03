@@ -32,15 +32,32 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.HomeController">
+<SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.HomeController">
    <items>
       <VBox prefHeight="373.0" prefWidth="251.0">
          <children>
@@ -137,7 +154,7 @@
                            <children>
                               <ScrollPane fitToWidth="true" prefHeight="359.0" prefWidth="444.0">
                                  <content>
-                                    <FlowPane fx:id="listViewPane" />
+                                    <FlowPane fx:id="listViewPane" hgap="10.0" vgap="10.0" />
                                  </content>
                               </ScrollPane>
                            </children>
@@ -168,7 +185,7 @@
                                           <Label fx:id="monDateLabel" alignment="CENTER" prefHeight="25.0" prefWidth="44.0" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox fx:id="monVBox" prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="monVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -179,7 +196,7 @@
                                           <Label fx:id="tueDateLabel" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox fx:id="tueVBox" prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="tueVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -190,7 +207,7 @@
                                           <Label fx:id="wedDateLabel" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox fx:id="wedVBox" prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="wedVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -201,7 +218,7 @@
                                           <Label fx:id="thuDateLabel" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox fx:id="thuVBox" prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="thuVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -212,7 +229,7 @@
                                           <Label fx:id="friDateLabel" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox fx:id="friVBox" prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="friVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -223,7 +240,7 @@
                                           <Label fx:id="satDateLabel" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox fx:id="satVBox" prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="satVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
@@ -234,7 +251,7 @@
                                           <Label fx:id="sunDateLabel" text="DD.MM" />
                                           <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0" prefWidth="63.0" vbarPolicy="NEVER">
                                              <content>
-                                                <VBox fx:id="sunVBox" prefHeight="451.0" prefWidth="61.0" />
+                                                <VBox fx:id="sunVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0" />
                                              </content>
                                           </ScrollPane>
                                        </children>
