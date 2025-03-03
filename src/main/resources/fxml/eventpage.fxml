@@ -40,7 +40,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox prefHeight="411.0" prefWidth="572.0" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventPageController">
    <children>
       <Label fx:id="eventNameLabel" text="Tapahtuman nimi">
@@ -59,35 +58,6 @@
                </font>
             </Label>
             <Label fx:id="organizerLabel" text="Organizer name">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <HBox prefHeight="10.0" prefWidth="460.0" spacing="5.0">
-         <children>
-            <Label fx:id="dateLabel" text="DD.MM.YYYY">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="startTimeLabel" text="00:00">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label text="-">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="dateLabel1" text="DD.MM.YYYY">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="endTimeLabel" text="23:59">
                <font>
                   <Font size="13.0" />
                </font>

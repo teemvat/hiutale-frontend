@@ -181,7 +181,7 @@ public class HomeController {
 
     @FXML
     private void handleSearchAction(ActionEvent event) {
-        FilterCriteria criteria = new FilterCriteria(
+        List<Event> filteredEvents = EventController.searchEvents(
                 searchField.getText(),
                 datePicker.getValue() != null ? datePicker.getValue().toString() : "",
                 eventTypeComboBox.getValue(),
@@ -189,9 +189,8 @@ public class HomeController {
                 organizerComboBox.getValue(),
                 minPriceField.getText(),
                 maxPriceField.getText()
-        );
-
-        updateListView(cachedEvents.stream().filter(criteria::matches).toList());
+                );
+        updateListView(filteredEvents);
     }
 
     private void updateListView(List<Event> events) {
