@@ -34,20 +34,20 @@ public class EventCardController {
         eventDate.setText(event.getDate());
         eventLocation.setText(event.getLocationId());
 
-        updateTicketIcon();
-        updateFavouriteIcon();
+        //updateTicketIcon();
+        //updateFavouriteIcon();
     }
 
-    private void updateTicketIcon() {
-        int totalTickets = event.getCapacity();
-        int ticketsLeft = totalTickets - event.getAttendanceCount();
-
-        if (totalTickets > 0) {
-            double percentageLeft = (double) ticketsLeft / totalTickets * 100;
-            String iconPath = percentageLeft > 75 ? "../pictures/icons/ticket_green.png" : percentageLeft > 50 ? "../pictures/icons/ticket_yellow.png" : percentageLeft > 25 ? "../pictures/icons/ticket_orange.png" : "../pictures/icons/ticket_red.png";
-            ticketImage.setImage(loadImage(iconPath));
-        }
-    }
+//    private void updateTicketIcon() {
+//        int totalTickets = event.getCapacity();
+//        int ticketsLeft = totalTickets - event.getAttendanceCount();
+//
+//        if (totalTickets > 0) {
+//            double percentageLeft = (double) ticketsLeft / totalTickets * 100;
+//            String iconPath = percentageLeft > 75 ? "../pictures/icons/ticket_green.png" : percentageLeft > 50 ? "../pictures/icons/ticket_yellow.png" : percentageLeft > 25 ? "../pictures/icons/ticket_orange.png" : "../pictures/icons/ticket_red.png";
+//            ticketImage.setImage(loadImage(iconPath));
+//        }
+//    }
 
     private void updateFavouriteIcon() {
         // TODO lisää nämä takaisin sitten kun getUserFavourites() on saatu kuntoon
@@ -74,7 +74,7 @@ public class EventCardController {
         } else {
             FavouriteController.createFavourite(this.event.getId());
         }
-        updateFavouriteIcon();
+        //updateFavouriteIcon();
     }
 
     @FXML
@@ -95,15 +95,15 @@ public class EventCardController {
         }
     }
 
-    private Image loadImage(String path) {
-        return loadImage(path, null);
-    }
-
-    private Image loadImage(String path, String fallbackpath) {
-        try {
-            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-        } catch (NullPointerException e) {
-            return fallbackpath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackpath))) : null;
-        }
-    }
+//    private Image loadImage(String path) {
+//        return loadImage(path, null);
+//    }
+//
+//    private Image loadImage(String path, String fallbackpath) {
+//        try {
+//            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+//        } catch (NullPointerException e) {
+//            return fallbackpath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackpath))) : null;
+//        }
+//    }
 }
