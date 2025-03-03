@@ -2,6 +2,7 @@ package controller.ui;
 
 import controller.api.CategoryController;
 import controller.api.EventController;
+import controller.api.LocationController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Category;
 import model.Event;
+import model.Location;
 import utils.FilterCriteria;
 
 import java.time.DayOfWeek;
@@ -66,6 +68,7 @@ public class HomeController {
 
         loadEventCards();
         populateEventTypeComboBox();
+        populateLocationComboBox();
     }
 
     private void configurePriceFields() {
@@ -83,6 +86,14 @@ public class HomeController {
                 .map(Category::getName)
                 .collect(Collectors.toList());
         eventTypeComboBox.getItems().addAll(categoryNames);
+    }
+
+    private void populateLocationComboBox() {
+        List<Location> locations = LocationController.getAllLocations();
+        List<String> locationNames = locations.stream()
+                .map(Location::getName)
+                .collect(Collectors.toList());
+        locationComboBox.getItems().addAll(locationNames);
     }
 
     private LocalDate getStartOfWeek(LocalDate date) {
