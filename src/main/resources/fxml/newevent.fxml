@@ -48,70 +48,70 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" prefHeight="582.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.NewEventController">
-   <children>
-      <ImageView fx:id="eventImageView" fitHeight="213.0" fitWidth="516.0" pickOnBounds="true">
-         <image>
-            <Image url="@../pictures/placeholder_image.png" />
-         </image>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-      </ImageView>
-      <GridPane alignment="CENTER" hgap="10.0" prefHeight="286.0" prefWidth="540.0">
-        <columnConstraints>
-            <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" />
-          <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="ALWAYS" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
-          <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="TOP" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-        </rowConstraints>
-         <children>
-            <HBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="248.0" GridPane.rowIndex="12">
-               <children>
-                  <FlowPane fx:id="categoryFlowPane" prefHeight="200.0" prefWidth="200.0" />
-                  <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Valitse kuva" />
-               </children>
-            </HBox>
-            <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#addEvent" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-            <TextField fx:id="titleField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman nimi" />
-            <TextField fx:id="descriptionField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman kuvaus" GridPane.rowIndex="4" />
-            <TextField fx:id="capacityField" prefHeight="25.0" prefWidth="250.0" promptText="Henkilömäärä" GridPane.rowIndex="8" />
-            <TextField fx:id="priceField" prefHeight="25.0" prefWidth="250.0" promptText="Hinta (€)" GridPane.columnIndex="1" />
-            <TextField fx:id="startTimeField" prefHeight="25.0" prefWidth="250.0" promptText="Alkamisaika" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="endTimeField" prefHeight="25.0" prefWidth="250.0" promptText="Päättymisaika" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-            <ComboBox fx:id="locationComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Sijainti" GridPane.rowIndex="6" />
-            <ComboBox fx:id="categoriesComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumatyyppi" GridPane.rowIndex="10" />
-            <DatePicker fx:id="startDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Aloituspäivä" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <DatePicker fx:id="endDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Päättymispäivä" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Label fx:id="imageError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="13" />
-            <Label fx:id="titleError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="1" />
-            <Label fx:id="descriptionError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="5" />
-            <Label fx:id="categoriesError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="11" />
-            <Label fx:id="startDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label fx:id="locationError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="7" />
-            <Label fx:id="capacityError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="9" />
-            <Label fx:id="priceError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="startTimeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-            <Label fx:id="endDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <Label fx:id="endTimeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-         </children>
-      </GridPane>
-   </children>
-   <padding>
-      <Insets bottom="50.0" left="50.0" right="50.0" top="20.0" />
-   </padding>
+    <children>
+        <ImageView fx:id="eventImageView" fitHeight="213.0" fitWidth="516.0" pickOnBounds="true">
+            <image>
+                <Image url="@../pictures/placeholder_image.png" />
+            </image>
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+        </ImageView>
+        <GridPane alignment="CENTER" hgap="10.0" prefHeight="286.0" prefWidth="540.0">
+            <columnConstraints>
+                <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" />
+                <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="ALWAYS" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            </rowConstraints>
+            <children>
+                <HBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="248.0" GridPane.rowIndex="12">
+                    <children>
+                        <FlowPane fx:id="categoryFlowPane" prefHeight="200.0" prefWidth="200.0" />
+                        <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Valitse kuva" />
+                    </children>
+                </HBox>
+                <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#addEvent" prefHeight="25.0" prefWidth="250.0" text="Lisää tapahtuma" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                <TextField fx:id="titleField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman nimi" />
+                <TextField fx:id="descriptionField" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtuman kuvaus" GridPane.rowIndex="4" />
+                <TextField fx:id="capacityField" prefHeight="25.0" prefWidth="250.0" promptText="Henkilömäärä" GridPane.rowIndex="8" />
+                <TextField fx:id="priceField" prefHeight="25.0" prefWidth="250.0" promptText="Hinta (€)" GridPane.columnIndex="1" />
+                <TextField fx:id="startTimeField" prefHeight="25.0" prefWidth="250.0" promptText="Alkamisaika" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <TextField fx:id="endTimeField" prefHeight="25.0" prefWidth="250.0" promptText="Päättymisaika" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                <ComboBox fx:id="locationComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Sijainti" GridPane.rowIndex="6" />
+                <ComboBox fx:id="categoriesComboBox" editable="true" prefHeight="25.0" prefWidth="250.0" promptText="Tapahtumatyyppi" GridPane.rowIndex="10" />
+                <DatePicker fx:id="startDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Aloituspäivä" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <DatePicker fx:id="endDatePicker" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="Päättymispäivä" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <Label fx:id="imageError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="13" />
+                <Label fx:id="titleError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="1" />
+                <Label fx:id="descriptionError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="5" />
+                <Label fx:id="categoriesError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="11" />
+                <Label fx:id="startDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label fx:id="locationError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="7" />
+                <Label fx:id="capacityError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.rowIndex="9" />
+                <Label fx:id="priceError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label fx:id="startTimeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <Label fx:id="addEventError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                <Label fx:id="endDateError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                <Label fx:id="endTimeError" prefHeight="17.0" prefWidth="250.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            </children>
+        </GridPane>
+    </children>
+    <padding>
+        <Insets bottom="50.0" left="50.0" right="50.0" top="20.0" />
+    </padding>
 </VBox>

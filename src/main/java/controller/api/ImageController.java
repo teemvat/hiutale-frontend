@@ -1,5 +1,6 @@
 package controller.api;
 
+import javafx.scene.image.Image;
 import utils.SessionManager;
 
 import java.io.*;

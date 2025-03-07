@@ -87,6 +87,8 @@ public class EventController {
     }
 
     public static List<Event> getAllEvents() {
+        events.clear();
+
         String response = sendHttpRequest("GET", "/events/all", "");
         System.out.println("Response: " + response);
         List<Event> allEvents = gson.fromJson(response, new TypeToken<List<Event>>() {
@@ -104,24 +106,47 @@ public class EventController {
 
         for (Event event : events) {
             if (query != null && !event.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                System.out.println("Skipping event due to query: " + event.getTitle());
                 continue;
             }
+            System.out.println("Category: " + category);
+            System.out.println("event category: " + event.getCategories());
             if (category != null && !category.isEmpty() && event.getCategories() != null && !event.getCategories().contains(Integer.parseInt(category))) {
+                System.out.println("Skipping event due to category: " + event.getTitle());
                 continue;
             }
-            if (date != null && !event.getDate().equals(date)) {
+            if (date != null && !date.isEmpty() && !event.getDate().equals(date)) {
+                System.out.println("Skipping event due to date: " + event.getTitle());
                 continue;
             }
-            if (location != null && !event.getLocationId().toLowerCase().contains(location.toLowerCase())) {
+            if (location != null && (!event.getLocationId().equalsIgnoreCase(location))) {
+                System.out.println("Skipping event due to location: " + event.getTitle());
                 continue;
             }
-            if (minPrice != null && event.getPrice() < Double.parseDouble(minPrice)) {
-                continue;
+            if (minPrice != null && !minPrice.trim().isEmpty()) {
+                try {
+                    double minPriceValue = Double.parseDouble(minPrice);
+                    if (event.getPrice() < minPriceValue) {
+                        System.out.println("Skipping event due to minPrice: " + event.getTitle());
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid minPrice value: " + minPrice);
+                }
             }
-            if (maxPrice != null && event.getPrice() > Double.parseDouble(maxPrice)) {
-                continue;
+            if (maxPrice != null && !maxPrice.isEmpty()) {
+                try {
+                    double maxPriceValue = Double.parseDouble(maxPrice);
+                    if (event.getPrice() > maxPriceValue) {
+                        System.out.println("Skipping event due to minPrice: " + event.getTitle());
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid minPrice value: " + maxPrice);
+                }
             }
-            if (organizerId != null && !event.getOrganizerId().toLowerCase().contains(organizerId.toLowerCase())) {
+            if (organizerId != null && (!event.getOrganizerId().equalsIgnoreCase(organizerId))) {
+                System.out.println("Skipping event due to organizerId: " + event.getTitle());
                 continue;
             }
             searchResults.add(event);

@@ -17,6 +17,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        // Force JavaFX to use software rendering
+        System.setProperty("prism.order", "sw");
+
         launch(args);
     }
 }

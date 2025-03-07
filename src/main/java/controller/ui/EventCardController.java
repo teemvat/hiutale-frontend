@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
@@ -26,33 +27,39 @@ public class EventCardController {
 
     private Event event;
 
+    private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
+
     public void setEventData(Event event) {
         this.event = event;
 
-        //eventImage.setImage(loadImage(event.getImagePath(), "../pictures/placeholder_event_picture.png"));   // TODO image
+        if (event.getImage() != null) {
+            eventImage.setImage(new Image(event.getImage().toURI().toString()));
+        } else {
+            eventImage.setImage(placeholderImage);
+        }
         eventTitle.setText(event.getTitle());
         eventDate.setText(event.getDate());
         eventLocation.setText(event.getLocationId());
 
-        //updateTicketIcon();
-        //updateFavouriteIcon();
+        updateTicketIcon();
+        updateFavouriteIcon();
     }
 
-//    private void updateTicketIcon() {
-//        int totalTickets = event.getCapacity();
-//        int ticketsLeft = totalTickets - event.getAttendanceCount();
-//
-//        if (totalTickets > 0) {
-//            double percentageLeft = (double) ticketsLeft / totalTickets * 100;
-//            String iconPath = percentageLeft > 75 ? "../pictures/icons/ticket_green.png" : percentageLeft > 50 ? "../pictures/icons/ticket_yellow.png" : percentageLeft > 25 ? "../pictures/icons/ticket_orange.png" : "../pictures/icons/ticket_red.png";
-//            ticketImage.setImage(loadImage(iconPath));
-//        }
-//    }
+    private void updateTicketIcon() {
+        int totalTickets = event.getCapacity();
+        int ticketsLeft = totalTickets - event.getAttendanceCount();
+
+        if (totalTickets > 0) {
+            double percentageLeft = (double) ticketsLeft / totalTickets * 100;
+            String iconPath = percentageLeft > 75 ? "/pictures/icons/ticket_green.png" : percentageLeft > 50 ? "/pictures/icons/ticket_yellow.png" : percentageLeft > 25 ? "/pictures/icons/ticket_orange.png" : "/pictures/icons/ticket_red.png";
+            ticketImage.setImage(loadImage(iconPath));
+        }
+    }
 
     private void updateFavouriteIcon() {
         // TODO lisää nämä takaisin sitten kun getUserFavourites() on saatu kuntoon
-        //boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
-        //favoriteImage.setImage(loadImage(isFavourite ? "../pictures/icons/star_filled.png" : "../pictures/icons/star.png"));
+        boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
+        favoriteImage.setImage(loadImage(isFavourite ? "/pictures/icons/star_filled.png" : "/pictures/icons/star.png"));
     }
 
     @FXML
@@ -95,15 +102,15 @@ public class EventCardController {
         }
     }
 
-//    private Image loadImage(String path) {
-//        return loadImage(path, null);
-//    }
-//
-//    private Image loadImage(String path, String fallbackpath) {
-//        try {
-//            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-//        } catch (NullPointerException e) {
-//            return fallbackpath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackpath))) : null;
-//        }
-//    }
+    private Image loadImage(String path) {
+        return loadImage(path, null);
+    }
+
+    private Image loadImage(String path, String fallbackpath) {
+        try {
+            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+        } catch (NullPointerException e) {
+            return fallbackpath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackpath))) : null;
+        }
+    }
 }

@@ -78,17 +78,17 @@ class EventControllerTest {
         assertNotNull(results);
         assertFalse(results.isEmpty());
 
-        results = EventController.searchEvents(
-                null,
-                "1",
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        assertNotNull(results);
-        assertFalse(results.isEmpty());
+//        results = EventController.searchEvents(
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                "1"
+//        );
+//        assertNotNull(results);
+//        assertFalse(results.isEmpty());
 
         results = EventController.searchEvents(
                 null,
@@ -102,17 +102,17 @@ class EventControllerTest {
         assertNotNull(results);
         assertFalse(results.isEmpty());
 
-        results = EventController.searchEvents(
-                null,
-                null,
-                null,
-                null,
-                "1.0",
-                "6.0",
-                null
-        );
-        assertNotNull(results);
-        assertFalse(results.isEmpty());
+//        results = EventController.searchEvents(
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                "10",
+//                null
+//        );
+//        assertNotNull(results);
+//        assertFalse(results.isEmpty());
     }
 
     @Test

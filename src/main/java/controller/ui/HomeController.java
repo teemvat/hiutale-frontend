@@ -14,11 +14,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import model.Category;
 import model.Event;
 import model.Location;
 import model.User;
-import utils.FilterCriteria;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,7 +35,9 @@ public class HomeController {
 
     @FXML private TextField searchField, minPriceField, maxPriceField;
     @FXML private DatePicker datePicker;
-    @FXML private ComboBox<String> eventTypeComboBox, locationComboBox, organizerComboBox;
+    @FXML private ComboBox<User> organizerComboBox;
+    @FXML private ComboBox<Location> locationComboBox;
+    @FXML private ComboBox<Category> eventTypeComboBox;
     @FXML private Button searchButton, resetButton, profileButton, addEventButton;
     @FXML private ChoiceBox<String> sortChoiceBox;
     @FXML private FlowPane listViewPane;
@@ -72,7 +74,57 @@ public class HomeController {
         populateEventTypeComboBox();
         populateLocationComboBox();
         populateOrganizerComboBox();
+
+        setComboBoxConverters();
     }
+
+    private void setComboBoxConverters() {
+        eventTypeComboBox.setConverter(new StringConverter<Category>() {
+            @Override
+            public String toString(Category category) {
+                return (category == null) ? "" : category.getName();
+            }
+
+            @Override
+            public Category fromString(String string) {
+                return eventTypeComboBox.getItems().stream()
+                        .filter(category -> category.getName().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+
+        locationComboBox.setConverter(new StringConverter<Location>() {
+            @Override
+            public String toString(Location location) {
+                return (location == null) ? "" : location.getName();
+            }
+
+            @Override
+            public Location fromString(String string) {
+                return locationComboBox.getItems().stream()
+                        .filter(location -> location.getName().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+
+        organizerComboBox.setConverter(new StringConverter<User>() {
+            @Override
+            public String toString(User organizer) {
+                return (organizer == null) ? "" : organizer.getUsername();
+            }
+
+            @Override
+            public User fromString(String string) {
+                return organizerComboBox.getItems().stream()
+                        .filter(organizer -> organizer.getUsername().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+    }
+
 
     private void configurePriceFields() {
         // Add a TextFormatter to ensure only numbers can be typed in the price fields
@@ -85,18 +137,20 @@ public class HomeController {
 
     private void populateEventTypeComboBox() {
         List<Category> categories = CategoryController.getAllCategories();
-        List<String> categoryNames = categories.stream()
-                .map(Category::getName)
-                .collect(Collectors.toList());
-        eventTypeComboBox.getItems().addAll(categoryNames);
+//        List<String> categoryNames = categories.stream()
+//                .map(Category::getName)
+//                .collect(Collectors.toList());
+        eventTypeComboBox.getItems().clear();
+        eventTypeComboBox.getItems().addAll(categories);
     }
 
     private void populateLocationComboBox() {
         List<Location> locations = LocationController.getAllLocations();
-        List<String> locationNames = locations.stream()
-                .map(Location::getName)
-                .collect(Collectors.toList());
-        locationComboBox.getItems().addAll(locationNames);
+//        List<String> locationNames = locations.stream()
+//                .map(Location::getName)
+//                .collect(Collectors.toList());
+        locationComboBox.getItems().clear();
+        locationComboBox.getItems().addAll(locations);
     }
 
     private void populateOrganizerComboBox() {
@@ -105,14 +159,28 @@ public class HomeController {
                 .map(Event::getOrganizerId)
                 .collect(Collectors.toSet());
 
-        List<String> organizerNames = organizerIds.stream()
-                .map(id -> UserController.getUser(Integer.parseInt(id)).getUsername())
-                .collect(Collectors.toList());
+//        List<String> organizerNames = organizerIds.stream()
+//                .map(id -> UserController.getUser(Integer.parseInt(id)).getUsername())
+//                .collect(Collectors.toList());
 
-        organizerComboBox.getItems().addAll(organizerNames);
+        List<User> organizers = new ArrayList<>();
+        for (String id : organizerIds) {
+            User user = UserController.getUser(Integer.parseInt(id));
+            if (user != null) {
+                organizers.add(user);
+            }
+        }
+
+        // Clear previous data to avoid conflicts
+        organizerComboBox.getItems().clear();
+        organizerComboBox.getItems().addAll(organizers);
+
     }
 
     private LocalDate getStartOfWeek(LocalDate date) {
+        if (date == null) {
+            return LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        }
         return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
 
@@ -181,17 +249,29 @@ public class HomeController {
 
     @FXML
     private void handleSearchAction(ActionEvent event) {
+        Category selectedCategory = eventTypeComboBox.getSelectionModel().getSelectedItem();
+        System.out.println("Selected category: " + selectedCategory);
+        Location selectedLocation = locationComboBox.getSelectionModel().getSelectedItem();
+        User selectedOrganizer = organizerComboBox.getSelectionModel().getSelectedItem();
+
+        String categoryId = (selectedCategory != null) ? selectedCategory.getId() : null;
+        String locationId = (selectedLocation != null) ? selectedLocation.getId() : null;
+        String organizerId = (selectedOrganizer != null) ? selectedOrganizer.getIdString() : null;
+
         List<Event> filteredEvents = EventController.searchEvents(
                 searchField.getText(),
+                categoryId,
                 datePicker.getValue() != null ? datePicker.getValue().toString() : "",
-                eventTypeComboBox.getValue(),
-                locationComboBox.getValue(),
-                organizerComboBox.getValue(),
+                locationId,
                 minPriceField.getText(),
-                maxPriceField.getText()
-                );
+                maxPriceField.getText(),
+                organizerId
+        );
+
         updateListView(filteredEvents);
+        updateCalendarView(filteredEvents);
     }
+
 
     private void updateListView(List<Event> events) {
         listViewPane.getChildren().clear();
@@ -202,16 +282,29 @@ public class HomeController {
         }
     }
 
+    private void updateCalendarView(List<Event> events) {
+        clearCalendar();
+        if (events.isEmpty()) {
+            listViewPane.getChildren().add(new Label("No events found for this week"));
+        } else {
+            events.forEach(event -> addEventToCalendar(event, getStartOfWeek(datePicker.getValue() != null ? datePicker.getValue() : LocalDate.now())));
+        }
+    }
+
     @FXML
     private void handleResetAction(ActionEvent event) {
         // Reset all fields
         searchField.clear();
-        datePicker.setValue(LocalDate.now());
+        datePicker.setValue(null);
         eventTypeComboBox.getSelectionModel().clearSelection();
         locationComboBox.getSelectionModel().clearSelection();
         organizerComboBox.getSelectionModel().clearSelection();
         minPriceField.clear();
         maxPriceField.clear();
+
+        // Reload all events
+        updateListView(cachedEvents);
+        updateCalendarView(cachedEvents);
     }
 
     @FXML

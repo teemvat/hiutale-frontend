@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -46,16 +47,16 @@ public class EventPageController {
         this.event = e;
         eventNameLabel.setText(event.getTitle());
         organizerLabel.setText(UserController.getUser(Integer.parseInt(event.getOrganizerId())).getUsername());
-        //dateLabel.setText(event.getDate());
-        //startTimeLabel.setText(event.getStart());
-        //endTimeLabel.setText(event.getEnd());
+        dateLabel.setText(event.getDate());
+        startTimeLabel.setText(event.getStart());
+        endTimeLabel.setText(event.getEnd());
         locationLabel.setText(LocationController.getLocationById(event.getLocationId()).getName());
         priceLabel.setText(Double.toString(event.getPrice()));
         descriptionLabel.setText(event.getDescription());
 
-//        if (event.getImageUrl() != null && !event.getImageUrl().isEmpty()) {
-//            eventImage.setImage(new Image(event.getImageUrl())); // TODO
-//        }
+        if (event.getImage() != null) {
+            eventImage.setImage(new Image(event.getImage().toURI().toString())); // TODO
+        }
     }
 
 }

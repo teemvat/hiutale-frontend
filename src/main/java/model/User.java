@@ -41,7 +41,16 @@ public class User {
         return id;
     }
 
+    public String getIdString() {
+        return id + "";
+    }
+
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return username;
     }
 }

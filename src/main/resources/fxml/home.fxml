@@ -115,7 +115,15 @@
             <Separator prefWidth="200.0" />
             <AnchorPane minHeight="-Infinity" prefHeight="46.0" prefWidth="188.0">
                <children>
-                  <Button fx:id="profileButton" mnemonicParsing="false" onAction="#handleProfileAction" text="Profiili" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <Button fx:id="profileButton" mnemonicParsing="false" onAction="#handleProfileAction" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../pictures/account.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button fx:id="addEventButton" mnemonicParsing="false" onAction="#handleAddEventAction" text="+" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                </children>
             </AnchorPane>
@@ -126,12 +134,12 @@
             <AnchorPane prefHeight="17.0" prefWidth="444.0">
                <children>
                   <ChoiceBox fx:id="sortChoiceBox" layoutY="15.0" onAction="#handleSortAction" prefHeight="10.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <items>
-                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Aakkosjärjestys" />
-                        <String fx:value="Päivämäärän mukaan" />
-                     </FXCollections>
-                  </items>
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="Aakkosjärjestys" />
+                           <String fx:value="Päivämäärän mukaan" />
+                        </FXCollections>
+                     </items>
                   </ChoiceBox>
                </children>
                <padding>
@@ -139,8 +147,8 @@
                </padding>
             </AnchorPane>
             <TabPane prefHeight="432.0" prefWidth="316.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="Listanäkymä">
+               <tabs>
+                  <Tab text="Listanäkymä">
                      <content>
                         <VBox>
                            <children>
@@ -152,24 +160,24 @@
                            </children>
                         </VBox>
                      </content>
-                </Tab>
-                <Tab text="Kalenterinäkymä">
+                  </Tab>
+                  <Tab text="Kalenterinäkymä">
                      <content>
                         <VBox>
                            <children>
                               <GridPane gridLinesVisible="true" prefHeight="363.0" prefWidth="444.0">
-                                <columnConstraints>
+                                 <columnConstraints>
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                                  <children>
                                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                                        <children>
@@ -253,8 +261,8 @@
                            </children>
                         </VBox>
                      </content>
-                </Tab>
-              </tabs>
+                  </Tab>
+               </tabs>
             </TabPane>
          </children>
       </VBox>

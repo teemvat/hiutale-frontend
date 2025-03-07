@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.io.File;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -175,5 +177,27 @@ public class Event {
 
     public File getImage() {
         return image;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", locationId='" + locationId + '\'' +
+                ", capacity=" + capacity +
+                ", organizerId='" + organizerId + '\'' +
+                ", eventCategoryIds=" + eventCategoryIds +
+                ", status='" + status + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", start='" + start + '\'' +
+                ", end='" + end + '\'' +
+                ", price=" + price +
+                ", attendanceCount=" + attendanceCount +
+                ", favouriteCount=" + favouriteCount +
+                ", image=" + image +
+                '}';
     }
 }

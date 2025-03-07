@@ -1,26 +1,26 @@
 package model;
 
 public class Location {
-    private String locationId;
+    private String id;
     private String name;
     private String address;
     private String city;
     private String postalCode;
 
-    public Location(String locationId, String name, String address, String city, String postalCode) {
-        this.locationId = locationId;
+    public Location(String id, String name, String address, String city, String postalCode) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
     }
 
-    public String getLocationId() {
-        return locationId;
+    public String getId() {
+        return id;
     }
 
-    public void setLocationId(String locationId) {
-        this.locationId = locationId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -53,5 +53,10 @@ public class Location {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

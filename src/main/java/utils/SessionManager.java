@@ -31,7 +31,7 @@ public class SessionManager {
 
     public boolean isLoggedIn() {
         boolean loggedIn =  user != null;
-        System.out.println("SessionManager: isLoggedIn = " + loggedIn);
+        //System.out.println("SessionManager: isLoggedIn = " + loggedIn);
         return loggedIn;
     }
 

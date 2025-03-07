@@ -105,7 +105,7 @@ public class NewEventController {
         return allLocations.stream()
                 .filter(loc -> loc.getName().equals(selectedLocationName))
                 .findFirst()
-                .map(loc -> String.valueOf(loc.getLocationId()))
+                .map(loc -> String.valueOf(loc.getId()))
                 .orElse(null);
     }
 
