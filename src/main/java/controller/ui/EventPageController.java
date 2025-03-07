@@ -16,18 +16,34 @@ import model.Event;
 
 import java.io.IOException;
 
-public class EventControllerUI {
+public class EventPageController {
 
     @FXML private Label eventNameLabel, organizerLabel, dateLabel, startTimeLabel, endTimeLabel, locationLabel, priceLabel, descriptionLabel;
     @FXML private ImageView eventImage;
     @FXML private Button buyTicketButton;
+    private Event event;
 
     @FXML
     private void handleBuyTicketAction(ActionEvent event) {
-        showModalWindow("/fxml/rsvp.fxml", "Buy ticket", buyTicketButton);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            Parent root = loader.load();
+            RSVPController controller = loader.getController();
+            controller.setEvent(this.event);
+            Stage stage = new Stage();
+            stage.setTitle("Buy ticket");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buyTicketButton.getScene().getWindow());
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.err.println("Error loading RSVP window: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    public void setEventDetails(Event event) {
+    public void setEventDetails(Event e) {
+        this.event = e;
         eventNameLabel.setText(event.getTitle());
         organizerLabel.setText(UserController.getUser(Integer.parseInt(event.getOrganizerId())).toString());
         dateLabel.setText(event.getDate());
@@ -42,19 +58,4 @@ public class EventControllerUI {
 //        }
     }
 
-    private void showModalWindow(String fxmlPath, String title, Button ownerButton) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(ownerButton.getScene().getWindow());
-            stage.showAndWait();
-        } catch (IOException e) {
-            System.err.println("Error loading window: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }

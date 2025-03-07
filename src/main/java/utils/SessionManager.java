@@ -18,6 +18,7 @@ public class SessionManager {
 
     public void login(User user) {
         this.user = user;
+        System.out.println("SessionManager: User set to " + user.getUsername());
     }
 
     public void logout() {
@@ -29,7 +30,9 @@ public class SessionManager {
     }
 
     public boolean isLoggedIn() {
-        return user != null;
+        boolean loggedIn =  user != null;
+        System.out.println("SessionManager: isLoggedIn = " + loggedIn);
+        return loggedIn;
     }
 
     public void setToken(String token) {

@@ -31,11 +31,15 @@ public class EventController {
             if (SessionManager.getInstance().isLoggedIn()) {
                 String token = SessionManager.getInstance().getUser().getToken();
                 conn.setRequestProperty("Authorization", "Bearer " + token);
+                System.out.println("User is logged in, token set");
+            } else {
+                System.out.println("User is not logged in");
             }
 
             if (!requestBody.isEmpty()) {
                 try (OutputStream os = conn.getOutputStream()) {
                     os.write(requestBody.getBytes());
+                    System.out.println("Request body is not empty");
                 }
             }
 
@@ -69,10 +73,13 @@ public class EventController {
                                     File image) {
         Event event = new Event(null, title, description, locationId, capacity, null, categories, startDate, endDate, startTime, endTime, price, 0, 0);
         event.reformatDateForBE();
+        System.out.println("EventController, created event: " + event);
         String requestBody = gson.toJson(event);
-        System.out.println(requestBody);
+        System.out.println("EventController, request: " + requestBody);
         String response = sendHttpRequest("POST", "/events/create", requestBody);
+        System.out.println("EventController, response: " + response);
         Event newEvent = gson.fromJson(response, Event.class);
+        System.out.println("EventController, new event: " + newEvent);
         ImageController.uploadImage(Long.parseLong(newEvent.getId()), image);
 
         events.add(newEvent);

@@ -125,7 +125,15 @@ public class HomeController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
             Parent node = fxmlLoader.load();
-            ((EventBoxController) fxmlLoader.getController()).setEventData(event);
+
+            if (resource.equals("/fxml/eventcard.fxml")) {
+                EventCardController controller = fxmlLoader.getController();
+                controller.setEventData(event);
+            } else if (resource.equals("/fxml/eventbox.fxml")) {
+                EventBoxController controller = fxmlLoader.getController();
+                controller.setEventData(event);
+            }
+
             return node;
         } catch (IOException e) {
             e.printStackTrace();

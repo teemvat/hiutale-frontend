@@ -38,7 +38,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventControllerUI">
+<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventPageController">
    <children>
       <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="199.0">
          <children>
@@ -186,7 +186,7 @@
                   <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                </padding>
             </ScrollPane>
-            <Button fx:id="buyTicketButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="69.0" text="Osta lippu">
+            <Button fx:id="buyTicketButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="69.0" text="Osta lippu" onAction="#handleBuyTicketAction">
                <font>
                   <Font size="11.0" />
                </font>

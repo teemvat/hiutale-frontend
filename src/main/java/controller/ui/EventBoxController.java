@@ -31,17 +31,18 @@ public class EventBoxController {
     @FXML
     private void handleBoxClick() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
-            Parent rsvpRoot = fxmlLoader.load();
-            RSVPController rsvpController = fxmlLoader.getController();
-            rsvpController.setEvent(event);
-            Stage rsvpStage = new Stage();
-            rsvpStage.setTitle("RSVP for " + event.getTitle());
-            rsvpStage.setScene(new Scene(rsvpRoot));
-            rsvpStage.initModality(Modality.WINDOW_MODAL);
-            rsvpStage.initOwner(eventTitle.getScene().getWindow());
-            rsvpStage.showAndWait();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"));
+            Parent root = loader.load();
+            EventPageController controller = loader.getController();
+            controller.setEventDetails(event);
+            Stage stage = new Stage();
+            stage.setTitle(event.getTitle());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(eventTitle.getScene().getWindow());
+            stage.showAndWait();
         } catch (IOException e) {
+            System.err.println("Failed to open Event Page: " + e.getMessage());
             e.printStackTrace();
         }
     }

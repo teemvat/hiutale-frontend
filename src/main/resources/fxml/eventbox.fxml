@@ -38,28 +38,37 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleBoxClick" prefHeight="63.0" prefWidth="63.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventBoxController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleBoxClick" prefHeight="60.0" prefWidth="75.0" styleClass="event-card" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventBoxController">
    <children>
       <Label fx:id="eventTitle" text="Title">
          <VBox.margin>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            <Insets />
          </VBox.margin>
          <font>
-            <Font size="14.0" />
+            <Font size="11.0" />
          </font>
       </Label>
       <Label fx:id="eventTime" text="00:00">
          <VBox.margin>
-            <Insets left="2.0" right="2.0" />
+            <Insets />
          </VBox.margin>
+         <font>
+            <Font size="10.0" />
+         </font>
       </Label>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label text="\@" />
-            <Label fx:id="eventLocation" text="Location" />
+            <Label text="\@">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <Label fx:id="eventLocation" text="Location">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
          </children>
          <VBox.margin>
-            <Insets left="2.0" right="2.0" />
+            <Insets />
          </VBox.margin>
       </HBox>
    </children>

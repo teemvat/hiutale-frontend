@@ -50,8 +50,9 @@ public class EventCardController {
     }
 
     private void updateFavouriteIcon() {
-        boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
-        favoriteImage.setImage(loadImage(isFavourite ? "../pictures/icons/star_filled.png" : "../pictures/icons/star.png"));
+        // TODO lisää nämä takaisin sitten kun getUserFavourites() on saatu kuntoon
+        //boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
+        //favoriteImage.setImage(loadImage(isFavourite ? "../pictures/icons/star_filled.png" : "../pictures/icons/star.png"));
     }
 
     @FXML
@@ -79,18 +80,18 @@ public class EventCardController {
     @FXML
     private void handleCardClick() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
-            Parent rsvpRoot = fxmlLoader.load();
-            RSVPController rsvpController = fxmlLoader.getController();
-            rsvpController.setEvent(event);
-            Stage rsvpStage = new Stage();
-            rsvpStage.setTitle("RSVP for " + event.getTitle());
-            rsvpStage.setScene(new Scene(rsvpRoot));
-            rsvpStage.initModality(Modality.WINDOW_MODAL);
-            rsvpStage.initOwner(eventTitle.getScene().getWindow());
-            rsvpStage.showAndWait();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"));
+            Parent root = loader.load();
+            EventPageController controller = loader.getController();
+            controller.setEventDetails(event);
+            Stage stage = new Stage();
+            stage.setTitle(event.getTitle());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(eventTitle.getScene().getWindow());
+            stage.showAndWait();
         } catch (IOException e) {
-            System.err.println("Failed to open RSVP window: " + e.getMessage());
+            System.err.println("Failed to open Event Page: " + e.getMessage());
         }
     }
 
