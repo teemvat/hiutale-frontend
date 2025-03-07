@@ -1,6 +1,9 @@
 package controller.ui;
 
+import controller.api.CategoryController;
 import controller.api.EventController;
+import controller.api.LocationController;
+import controller.api.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +14,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Category;
 import model.Event;
+import model.Location;
+import model.User;
 import utils.FilterCriteria;
 
 import java.time.DayOfWeek;
@@ -23,6 +29,7 @@ import java.util.*;
 import java.util.function.UnaryOperator;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class HomeController {
 
@@ -55,14 +62,16 @@ public class HomeController {
 
         dayLabels = new Label[]{monDateLabel, tueDateLabel, wedDateLabel, thuDateLabel, friDateLabel, satDateLabel, sunDateLabel};
         dayBoxes = new VBox[]{monVBox, tueVBox, wedVBox, thuVBox, friVBox, satVBox, sunVBox};
-
-        configurePriceFields();
         LocalDate today = LocalDate.now();
         updateCalendar(getStartOfWeek(today));
-
         datePicker.setOnAction(event -> updateCalendar(getStartOfWeek(datePicker.getValue())));
 
+        configurePriceFields();
+
         loadEventCards();
+        populateEventTypeComboBox();
+        populateLocationComboBox();
+        populateOrganizerComboBox();
     }
 
     private void configurePriceFields() {
@@ -72,6 +81,35 @@ public class HomeController {
 
         minPriceField.setTextFormatter(new TextFormatter<>(filter));
         maxPriceField.setTextFormatter(new TextFormatter<>(filter));
+    }
+
+    private void populateEventTypeComboBox() {
+        List<Category> categories = CategoryController.getAllCategories();
+        List<String> categoryNames = categories.stream()
+                .map(Category::getName)
+                .collect(Collectors.toList());
+        eventTypeComboBox.getItems().addAll(categoryNames);
+    }
+
+    private void populateLocationComboBox() {
+        List<Location> locations = LocationController.getAllLocations();
+        List<String> locationNames = locations.stream()
+                .map(Location::getName)
+                .collect(Collectors.toList());
+        locationComboBox.getItems().addAll(locationNames);
+    }
+
+    private void populateOrganizerComboBox() {
+        List<Event> allEvents = EventController.getAllEvents();
+        Set<String> organizerIds = allEvents.stream()
+                .map(Event::getOrganizerId)
+                .collect(Collectors.toSet());
+
+        List<String> organizerNames = organizerIds.stream()
+                .map(id -> UserController.getUser(Integer.parseInt(id)).getUsername())
+                .collect(Collectors.toList());
+
+        organizerComboBox.getItems().addAll(organizerNames);
     }
 
     private LocalDate getStartOfWeek(LocalDate date) {
@@ -143,7 +181,7 @@ public class HomeController {
 
     @FXML
     private void handleSearchAction(ActionEvent event) {
-        FilterCriteria criteria = new FilterCriteria(
+        List<Event> filteredEvents = EventController.searchEvents(
                 searchField.getText(),
                 datePicker.getValue() != null ? datePicker.getValue().toString() : "",
                 eventTypeComboBox.getValue(),
@@ -151,9 +189,8 @@ public class HomeController {
                 organizerComboBox.getValue(),
                 minPriceField.getText(),
                 maxPriceField.getText()
-        );
-
-        updateListView(cachedEvents.stream().filter(criteria::matches).toList());
+                );
+        updateListView(filteredEvents);
     }
 
     private void updateListView(List<Event> events) {

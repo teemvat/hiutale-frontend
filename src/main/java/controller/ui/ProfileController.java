@@ -32,6 +32,7 @@ public class ProfileController {
         loadEventCards(favoriteEventsVBox, FavouriteController.getUserFavourites(), "No favourite events found");
         loadEventCards(upcomingEventsVBox, AttendanceController.getUserAttendances(), "No upcoming events found");
         loadEventCards(organizedEventsVBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), "No organized events found");
+        setUserInformation();
     }
 
     private void setUserInformation() {
