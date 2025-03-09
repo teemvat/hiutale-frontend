@@ -27,8 +27,10 @@ public class UserController {
             conn.setDoOutput(true);
 
             if (SessionManager.getInstance().isLoggedIn()) {
-                String token = SessionManager.getInstance().getUser().getToken();
-                conn.setRequestProperty("Authorization", "Bearer " + token);
+                String token = SessionManager.getInstance().getToken();
+                if (token != null) {
+                    conn.setRequestProperty("Authorization", "Bearer " + token);
+                }
             }
 
             if (!requestBody.isEmpty()) {
@@ -75,8 +77,10 @@ public class UserController {
                 User user = gson.fromJson(jsonResponse.get("user"), User.class);
                 user.setToken(token);
 
-                SessionManager.getInstance().login(user);
-                SessionManager.getInstance().setToken(token);
+                if (!SessionManager.getInstance().isLoggedIn()) {
+                    SessionManager.getInstance().login(user);
+                    SessionManager.getInstance().setToken(token);
+                }
                 System.out.println("User logged in: " + user.getUsername());
                 return user;
             } else {

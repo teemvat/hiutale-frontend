@@ -148,10 +148,22 @@ public class ImageController {
 
     public static String getImageURL(String eventId) {
         String response = sendHttpRequest("GET", "/event/" + eventId, "");
+        if (response == null || response.isEmpty()) {
+            System.out.println("Error: Empty response for eventId " + eventId);
+            return "";
+        }
 
-        JsonArray jsonArray = JsonParser.parseString(response).getAsJsonArray();
-
-        return jsonArray.get(0).getAsJsonObject().get("filename").getAsString();
+        try {
+            JsonArray jsonArray = JsonParser.parseString(response).getAsJsonArray();
+            if (jsonArray.size() == 0) {
+                System.out.println("No image found for eventId " + eventId);
+                return "";
+            }
+            return jsonArray.get(0).getAsJsonObject().get("filename").getAsString();
+        } catch (Exception e) {
+            System.out.println("Error parsing JSON for eventId " + eventId + ": " + e.getMessage());
+            return "";
+        }
     }
 
 
@@ -162,7 +174,7 @@ public class ImageController {
         }
 
         String fileUrl = "http://37.27.9.255:8080/resources/" + event.getImage();
-        String saveAs = "downloaded_" + event.getImage();  // Save it with a unique filename
+        String saveAs = "downloaded_" + event.getImage();
 
         try (InputStream in = new URL(fileUrl).openStream()) {
             Path destination = Paths.get(saveAs);
@@ -174,6 +186,7 @@ public class ImageController {
             return null;
         }
     }
+
 
     public static String deleteImage(String imageId) {
         HttpURLConnection conn = null;

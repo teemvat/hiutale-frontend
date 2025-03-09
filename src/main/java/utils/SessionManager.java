@@ -3,7 +3,7 @@ package utils;
 import model.User;
 
 public class SessionManager {
-    private static SessionManager instance;
+    private static volatile SessionManager instance;
     private User user;
     private String token;
 
@@ -23,6 +23,7 @@ public class SessionManager {
 
     public void logout() {
         this.user = null;
+        this.token = null;
     }
 
     public User getUser() {
@@ -44,6 +45,6 @@ public class SessionManager {
     }
 
     public String getUserName(){
-        return user.getUsername();
+        return user != null ? user.getUsername() : "Guest";
     }
 }

@@ -97,7 +97,7 @@ public class EventController {
         for (Event event : events) {
             event.reformatDateForFE();
             String imageUrl = ImageController.getImageURL(event.getId());
-            if (imageUrl != null) {
+            if (imageUrl != null && !imageUrl.isEmpty()) {
                 System.out.println("Image found for event ID: " + event.getId());
                 event.setImage(imageUrl);
             } else {

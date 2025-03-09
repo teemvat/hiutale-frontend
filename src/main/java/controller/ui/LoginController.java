@@ -44,6 +44,8 @@ public class LoginController {
     }
 
     private void performLogin() {
+        loginButton.setDisable(true);
+
         User user = UserController.login(emailField.getText(), passwordField.getText());
         if (user != null) {
             System.out.println("Login successful");
@@ -53,6 +55,8 @@ public class LoginController {
             emailError.setText("Invalid email or password");
             passwordError.setText("Invalid email or password");
         }
+
+        loginButton.setDisable(false);
     }
 
     @FXML

@@ -33,10 +33,4 @@ class CategoryControllerTest {
         assertNotNull(category);
     }
 
-    @Test
-    void createCategory() {
-        Category category = CategoryController.createCategory("Testi", "Tämä on testi");
-        assertNotNull(category);
-    }
-
 }

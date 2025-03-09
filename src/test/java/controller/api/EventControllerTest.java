@@ -136,7 +136,7 @@ class EventControllerTest {
     @Order(7)
     void getEventsByOrganizer() {
         EventController.getAllEvents();
-        List<Event> events = EventController.getEventsByOrganizer("1");
+        List<Event> events = EventController.getEventsByOrganizer(SessionManager.getInstance().getUser().getId() + "");
         assertNotNull(events);
         assertFalse(events.isEmpty());
     }

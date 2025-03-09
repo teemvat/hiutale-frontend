@@ -66,14 +66,14 @@ public class CategoryController {
         String response = sendHttpRequest("GET", "/categories/one/" + categoryId, "");
         return gson.fromJson(response, Category.class);
     }
-
-    public static Category createCategory(String categoryName, String categoryDescription) {
-        String requestBody = '{' +
-                "\"name\": \"" + categoryName + "\"," +
-                "\"description\": \"" + categoryDescription + "\"" +
-                '}';
-        String response = sendHttpRequest("POST", "/categories/create", requestBody);
-        return gson.fromJson(response, Category.class);
-    }
+//
+//    public static Category createCategory(String categoryName, String categoryDescription) {
+//        String requestBody = '{' +
+//                "\"name\": \"" + categoryName + "\"," +
+//                "\"description\": \"" + categoryDescription + "\"" +
+//                '}';
+//        String response = sendHttpRequest("POST", "/categories/create", requestBody);
+//        return gson.fromJson(response, Category.class);
+//    }
 
 }
