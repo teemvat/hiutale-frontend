@@ -90,7 +90,7 @@
       </HBox>
       <AnchorPane prefHeight="74.0" prefWidth="600.0">
          <children>
-            <Button mnemonicParsing="false" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+            <Button fx:id="ticketButton" onAction="#handleTicketAction" mnemonicParsing="false" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
                <graphic>
                   <ImageView fx:id="ticketImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" rotate="-40.4">
                      <image>

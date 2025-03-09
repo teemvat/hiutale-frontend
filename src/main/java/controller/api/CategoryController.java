@@ -69,8 +69,8 @@ public class CategoryController {
 
     public static Category createCategory(String categoryName, String categoryDescription) {
         String requestBody = '{' +
-                "\"categoryName\": \"" + categoryName + "\"," +
-                "\"categoryDescription\": \"" + categoryDescription + "\"" +
+                "\"name\": \"" + categoryName + "\"," +
+                "\"description\": \"" + categoryDescription + "\"" +
                 '}';
         String response = sendHttpRequest("POST", "/categories/create", requestBody);
         return gson.fromJson(response, Category.class);

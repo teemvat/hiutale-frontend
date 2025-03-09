@@ -3,6 +3,7 @@ package controller.api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import model.Notification;
 import model.User;
 import org.junit.jupiter.api.*;
 import utils.SessionManager;
@@ -13,12 +14,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 class NotificationControllerTest {
     static int notificationId;
+    static Notification notification;
 
     @BeforeAll
     static void setUp() {
@@ -79,12 +82,19 @@ class NotificationControllerTest {
     @Test
     @Order(1)
     void getUserNotifications() {
+        List<Notification> notifications = NotificationController.getUserNotifications();
+        notification = notifications.getFirst();
+        assertNotNull(notifications);
 
     }
 
     @Test
     @Order(2)
     void markNotificationAsRead() {
+        NotificationController.markNotificationAsRead(notification.getId() + "");
+        List<Notification> notifications = NotificationController.getUserNotifications();
+        notification = notifications.getFirst();
+        assertTrue(notification.isRead());
     }
 
     @AfterAll

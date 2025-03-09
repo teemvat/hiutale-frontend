@@ -1,6 +1,8 @@
 package controller.ui;
 
 import controller.api.FavouriteController;
+import controller.api.ImageController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -33,7 +36,13 @@ public class EventCardController {
         this.event = event;
 
         if (event.getImage() != null) {
-            eventImage.setImage(new Image(event.getImage().toURI().toString()));
+            try {
+                File image = ImageController.getImage(event);
+                eventImage.setImage(new Image(image.toURI().toString()));
+            } catch (Exception e) {
+                System.err.println("Failed to load event image: " + e.getMessage());
+                eventImage.setImage(placeholderImage);
+            }
         } else {
             eventImage.setImage(placeholderImage);
         }
@@ -53,6 +62,25 @@ public class EventCardController {
             double percentageLeft = (double) ticketsLeft / totalTickets * 100;
             String iconPath = percentageLeft > 75 ? "/pictures/icons/ticket_green.png" : percentageLeft > 50 ? "/pictures/icons/ticket_yellow.png" : percentageLeft > 25 ? "/pictures/icons/ticket_orange.png" : "/pictures/icons/ticket_red.png";
             ticketImage.setImage(loadImage(iconPath));
+        }
+    }
+
+    @FXML
+    private void handleTicketAction(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            Parent root = loader.load();
+            RSVPController controller = loader.getController();
+            controller.setEvent(this.event);
+            Stage stage = new Stage();
+            stage.setTitle("Buy ticket");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(ticketButton.getScene().getWindow());
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.err.println("Error loading RSVP window: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -81,7 +109,7 @@ public class EventCardController {
         } else {
             FavouriteController.createFavourite(this.event.getId());
         }
-        //updateFavouriteIcon();
+        updateFavouriteIcon();
     }
 
     @FXML

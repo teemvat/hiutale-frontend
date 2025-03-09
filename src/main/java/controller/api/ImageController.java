@@ -1,14 +1,63 @@
 package controller.api;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import javafx.scene.image.Image;
+import model.Event;
 import utils.SessionManager;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 
 public class ImageController {
     private static final String BASE_URL = "http://37.27.9.255:8080/files";
+
+    private static String sendHttpRequest(String method, String endpoint, String requestBody) {
+        try {
+            URL url = new URL(BASE_URL + endpoint);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            if (SessionManager.getInstance().isLoggedIn()) {
+                String token = SessionManager.getInstance().getUser().getToken();
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+                System.out.println("User is logged in, token set");
+            } else {
+                System.out.println("User is not logged in");
+            }
+
+            if (!requestBody.isEmpty()) {
+                try (OutputStream os = conn.getOutputStream()) {
+                    os.write(requestBody.getBytes());
+                    System.out.println("Request body is not empty");
+                }
+            }
+
+            int responseCode = conn.getResponseCode();
+            InputStream is = (responseCode < 400) ? conn.getInputStream() : conn.getErrorStream();
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return "";
+        }
+    }
 
     public static String uploadImage(long eventId, File file) {
         if (file == null) {
@@ -97,57 +146,33 @@ public class ImageController {
         }
     }
 
+    public static String getImageURL(String eventId) {
+        String response = sendHttpRequest("GET", "/event/" + eventId, "");
 
-    public static File getImage(String eventId) {
-        HttpURLConnection conn = null;
-        InputStream inputStream = null;
-        File outputFile = null;
-        try {
-            // Set up the connection to the server using eventId in URL
-            URL url = new URL(BASE_URL + "/one/" + eventId);  // Use eventId in URL
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+        JsonArray jsonArray = JsonParser.parseString(response).getAsJsonArray();
 
-            // Add Authorization header if needed
-            if (SessionManager.getInstance().isLoggedIn()) {
-                String token = SessionManager.getInstance().getUser().getToken();
-                conn.setRequestProperty("Authorization", "Bearer " + token);
-            }
+        return jsonArray.get(0).getAsJsonObject().get("filename").getAsString();
+    }
 
-            int status = conn.getResponseCode();
-            if (status == HttpURLConnection.HTTP_OK) {
-                // Create a file to save the downloaded image
-                String tempDir = System.getProperty("java.io.tmpdir");
-                outputFile = new File(tempDir, eventId + ".jpg");  // Save the file with eventId as the name
 
-                // Read the image data and save it to the file
-                inputStream = conn.getInputStream();
-                try (FileOutputStream outputStream = new FileOutputStream(outputFile)) {
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
-                return outputFile; // Return the file if successful
-            } else {
-                System.out.println("Failed to retrieve image. HTTP Status: " + status);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    public static File getImage(Event event) {
+        if (event == null || event.getImage() == null || event.getImage().isEmpty()) {
+            System.out.println("Invalid event or image filename");
+            return null;
         }
-        return null;
+
+        String fileUrl = "http://37.27.9.255:8080/resources/" + event.getImage();
+        String saveAs = "downloaded_" + event.getImage();  // Save it with a unique filename
+
+        try (InputStream in = new URL(fileUrl).openStream()) {
+            Path destination = Paths.get(saveAs);
+            Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("File downloaded successfully: " + destination.toAbsolutePath());
+            return destination.toFile();
+        } catch (IOException e) {
+            System.err.println("Error downloading file: " + e.getMessage());
+            return null;
+        }
     }
 
     public static String deleteImage(String imageId) {

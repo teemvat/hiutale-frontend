@@ -63,16 +63,13 @@ class ImageControllerTest {
     void getImage() {
         try {
             // Download an image
-            File imageFile = ImageController.getImage("1");
+            String imageFile = ImageController.getImageURL("45");
 
             // Check that the file is not null
             assertNotNull(imageFile);
 
-            // Check that the file exists
-            assertTrue(imageFile.exists());
-
             // Check that the file is not empty
-            assertTrue(imageFile.length() > 0);
+            assertFalse(imageFile.isEmpty());
         } catch (Exception e) {
             fail("Exception thrown: " + e.getMessage());
         }

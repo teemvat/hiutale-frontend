@@ -325,6 +325,7 @@ public class HomeController {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(ownerButton.getScene().getWindow());
+            stage.setOnHiding(event -> updateEventList());
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -346,5 +347,11 @@ public class HomeController {
 
     private void clearCalendar() {
         Arrays.stream(dayBoxes).forEach(vbox -> vbox.getChildren().clear());
+    }
+
+    private void updateEventList(){
+        cachedEvents = EventController.getAllEvents();
+        updateListView(cachedEvents);
+        updateCalendarView(cachedEvents);
     }
 }

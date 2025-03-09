@@ -25,7 +25,7 @@ public class Event {
     private double price;
     private int attendanceCount;
     private int favouriteCount;
-    private File image;
+    private String image;
 
     // for new event and getting events from database
     public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String[] eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
@@ -171,11 +171,11 @@ public class Event {
         this.favouriteCount = favouriteCount;
     }
 
-    public void setImage(File image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
-    public File getImage() {
+    public String getImage() {
         return image;
     }
 

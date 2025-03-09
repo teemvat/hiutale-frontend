@@ -1,5 +1,6 @@
 package controller.ui;
 
+import controller.api.ImageController;
 import controller.api.LocationController;
 import controller.api.UserController;
 import javafx.event.ActionEvent;
@@ -15,14 +16,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class EventPageController {
 
     @FXML private Label eventNameLabel, organizerLabel, dateLabel, startTimeLabel, endTimeLabel, locationLabel, priceLabel, descriptionLabel;
-    @FXML private ImageView eventImage;
+    @FXML private ImageView eventImage, eventImageView;
     @FXML private Button buyTicketButton;
     private Event event;
+
+    private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
 
     @FXML
     private void handleBuyTicketAction(ActionEvent event) {
@@ -55,7 +60,16 @@ public class EventPageController {
         descriptionLabel.setText(event.getDescription());
 
         if (event.getImage() != null) {
-            eventImage.setImage(new Image(event.getImage().toURI().toString())); // TODO
+            try {
+                File image = ImageController.getImage(event);
+                eventImage.setImage(new Image(image.toURI().toString()));
+                eventImageView.setImage(new Image(image.toURI().toString()));
+            } catch (Exception ex) {
+                System.err.println("Failed to load event image: " + ex.getMessage());
+                eventImage.setImage(placeholderImage);
+            }
+        } else {
+            eventImage.setImage(placeholderImage);
         }
     }
 

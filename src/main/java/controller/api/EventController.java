@@ -96,7 +96,13 @@ public class EventController {
         events.addAll(allEvents);
         for (Event event : events) {
             event.reformatDateForFE();
-            event.setImage(ImageController.getImage(event.getId()));
+            String imageUrl = ImageController.getImageURL(event.getId());
+            if (imageUrl != null) {
+                System.out.println("Image found for event ID: " + event.getId());
+                event.setImage(imageUrl);
+            } else {
+                System.out.println("No image found for event ID: " + event.getId());
+            }
         }
         return allEvents;
     }
@@ -163,7 +169,7 @@ public class EventController {
     public static Event getEvent(String eventId) {
         for (Event event : events) {
             if (event.getId().equals(eventId)) {
-                event.setImage(ImageController.getImage(eventId));
+                event.setImage(ImageController.getImageURL(event.getId()));
                 return event;
             }
         }
