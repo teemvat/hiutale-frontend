@@ -60,7 +60,7 @@ public class FavouriteController {
 
     public static boolean createFavourite(String eventId) {
         String requestBody = '{' +
-                "\"id\": \"" + eventId + "\"," +
+                "\"id\": \"" + eventId + "\"" +
                 '}';
         return sendHttpRequest("POST", "/favourites/create", requestBody).contains("success");
     }

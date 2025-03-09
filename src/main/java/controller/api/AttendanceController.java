@@ -60,7 +60,7 @@ public class AttendanceController {
 
     public static void createAttendance(String eventId) {
         String requestBody = '{' +
-                "\"id\": \"" + eventId + "\"," +
+                "\"id\": \"" + eventId + "\"" +
                 '}';
         sendHttpRequest("POST", "/attendances/create", requestBody);
     }

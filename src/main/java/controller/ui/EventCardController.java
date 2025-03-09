@@ -85,9 +85,9 @@ public class EventCardController {
     }
 
     private void updateFavouriteIcon() {
-        // TODO lisää nämä takaisin sitten kun getUserFavourites() on saatu kuntoon
         boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
         favoriteImage.setImage(loadImage(isFavourite ? "/pictures/icons/star_filled.png" : "/pictures/icons/star.png"));
+        updateFavouriteIcon();
     }
 
     @FXML
