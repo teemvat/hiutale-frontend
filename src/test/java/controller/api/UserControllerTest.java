@@ -15,7 +15,7 @@ class UserControllerTest {
     @Test
     @Order(1)
     void register() {
-        UserController.register("testuser" + rnum + "@example.com", "password", "testuser" + rnum);
+        UserController.register("testuser" + rnum, "password", "testuser" + rnum + "@example.com");
         User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
     }
@@ -31,16 +31,16 @@ class UserControllerTest {
     @Order(3)
     void login() {
         UserController.login("testuser" + rnum + "@example.com", "password");
-        User user = SessionManager.getInstance().getUser();
-        assertNotNull(user);
+        //User user = SessionManager.getInstance().getUser();
+        assertTrue(SessionManager.getInstance().isLoggedIn());
     }
 
     @Test
     @Order(4)
     void getUser() {
-        User user = UserController.getUser(1);
+        User user = UserController.getUser(SessionManager.getInstance().getUser().getId());
         assertNotNull(user);
-        assertEquals("Testing", user.getUsername());
+        assertEquals("testuser" + rnum, user.getUsername());
     }
 
     @Test

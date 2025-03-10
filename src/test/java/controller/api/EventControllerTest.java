@@ -1,17 +1,22 @@
 package controller.api;
 
+import model.Category;
 import model.Event;
+import model.Location;
 import org.junit.jupiter.api.*;
 import utils.SessionManager;
 import model.User;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EventControllerTest {
+    static List<Location> locations;
+    static List<Category> categories;
 
     @BeforeAll
     static void setUp() {
@@ -19,19 +24,22 @@ class EventControllerTest {
         UserController.login("testuser@example.com", "password");
         User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
+
+        locations = LocationController.getAllLocations();
+        categories = CategoryController.getAllCategories();
     }
 
     @Test
     @Order(1)
     void createEvent() {
-        String[] categories = {"1", "2"};
+        //String[] eventCategories = new String[Integer.parseInt(categories.get(0).getId())];
         File file = new File("src/test/resources/test.png");
         Event e = EventController.createEvent(
                 "Testi",
                 "Tämä on testi",
-                "1",
+                locations.get(0).getId(),
                 "200",
-                categories,
+                new String[]{categories.get(0).getId()},
                 "2025-02-26",
                 "2025-02-26",
                 "17:00",
@@ -70,7 +78,7 @@ class EventControllerTest {
                 null,
                 null,
                 null,
-                "1",
+                locations.get(0).getId(),
                 null,
                 null,
                 null
@@ -127,8 +135,8 @@ class EventControllerTest {
     @Test
     @Order(6)
     void getEvent() {
-        EventController.getAllEvents();
-        Event e = EventController.getEvent("1");
+        List<Event> events = EventController.getAllEvents();
+        Event e = EventController.getEvent(events.get(0).getId());
         assertNotNull(e);
     }
 

@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import utils.SessionManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 class AttendanceControllerTest {
+    static List<Event> events;
 
     @BeforeAll
     static void setUp() {
@@ -21,12 +23,14 @@ class AttendanceControllerTest {
         UserController.login("testuser@example.com", "password");
         User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
+
+        events = new ArrayList<>(EventController.getAllEvents());
     }
 
     @Test
     @Order(1)
     void createAttendance() {
-        assertDoesNotThrow(() -> AttendanceController.createAttendance("1"));
+        assertDoesNotThrow(() -> AttendanceController.createAttendance(events.get(0).getId()));
 
     }
 
@@ -41,7 +45,7 @@ class AttendanceControllerTest {
     @Test
     @Order(3)
     void deleteAttendance() {
-        assertDoesNotThrow(() -> AttendanceController.deleteAttendance("1"));
+        assertDoesNotThrow(() -> AttendanceController.deleteAttendance(events.get(0).getId()));
     }
 
 }
