@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    // comment for testing webhook
 
     @Override
     public void start(Stage stage) throws Exception {
