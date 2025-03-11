@@ -148,6 +148,7 @@
                 <version>0.8.12</version>
                 <configuration>
                     <excludes>
+                        <exclude>**/Main.java</exclude>
                         <exclude>**/controller/ui/*</exclude>
                     </excludes>
                 </configuration>

@@ -1,8 +1,5 @@
 package model;
 
-import javafx.scene.image.Image;
-
-import java.io.File;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;

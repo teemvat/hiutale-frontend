@@ -36,3 +36,12 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Image files in root folder ###
+/*.jpg
+/*.jpeg
+/*.png
+/*.gif
+/*.bmp
+/*.tiff
+/*.webp
