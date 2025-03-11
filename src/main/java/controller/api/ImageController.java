@@ -2,7 +2,6 @@ package controller.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import javafx.scene.image.Image;
 import model.Event;
 import utils.SessionManager;
 
@@ -13,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 
 public class ImageController {
     private static final String BASE_URL = "http://37.27.9.255:8080/files";

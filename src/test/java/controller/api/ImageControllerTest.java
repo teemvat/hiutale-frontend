@@ -1,20 +1,12 @@
 package controller.api;
 
-import model.Category;
 import model.Event;
-import model.Location;
 import model.User;
 import org.junit.jupiter.api.*;
 import utils.SessionManager;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.List;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +23,6 @@ class ImageControllerTest {
         assertNotNull(user);
 
         events = EventController.getAllEvents();
-
     }
 
     @Test
