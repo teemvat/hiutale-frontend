@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    //test
 
     @Override
     public void start(Stage stage) throws Exception {
