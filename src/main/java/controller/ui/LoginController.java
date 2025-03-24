@@ -4,6 +4,7 @@ import app.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -31,8 +32,8 @@ public class LoginController {
     static {
         LANGUAGE_MAP.put("English", new Locale("en"));
         LANGUAGE_MAP.put("Suomi", new Locale("fi", "FI"));
-        //LANGUAGE_MAP.put("Deutsch", new Locale("de", "DE"));
-        //LANGUAGE_MAP.put("Français", new Locale("fr", "FR"));
+        LANGUAGE_MAP.put("日本語", new Locale("ja", "JP")); // Japanese
+        LANGUAGE_MAP.put("فارسی", new Locale("fa", "IR")); // Farsi (Persian)
     }
 
     @FXML
@@ -68,6 +69,14 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
             loader.setResources(Main.bundle);
             Parent root = loader.load();
+
+            // Detect RTL language
+            if (selectedLanguage.equals("فارسی")) {
+                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+            } else {
+                root.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+            }
+
             Scene scene = new Scene(root);
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
