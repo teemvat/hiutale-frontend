@@ -113,7 +113,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Main</mainClass>
+                            <mainClass>app.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -136,7 +136,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <mainClass>Main</mainClass>
+                    <mainClass>app.Main</mainClass>
                     <options>
                         <option>--add-modules=javafx.controls,javafx.fxml</option>
                     </options>
@@ -148,7 +148,7 @@
                 <version>0.8.12</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/Main.java</exclude>
+                        <exclude>**/app.Main.java</exclude>
                         <exclude>**/controller/ui/*</exclude>
                     </excludes>
                 </configuration>
