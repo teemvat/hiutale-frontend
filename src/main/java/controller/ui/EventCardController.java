@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.FavouriteController;
 import controller.api.ImageController;
 import javafx.event.ActionEvent;
@@ -13,7 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
@@ -29,7 +29,6 @@ public class EventCardController {
     @FXML private Button ticketButton, shareButton, favoriteButton;
 
     private Event event;
-
     private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
 
     public void setEventData(Event event) {
@@ -68,12 +67,12 @@ public class EventCardController {
     @FXML
     private void handleTicketAction(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.bundle);
             Parent root = loader.load();
             RSVPController controller = loader.getController();
             controller.setEvent(this.event);
             Stage stage = new Stage();
-            stage.setTitle("Buy ticket");
+            stage.setTitle(Main.bundle.getString("ticket.title"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(ticketButton.getScene().getWindow());
@@ -114,7 +113,7 @@ public class EventCardController {
     @FXML
     private void handleCardClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"), Main.bundle);
             Parent root = loader.load();
             EventPageController controller = loader.getController();
             controller.setEventDetails(event);
