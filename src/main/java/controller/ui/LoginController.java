@@ -104,18 +104,18 @@ public class LoginController {
     @FXML
     private void handleLoginAsGuestAction(ActionEvent event) {
         System.out.println("Login as guest");
-        switchScene("/fxml/home.fxml", loginButton);
+        switchScene("/fxml/home.fxml", loginButton, "home.title");
     }
 
     @FXML
     private void handleSignupAction(ActionEvent event) {
-        switchScene("/fxml/signup.fxml", signupLink);
+        switchScene("/fxml/signup.fxml", signupLink, "signup.title");
     }
 
     private boolean validateLogin() {
         boolean isValid = true;
-        isValid &= validateField(emailField, emailError, Main.bundle.getString("login.email.error"));
-        isValid &= validateField(passwordField, passwordError, Main.bundle.getString("login.password.error"));
+        isValid &= validateField(emailField, emailError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(passwordField, passwordError, Main.bundle.getString("empty.field"));
         return isValid;
     }
 
@@ -135,7 +135,7 @@ public class LoginController {
 
         if (user != null) {
             System.out.println("Login successful");
-            switchScene("/fxml/home.fxml", loginButton);
+            switchScene("/fxml/home.fxml", loginButton, "home.title");
         } else {
             System.out.println("Login failed");
             emailError.setText(Main.bundle.getString("login.invalid"));
@@ -144,12 +144,13 @@ public class LoginController {
         loginButton.setDisable(false);
     }
 
-    private void switchScene(String fxmlPath, Control control) {
+    private void switchScene(String fxmlPath, Control control, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath), Main.bundle);
-            Parent page = loader.load();
-            Scene scene = new Scene(page);
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
             Stage stage = (Stage) control.getScene().getWindow();
+            stage.setTitle(Main.bundle.getString(title));
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
