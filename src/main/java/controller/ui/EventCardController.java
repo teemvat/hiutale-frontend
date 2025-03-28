@@ -20,6 +20,7 @@ import model.Event;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Objects;
 
 public class EventCardController {
@@ -65,7 +66,7 @@ public class EventCardController {
     }
 
     @FXML
-    private void handleTicketAction(ActionEvent event) {
+    private void handleTicketAction() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.bundle);
             Parent root = loader.load();
@@ -90,7 +91,7 @@ public class EventCardController {
 
     @FXML
     private void handleShareAction() {
-        String eventInfo = String.format("Event Title: %s\nDate: %s\nLocation: %s\nDescription: %s",
+        String eventInfo = MessageFormat.format(Main.bundle.getString("card.info"),
                 eventTitle.getText(), eventDate.getText(), eventLocation.getText(), event.getDescription());
 
         Clipboard clipboard = Clipboard.getSystemClipboard();
