@@ -5,6 +5,7 @@ import controller.api.CategoryController;
 import controller.api.EventController;
 import controller.api.LocationController;
 import controller.api.UserController;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ import model.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
@@ -54,8 +56,8 @@ public class HomeController {
     }
 
     private static final Map<String, SortType> SORT_MAP = Map.of(
-            "Aakkosjärjestys", SortType.ALPHABETICAL,
-            "Päivämäärän mukaan", SortType.DATE
+            Main.bundle.getString("sort.alphabetical"), SortType.ALPHABETICAL,
+            Main.bundle.getString("sort.date"), SortType.DATE
     );
 
     @FXML
@@ -77,6 +79,15 @@ public class HomeController {
         populateOrganizerComboBox();
 
         setComboBoxConverters();
+
+        // Set sorting options
+        sortChoiceBox.setItems(FXCollections.observableArrayList(
+                Main.bundle.getString("sort.alphabetical"),
+                Main.bundle.getString("sort.date")
+        ));
+
+        // Set default sorting option
+        sortChoiceBox.setValue(Main.bundle.getString("sort.alphabetical"));
     }
 
     private void setComboBoxConverters() {

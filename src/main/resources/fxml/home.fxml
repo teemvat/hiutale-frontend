@@ -110,12 +110,6 @@
          <ChoiceBox fx:id="sortChoiceBox" layoutY="15.0" onAction="#handleSortAction" prefHeight="10.0"
                     prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
                     AnchorPane.topAnchor="0.0">
-            <items>
-               <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Aakkosjärjestys"/>
-                  <String fx:value="Päivämäärän mukaan"/>
-               </FXCollections>
-            </items>
          </ChoiceBox>
       </AnchorPane>
 
