@@ -47,7 +47,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="582.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.NewEventController">
+<VBox alignment="CENTER" prefHeight="582.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.NewEventController" styleClass="new-event" stylesheets="@../styles.css">
     <children>
         <ImageView fx:id="eventImageView" fitHeight="213.0" fitWidth="516.0" pickOnBounds="true">
             <image>

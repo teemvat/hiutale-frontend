@@ -57,11 +57,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.HomeController">
+<SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.HomeController" styleClass="home" stylesheets="@../styles.css">
    <items>
       <VBox prefHeight="373.0" prefWidth="251.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="316.0" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="49.0" fx:id="titleBox" prefWidth="316.0" spacing="10.0">
                <children>
                   <ImageView fitHeight="31.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -79,7 +79,7 @@
                </padding>
             </HBox>
             <Separator prefWidth="200.0" />
-            <ScrollPane fitToWidth="true" prefHeight="300.0" prefWidth="188.0">
+            <ScrollPane fitToWidth="true" prefHeight="300.0" prefWidth="188.0" fx:id="searchBox">
                <content>
                   <VBox prefHeight="240.0" prefWidth="173.0" spacing="10.0">
                      <children>
@@ -113,7 +113,7 @@
                </content>
             </ScrollPane>
             <Separator prefWidth="200.0" />
-            <AnchorPane minHeight="-Infinity" prefHeight="46.0" prefWidth="188.0">
+            <AnchorPane minHeight="-Infinity" prefHeight="46.0" prefWidth="188.0" fx:id="profileBox">
                <children>
                   <Button fx:id="profileButton" mnemonicParsing="false" onAction="#handleProfileAction" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <graphic>

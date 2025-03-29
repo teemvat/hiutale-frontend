@@ -3,6 +3,7 @@ package controller.api;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import javafx.scene.image.Image;
+import javafx.util.Pair;
 import model.Event;
 import utils.SessionManager;
 
@@ -13,10 +14,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ImageController {
     private static final String BASE_URL = "http://37.27.9.255:8080/files";
+    private static List<Pair<String, File>> imageCache = new ArrayList<>();
 
     private static String sendHttpRequest(String method, String endpoint, String requestBody) {
         try {
@@ -30,7 +34,7 @@ public class ImageController {
             if (SessionManager.getInstance().isLoggedIn()) {
                 String token = SessionManager.getInstance().getUser().getToken();
                 conn.setRequestProperty("Authorization", "Bearer " + token);
-                System.out.println("User is logged in, token set");
+                //System.out.println("User is logged in, token set");
             } else {
                 System.out.println("User is not logged in");
             }
@@ -176,11 +180,20 @@ public class ImageController {
         String fileUrl = "http://37.27.9.255:8080/resources/" + event.getImage();
         String saveAs = "downloaded_" + event.getImage();
 
+        for (Pair<String, File> pair : imageCache) {
+            if (pair.getKey().equals(event.getImage())) {
+                System.out.println("Image already downloaded: " + pair.getValue().getAbsolutePath());
+                return pair.getValue();
+            }
+        }
+
         try (InputStream in = new URL(fileUrl).openStream()) {
             Path destination = Paths.get(saveAs);
             Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("File downloaded successfully: " + destination.toAbsolutePath());
-            return destination.toFile();
+            File file = destination.toFile();
+            imageCache.add(new Pair<>(event.getImage(), file));
+            return file;
         } catch (IOException e) {
             System.err.println("Error downloading file: " + e.getMessage());
             return null;
