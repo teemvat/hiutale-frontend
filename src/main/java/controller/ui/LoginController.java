@@ -138,7 +138,7 @@ public class LoginController {
             switchScene("/fxml/home.fxml", loginButton, "home.title");
         } else {
             System.out.println("Login failed");
-            emailError.setText(Main.bundle.getString("login.invalid"));
+            emailError.setText(Main.bundle.getString("login.error"));
             passwordError.setText(Main.bundle.getString("login.invalid"));
         }
         loginButton.setDisable(false);

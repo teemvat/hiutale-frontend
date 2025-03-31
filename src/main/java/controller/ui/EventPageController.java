@@ -38,7 +38,7 @@ public class EventPageController {
             RSVPController controller = loader.getController();
             controller.setEvent(this.event);
             Stage stage = new Stage();
-            stage.setTitle(Main.bundle.getString("ticket.title"));
+            stage.setTitle(Main.bundle.getString("rsvp.title"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(buyTicketButton.getScene().getWindow());

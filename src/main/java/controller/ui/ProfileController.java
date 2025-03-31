@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.AttendanceController;
 import controller.api.EventController;
 import controller.api.FavouriteController;
@@ -29,9 +30,9 @@ public class ProfileController {
 
     @FXML
     private void initialize() {
-        loadEventCards(favoriteEventsVBox, FavouriteController.getUserFavourites(), "No favourite events found");
-        loadEventCards(upcomingEventsVBox, AttendanceController.getUserAttendances(), "No upcoming events found");
-        loadEventCards(organizedEventsVBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), "No organized events found");
+        loadEventCards(favoriteEventsVBox, FavouriteController.getUserFavourites(), Main.bundle.getString("no.favourite.events"));
+        loadEventCards(upcomingEventsVBox, AttendanceController.getUserAttendances(), Main.bundle.getString("no.upcoming.events"));
+        loadEventCards(organizedEventsVBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), Main.bundle.getString("no.organized.events"));
         setUserInformation();
     }
 
