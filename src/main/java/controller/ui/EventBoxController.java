@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.LocationController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +32,7 @@ public class EventBoxController {
     @FXML
     private void handleBoxClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"), Main.bundle);
             Parent root = loader.load();
             EventPageController controller = loader.getController();
             controller.setEventDetails(event);
