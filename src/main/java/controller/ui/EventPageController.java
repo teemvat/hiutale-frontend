@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.ImageController;
 import controller.api.LocationController;
 import controller.api.UserController;
@@ -30,14 +31,14 @@ public class EventPageController {
     private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
 
     @FXML
-    private void handleBuyTicketAction(ActionEvent event) {
+    private void handleBuyTicketAction() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
             Parent root = loader.load();
             RSVPController controller = loader.getController();
             controller.setEvent(this.event);
             Stage stage = new Stage();
-            stage.setTitle("Buy ticket");
+            stage.setTitle(Main.bundle.getString("ticket.title"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(buyTicketButton.getScene().getWindow());
