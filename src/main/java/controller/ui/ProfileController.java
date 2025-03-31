@@ -51,11 +51,11 @@ public class ProfileController {
 
         for (Event event : events) {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"), Main.bundle);
+                Parent root = loader.load();
+                EventCardController controller = loader.getController();
                 controller.setEventData(event);
-                container.getChildren().add(eventCard);
+                container.getChildren().add(root);
             } catch (IOException e) {
                 System.err.println("Failed to load event card for: " + event.getTitle());
                 e.printStackTrace();
