@@ -139,7 +139,7 @@ public class LoginController {
         } else {
             System.out.println("Login failed");
             emailError.setText(Main.bundle.getString("login.error"));
-            passwordError.setText(Main.bundle.getString("login.invalid"));
+            passwordError.setText(Main.bundle.getString("login.error"));
         }
         loginButton.setDisable(false);
     }
