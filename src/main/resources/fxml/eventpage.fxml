@@ -38,7 +38,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventPageController">
+<HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../styles.css" fx:controller="controller.ui.EventPageController">
    <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="199.0">
       <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="500.0" spacing="10.0">
          <padding>

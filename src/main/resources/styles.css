@@ -90,3 +90,150 @@
     -fx-border-color: #f1f3f6;
     -fx-border-width: 1;
 }
+
+#searchButton {
+    -fx-background-color: #8f9aea;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #f1f3f6;
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+}
+
+#searchButton:hover {
+    -fx-background-color: #6f7aca;
+}
+
+#searchButton:pressed {
+    -fx-background-color: #4f5a9a;
+}
+
+#searchField {
+    -fx-background-color: #f0f1f4;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #f1f3f6;
+    -fx-border-width: 1;
+}
+
+#searchField:hover {
+    -fx-background-color: #f0f1f4;
+}
+
+#searchField:pressed {
+    -fx-background-color: #f0f1f4;
+}
+
+#appNameLabel {
+    -fx-font-size: 32;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8f9aea;
+}
+
+#eventBox {
+    -fx-background-color: #f0f1f4;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #f1f3f6;
+    -fx-border-width: 1;
+}
+
+#eventBox:hover {
+    -fx-background-color: #e0e1e4;
+}
+
+#eventBox:pressed {
+    -fx-background-color: #d0d1d4;
+}
+
+#eventBoxTitle {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #131743;
+}
+
+#eventBoxDescription {
+    -fx-font-size: 16;
+    -fx-text-fill: #131743;
+}
+
+#eventBoxDate {
+    -fx-font-size: 16;
+    -fx-text-fill: #131743;
+}
+
+#eventBoxLocation {
+    -fx-font-size: 16;
+    -fx-text-fill: #131743;
+}
+
+.tab-pane {
+    -fx-background-color: #f0f1f4;
+}
+
+.tab {
+    -fx-background-color: #8f9aea;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #f1f3f6;
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+}
+
+.tab:hover {
+    -fx-background-color: #6f7aca;
+}
+
+.tab:pressed {
+    -fx-background-color: #4f5a9a;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-radius: 10;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: #6f7aca;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-close-button {
+    -fx-background-color: #6f7aca;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-close-button:hover {
+    -fx-background-color: #4f5a9a;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-close-button:pressed {
+    -fx-background-color: #4f5a9a;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+    -fx-background-color: #6f7aca;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:hover .tab-label {
+    -fx-text-fill: white;
+}
+
+#languageSelector {
+    -fx-background-color: #f0f1f4;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #f1f3f6;
+    -fx-border-width: 1;
+}

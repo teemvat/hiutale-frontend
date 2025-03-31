@@ -1,5 +1,6 @@
 package controller.api;
 
+import app.Main;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Category;
@@ -58,7 +59,7 @@ public class CategoryController {
     }
 
     public static List<Category> getAllCategories() {
-        String response = sendHttpRequest("GET", "/categories/all", "");
+        String response = sendHttpRequest("GET", "/categories/" + Main.currentLocale.getLanguage() + "/all", "");
         return gson.fromJson(response, new TypeToken<ArrayList<Category>>() {}.getType());
     }
 

@@ -37,7 +37,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="582.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.12"
+<VBox alignment="CENTER" prefHeight="582.0" prefWidth="640.0" spacing="10.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/17.0.12"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.NewEventController">
     <padding>
         <Insets bottom="50.0" left="50.0" right="50.0" top="20.0"/>
