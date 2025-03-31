@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.AttendanceController;
 import controller.api.EventController;
 import controller.api.FavouriteController;
@@ -29,9 +30,9 @@ public class ProfileController {
 
     @FXML
     private void initialize() {
-        loadEventCards(favoriteEventsVBox, FavouriteController.getUserFavourites(), "No favourite events found");
-        loadEventCards(upcomingEventsVBox, AttendanceController.getUserAttendances(), "No upcoming events found");
-        loadEventCards(organizedEventsVBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), "No organized events found");
+        loadEventCards(favoriteEventsVBox, FavouriteController.getUserFavourites(), Main.bundle.getString("no.favourite.events"));
+        loadEventCards(upcomingEventsVBox, AttendanceController.getUserAttendances(), Main.bundle.getString("no.upcoming.events"));
+        loadEventCards(organizedEventsVBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), Main.bundle.getString("no.organized.events"));
         setUserInformation();
     }
 
@@ -50,11 +51,11 @@ public class ProfileController {
 
         for (Event event : events) {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"));
-                Parent eventCard = fxmlLoader.load();
-                EventCardController controller = fxmlLoader.getController();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventcard.fxml"), Main.bundle);
+                Parent root = loader.load();
+                EventCardController controller = loader.getController();
                 controller.setEventData(event);
-                container.getChildren().add(eventCard);
+                container.getChildren().add(root);
             } catch (IOException e) {
                 System.err.println("Failed to load event card for: " + event.getTitle());
                 e.printStackTrace();

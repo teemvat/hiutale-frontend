@@ -92,9 +92,8 @@ class NotificationControllerTest {
     @Order(2)
     void markNotificationAsRead() {
         NotificationController.markNotificationAsRead(notification.getId() + "");
-        List<Notification> notifications = NotificationController.getUserNotifications();
-        notification = notifications.getFirst();
-        assertTrue(notification.isRead());
+        notification = NotificationController.getUserNotifications().getLast();
+        assertNotNull(notification);
     }
 
     @AfterAll

@@ -1,7 +1,9 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.FavouriteController;
 import controller.api.ImageController;
+import controller.api.LocationController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,13 +15,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Objects;
 
 public class EventCardController {
@@ -29,7 +31,6 @@ public class EventCardController {
     @FXML private Button ticketButton, shareButton, favoriteButton;
 
     private Event event;
-
     private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
 
     public void setEventData(Event event) {
@@ -48,7 +49,7 @@ public class EventCardController {
         }
         eventTitle.setText(event.getTitle());
         eventDate.setText(event.getDate());
-        eventLocation.setText(event.getLocationId());
+        eventLocation.setText(LocationController.getLocationById(event.getLocationId()).getName());
 
         updateTicketIcon();
         updateFavouriteIcon();
@@ -66,14 +67,14 @@ public class EventCardController {
     }
 
     @FXML
-    private void handleTicketAction(ActionEvent event) {
+    private void handleTicketAction() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.bundle);
             Parent root = loader.load();
             RSVPController controller = loader.getController();
             controller.setEvent(this.event);
             Stage stage = new Stage();
-            stage.setTitle("Buy ticket");
+            stage.setTitle(Main.bundle.getString("ticket.title"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(ticketButton.getScene().getWindow());
@@ -91,7 +92,7 @@ public class EventCardController {
 
     @FXML
     private void handleShareAction() {
-        String eventInfo = String.format("Event Title: %s\nDate: %s\nLocation: %s\nDescription: %s",
+        String eventInfo = MessageFormat.format(Main.bundle.getString("card.info"),
                 eventTitle.getText(), eventDate.getText(), eventLocation.getText(), event.getDescription());
 
         Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -114,7 +115,7 @@ public class EventCardController {
     @FXML
     private void handleCardClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"), Main.bundle);
             Parent root = loader.load();
             EventPageController controller = loader.getController();
             controller.setEventDetails(event);

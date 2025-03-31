@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.ImageController;
 import controller.api.LocationController;
 import controller.api.UserController;
@@ -23,21 +24,21 @@ import java.util.Objects;
 public class EventPageController {
 
     @FXML private Label eventNameLabel, organizerLabel, dateLabel, startTimeLabel, endTimeLabel, locationLabel, priceLabel, descriptionLabel;
-    @FXML private ImageView eventImage, eventImageView;
+    @FXML private ImageView eventImage;
     @FXML private Button buyTicketButton;
     private Event event;
 
     private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
 
     @FXML
-    private void handleBuyTicketAction(ActionEvent event) {
+    private void handleBuyTicketAction() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.bundle);
             Parent root = loader.load();
             RSVPController controller = loader.getController();
             controller.setEvent(this.event);
             Stage stage = new Stage();
-            stage.setTitle("Buy ticket");
+            stage.setTitle(Main.bundle.getString("rsvp.title"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(buyTicketButton.getScene().getWindow());
@@ -63,7 +64,6 @@ public class EventPageController {
             try {
                 File image = ImageController.getImage(event);
                 eventImage.setImage(new Image(image.toURI().toString()));
-                eventImageView.setImage(new Image(image.toURI().toString()));
             } catch (Exception ex) {
                 System.err.println("Failed to load event image: " + ex.getMessage());
                 eventImage.setImage(placeholderImage);

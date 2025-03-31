@@ -1,9 +1,11 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.CategoryController;
 import controller.api.EventController;
 import controller.api.LocationController;
 import controller.api.UserController;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,8 @@ import model.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.chrono.Chronology;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
@@ -53,8 +57,8 @@ public class HomeController {
     }
 
     private static final Map<String, SortType> SORT_MAP = Map.of(
-            "Aakkosjärjestys", SortType.ALPHABETICAL,
-            "Päivämäärän mukaan", SortType.DATE
+            Main.bundle.getString("sort.alphabetical"), SortType.ALPHABETICAL,
+            Main.bundle.getString("sort.date"), SortType.DATE
     );
 
     @FXML
@@ -76,6 +80,15 @@ public class HomeController {
         populateOrganizerComboBox();
 
         setComboBoxConverters();
+
+        // Set sorting options
+        sortChoiceBox.setItems(FXCollections.observableArrayList(
+                Main.bundle.getString("sort.alphabetical"),
+                Main.bundle.getString("sort.date")
+        ));
+
+        // Set default sorting option
+        sortChoiceBox.setValue(Main.bundle.getString("sort.alphabetical"));
     }
 
     private void setComboBoxConverters() {
@@ -125,7 +138,6 @@ public class HomeController {
         });
     }
 
-
     private void configurePriceFields() {
         // Add a TextFormatter to ensure only numbers can be typed in the price fields
         UnaryOperator<TextFormatter.Change> filter = change ->
@@ -146,9 +158,6 @@ public class HomeController {
 
     private void populateLocationComboBox() {
         List<Location> locations = LocationController.getAllLocations();
-//        List<String> locationNames = locations.stream()
-//                .map(Location::getName)
-//                .collect(Collectors.toList());
         locationComboBox.getItems().clear();
         locationComboBox.getItems().addAll(locations);
     }
@@ -158,10 +167,6 @@ public class HomeController {
         Set<String> organizerIds = allEvents.stream()
                 .map(Event::getOrganizerId)
                 .collect(Collectors.toSet());
-
-//        List<String> organizerNames = organizerIds.stream()
-//                .map(id -> UserController.getUser(Integer.parseInt(id)).getUsername())
-//                .collect(Collectors.toList());
 
         List<User> organizers = new ArrayList<>();
         for (String id : organizerIds) {
@@ -174,7 +179,6 @@ public class HomeController {
         // Clear previous data to avoid conflicts
         organizerComboBox.getItems().clear();
         organizerComboBox.getItems().addAll(organizers);
-
     }
 
     private LocalDate getStartOfWeek(LocalDate date) {
@@ -194,9 +198,7 @@ public class HomeController {
 
     private void loadEventsForWeek(LocalDate startOfWeek) {
         clearCalendar();
-        if (cachedEvents.isEmpty()) {
-            listViewPane.getChildren().add(new Label("No events found for this week"));
-        } else {
+        if (!cachedEvents.isEmpty()) {
             cachedEvents.forEach(event -> addEventToCalendar(event, startOfWeek));
         }
     }
@@ -221,7 +223,7 @@ public class HomeController {
     private void loadEventCards() {
         listViewPane.getChildren().clear();
         if (cachedEvents.isEmpty()) {
-            listViewPane.getChildren().add(new Label("No events found"));
+            listViewPane.getChildren().add(new Label(Main.bundle.getString("no.events")));
         } else {
             cachedEvents.forEach(event -> listViewPane.getChildren().add(loadFXML("/fxml/eventcard.fxml", event)));
         }
@@ -229,18 +231,18 @@ public class HomeController {
 
     private Parent loadFXML(String resource, Event event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
-            Parent node = fxmlLoader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.bundle);
+            Parent root = loader.load();
 
             if (resource.equals("/fxml/eventcard.fxml")) {
-                EventCardController controller = fxmlLoader.getController();
+                EventCardController controller = loader.getController();
                 controller.setEventData(event);
             } else if (resource.equals("/fxml/eventbox.fxml")) {
-                EventBoxController controller = fxmlLoader.getController();
+                EventBoxController controller = loader.getController();
                 controller.setEventData(event);
             }
 
-            return node;
+            return root;
         } catch (IOException e) {
             e.printStackTrace();
             return new Label("Error loading event");
@@ -248,7 +250,7 @@ public class HomeController {
     }
 
     @FXML
-    private void handleSearchAction(ActionEvent event) {
+    private void handleSearchAction() {
         Category selectedCategory = eventTypeComboBox.getSelectionModel().getSelectedItem();
         System.out.println("Selected category: " + selectedCategory);
         Location selectedLocation = locationComboBox.getSelectionModel().getSelectedItem();
@@ -272,11 +274,10 @@ public class HomeController {
         updateCalendarView(filteredEvents);
     }
 
-
     private void updateListView(List<Event> events) {
         listViewPane.getChildren().clear();
         if (events.isEmpty()) {
-            listViewPane.getChildren().add(new Label("No events found"));
+            listViewPane.getChildren().add(new Label(Main.bundle.getString("no.events")));
         } else {
             events.forEach(event -> listViewPane.getChildren().add(loadFXML("/fxml/eventcard.fxml", event)));
         }
@@ -284,9 +285,7 @@ public class HomeController {
 
     private void updateCalendarView(List<Event> events) {
         clearCalendar();
-        if (events.isEmpty()) {
-            listViewPane.getChildren().add(new Label("No events found for this week"));
-        } else {
+        if (!events.isEmpty()) {
             events.forEach(event -> addEventToCalendar(event, getStartOfWeek(datePicker.getValue() != null ? datePicker.getValue() : LocalDate.now())));
         }
     }
@@ -308,18 +307,19 @@ public class HomeController {
     }
 
     @FXML
-    private void handleProfileAction(ActionEvent event) {
-        openNewWindow("/fxml/profile.fxml", "User Profile", profileButton);
+    private void handleProfileAction() {
+        openNewWindow("/fxml/profile.fxml", Main.bundle.getString("profile.title"), profileButton);
     }
 
     @FXML
-    private void handleAddEventAction(ActionEvent event) {
-        openNewWindow("/fxml/newevent.fxml", "Add New Event", addEventButton);
+    private void handleAddEventAction() {
+        openNewWindow("/fxml/newevent.fxml", Main.bundle.getString("new.event.title"), addEventButton);
     }
 
     private void openNewWindow(String resource, String title, Button ownerButton) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(resource));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.bundle);
+            Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
@@ -341,7 +341,7 @@ public class HomeController {
     }
 
     @FXML
-    private void handleSortAction(ActionEvent event) {
+    private void handleSortAction() {
         Optional.ofNullable(SORT_MAP.get(sortChoiceBox.getValue())).ifPresent(this::sortEvents);
     }
 

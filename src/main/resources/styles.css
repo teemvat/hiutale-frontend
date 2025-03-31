@@ -1,10 +1,6 @@
-* {
-    -fx-font-family: "Roboto";
-    -fx-font-size: 14px;
-}
-
-.hyperlink {
-    -fx-text-fill: -fx-accent;
+/*Universal font that supports most languages*/
+.root {
+    -fx-font-family: "Noto Sans", "Arial", "Tahoma";
 }
 
 .event-card, .event-box {

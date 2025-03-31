@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,25 +28,27 @@ public class SignupController {
         String confirmPassword = confirmPasswordField.getText();
 
         if (username.isEmpty()) {
-            usernameError.setText("Username is required");
+            usernameError.setText(Main.bundle.getString("empty.field"));
         } else {
             usernameError.setText("");
         }
 
         if (email.isEmpty()) {
-            emailError.setText("Email is required");
+            emailError.setText(Main.bundle.getString("empty.field"));
         } else {
             emailError.setText("");
         }
 
         if (password.isEmpty()) {
-            passwordError.setText("Password is required");
+            passwordError.setText(Main.bundle.getString("empty.field"));
         } else {
             passwordError.setText("");
         }
 
-        if (!password.equals(confirmPassword)) {
-            confirmPasswordError.setText("Passwords do not match");
+        if (confirmPassword.isEmpty()) {
+            confirmPasswordError.setText(Main.bundle.getString("empty.field"));
+        } else if (!password.equals(confirmPassword)) {
+            confirmPasswordError.setText(Main.bundle.getString("password.match.error"));
         } else {
             confirmPasswordError.setText("");
         }
@@ -53,26 +56,30 @@ public class SignupController {
         if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && password.equals(confirmPassword)) {
             if (UserController.register(username, password, email) != null) {
                 try {
-                    Parent homePage = FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
-                    Scene homeScene = new Scene(homePage);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"), Main.bundle);
+                    Parent root = loader.load();
+                    Scene scene = new Scene(root);
                     Stage stage = (Stage) signupButton.getScene().getWindow();
-                    stage.setScene(homeScene);
+                    stage.setTitle(Main.bundle.getString("home.title"));
+                    stage.setScene(scene);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                signupError.setText("Signup failed");
+                signupError.setText(Main.bundle.getString("signup.error"));
             }
         }
     }
 
     @FXML
-    private void handleLoginAction(ActionEvent event) {
+    private void handleLoginAction() {
         try {
-            Parent loginPage = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
-            Scene loginScene = new Scene(loginPage);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"), Main.bundle);
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
             Stage stage = (Stage) loginLink.getScene().getWindow();
-            stage.setScene(loginScene);
+            stage.setTitle(Main.bundle.getString("login.title"));
+            stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
         }

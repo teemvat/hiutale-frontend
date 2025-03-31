@@ -11,6 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LocationControllerTest {
+    static List<Location> locations;
 
     @BeforeAll
     static void setUp() {
@@ -22,26 +23,14 @@ class LocationControllerTest {
 
     @Test
     void getAllLocations() {
-        List<Location> locations = LocationController.getAllLocations();
+        locations = LocationController.getAllLocations();
         assertNotNull(locations);
     }
 
     @Test
     void getLocationById() {
-        Location location = LocationController.getLocationById("1");
+        Location location = LocationController.getLocationById(locations.get(0).getId());
         assertNotNull(location);
     }
 
-    @Test
-    void createLocation() {
-        assertDoesNotThrow(() -> LocationController.createLocation("Test Location", "Test Description",  "Test City", "Test Postal Code"));
-    }
-
-    @Test
-    void deleteLocation() {
-        List<Location> locations = LocationController.getAllLocations();
-        assertNotNull(locations);
-        int lastLocationIndex = locations.size() - 1;
-        assertDoesNotThrow(() -> LocationController.deleteLocation(String.valueOf(lastLocationIndex)));
-    }
 }

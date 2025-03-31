@@ -69,17 +69,4 @@ public class LocationController {
         return gson.fromJson(result, Location.class);
     }
 
-    public static void createLocation(String name, String address, String city, String postalCode) {
-        String requestBody = '{' +
-                "\"name\": \"" + name + "\"," +
-                "\"address\": \"" + address + "\"," +
-                "\"city\": \"" + city + "\"," +
-                "\"postalCode\": \"" + postalCode + "\"" +
-                '}';
-        sendHttpRequest("POST", "/locations/create", requestBody);
-    }
-
-    public static void deleteLocation(String locationId) {
-        sendHttpRequest("DELETE", "/locations/delete/" + locationId, "");
-    }
 }

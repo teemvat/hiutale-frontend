@@ -1,124 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.ProfileController" styleClass="profile" stylesheets="@../styles.css">
-    <tabs>
-        <Tab text="Käyttäjätiedot">
-            <content>
-                <VBox spacing="10.0">
-                    <children>
-                        <Label text="Tarkastele omia tietojasi">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <GridPane prefHeight="60.0" prefWidth="416.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="151.5" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.5" minWidth="10.0" prefWidth="428.5" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label text="Käyttäjänimi:" />
-                                <Label fx:id="usernameLabel" text="username" GridPane.columnIndex="1" />
-                                <Label text="Sähköpostiosoite:" GridPane.rowIndex="1" />
-                                <Label fx:id="emailLabel" text="email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                            </children>
-                        </GridPane>
-                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogoutAction" prefHeight="25.0" prefWidth="150.0" text="Kirjaudu ulos" />
-                        <Button fx:id="removeUserButton" mnemonicParsing="false" onAction="#handleRemoveUserAction" prefHeight="25.0" prefWidth="150.0" text="Poista käyttäjätili" />
-                    </children>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </VBox>
-            </content>
-        </Tab>
-        <Tab text="Suosikit">
-            <content>
-                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                    <children>
-                        <Label text="Tarkastele suosikkitapahtumiasi">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="352.0" prefWidth="580.0" vbarPolicy="NEVER">
-                            <content>
-                                <VBox fx:id="favoriteEventsVBox" prefHeight="368.0" prefWidth="578.0" spacing="10.0" />
-                            </content>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </ScrollPane>
-                    </children>
-                </VBox>
-            </content>
-        </Tab>
-        <Tab text="Tulevat tapahtumat">
-            <content>
-                <VBox spacing="10.0">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                    <children>
-                        <Label text="Tarkastele tulevia tapahtumia">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="375.0" prefWidth="580.0" vbarPolicy="NEVER">
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                            <content>
-                                <VBox fx:id="upcomingEventsVBox" prefHeight="400.0" prefWidth="580.0" spacing="10.0" />
-                            </content>
-                        </ScrollPane>
-                    </children>
-                </VBox>
-            </content>
-        </Tab>
-        <Tab text="Omat taphatumat">
-            <content>
-                <VBox spacing="10.0">
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                    <children>
-                        <Label text="Omat ilmoitukset">
-                            <font>
-                                <Font size="14.0" />
-                            </font>
-                        </Label>
-                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="358.0" prefWidth="580.0" vbarPolicy="NEVER">
-                            <content>
-                                <VBox fx:id="organizedEventsVBox" spacing="10.0" />
-                            </content>
-                            <padding>
-                                <Insets bottom="10.0" top="10.0" />
-                            </padding>
-                        </ScrollPane>
-                    </children>
-                </VBox>
-            </content>
-        </Tab>
-    </tabs>
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+         prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12"
+         xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.ProfileController">
+    <Tab text="%user.information">
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <Label text="%view.information">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <GridPane prefHeight="60.0" prefWidth="416.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="151.5"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.5" minWidth="10.0" prefWidth="428.5"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <Label text="%username"/>
+                <Label fx:id="usernameLabel" text="username" GridPane.columnIndex="1"/>
+                <Label text="%email" GridPane.rowIndex="1"/>
+                <Label fx:id="emailLabel" text="email" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogoutAction"
+                    prefHeight="25.0" prefWidth="150.0" text="%logout.button"/>
+            <Button fx:id="removeUserButton" mnemonicParsing="false" onAction="#handleRemoveUserAction"
+                    prefHeight="25.0" prefWidth="150.0" text="%remove.user.button"/>
+        </VBox>
+    </Tab>
+    <Tab text="%favourites">
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <Label text="%view.favourites">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="352.0" prefWidth="580.0"
+                        vbarPolicy="NEVER">
+                <padding>
+                    <Insets bottom="10.0" top="10.0"/>
+                </padding>
+                <VBox fx:id="favoriteEventsVBox" prefHeight="368.0" prefWidth="578.0" spacing="10.0"/>
+            </ScrollPane>
+        </VBox>
+    </Tab>
+    <Tab text="%upcoming.events">
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <Label text="%view.upcoming.events">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="375.0" prefWidth="580.0"
+                        vbarPolicy="NEVER">
+                <padding>
+                    <Insets bottom="10.0" top="10.0"/>
+                </padding>
+                <VBox fx:id="upcomingEventsVBox" prefHeight="400.0" prefWidth="580.0" spacing="10.0"/>
+            </ScrollPane>
+        </VBox>
+    </Tab>
+    <Tab text="%own.events">
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <Label text="%own.upcoming.events">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="358.0" prefWidth="580.0"
+                        vbarPolicy="NEVER">
+                <padding>
+                    <Insets bottom="10.0" top="10.0"/>
+                </padding>
+                <VBox fx:id="organizedEventsVBox" spacing="10.0"/>
+            </ScrollPane>
+        </VBox>
+    </Tab>
 </TabPane>

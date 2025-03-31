@@ -12,6 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryControllerTest {
+    static List<Category> categories;
 
     @BeforeAll
     static void setUp() {
@@ -23,13 +24,13 @@ class CategoryControllerTest {
 
     @Test
     void getAllCategories() {
-        List<Category> categories = CategoryController.getAllCategories();
+        categories = CategoryController.getAllCategories();
         assertNotNull(categories);
     }
 
     @Test
     void getCategoryById() {
-        Category category = CategoryController.getCategoryById("1");
+        Category category = CategoryController.getCategoryById(categories.get(0).getId());
         assertNotNull(category);
     }
 

@@ -1,5 +1,6 @@
 package controller.ui;
 
+import app.Main;
 import controller.api.CategoryController;
 import controller.api.EventController;
 import controller.api.LocationController;
@@ -117,19 +118,10 @@ public class NewEventController {
             selectedCategories.remove(category);
             categoryFlowPane.getChildren().removeAll(tag, removeBtn);
         });
-        //tag.setStyle("-fx-background-color: lightblue; -fx-padding: 5px");
         categoryFlowPane.getChildren().addAll(tag, removeBtn);
     }
 
     private String[] getCategoryIds() {
-//        return selectedCategories.stream()
-//                .map(name -> allCategories.stream()
-//                        .filter(c -> c.getName().equals(name))
-//                        .findFirst()
-//                        .orElse(null))
-//                .filter(Objects::nonNull)
-//                .map(c -> String.valueOf(c.getId()))
-//                .toArray(String[]::new);
         return selectedCategories.stream()
                 .map(Category::getId)
                 .toArray(String[]::new);
@@ -145,7 +137,7 @@ public class NewEventController {
         return (selectedLocation != null) ? selectedLocation.getId() : null;    }
 
     @FXML
-    private void selectImage(ActionEvent event) {
+    private void selectImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -156,14 +148,14 @@ public class NewEventController {
                 eventImageView.setImage(new Image(new FileInputStream(eventImage)));
             } catch (FileNotFoundException e) {
                 eventImage = placeholderImage;
-                imageError.setText("Image not found");
+                imageError.setText(Main.bundle.getString("image.error"));
                 e.printStackTrace();
             }
         }
     }
 
     @FXML
-    private void addEvent(ActionEvent event) {
+    private void addEvent() {
         if (!validateInput()) return;
 
         try {
@@ -186,26 +178,26 @@ public class NewEventController {
                 System.out.println("Event created successfully");
                 ((Stage) addEventButton.getScene().getWindow()).close();
             } else {
-                addEventError.setText("Event creation failed.");
+                addEventError.setText(Main.bundle.getString("event.creation.error"));
             }
         } catch (Exception e) {
-            addEventError.setText("Error: Event creation failed.");
+            addEventError.setText(Main.bundle.getString("event.creation.error"));
             System.out.println("Title: " + titleField.getText() + " Description: " + descriptionField.getText() + " Location: " + getSelectedLocationId() + " Capacity: " + capacityField.getText() + " Categories: " + getCategoryIds() + " Start date: " + startDatePicker.getValue().toString() + " End date: " + endDatePicker.getValue().toString() + " Start time: " + startTimeField.getText() + " End time: " + endTimeField.getText() + " Price: " + priceField.getText());
         }
     }
 
     private boolean validateInput() {
         boolean isValid = true;
-        isValid &= validateField(titleField, titleError, "Event name is required");
-        isValid &= validateField(descriptionField, descriptionError, "Event description is required");
-        isValid &= validateField(categoriesComboBox, categoriesError, "Event type is required");
-        isValid &= validateField(locationComboBox, locationError, "Event location is required");
-        isValid &= validateField(startDatePicker, startDateError, "Start date is required");
-        isValid &= validateField(endDatePicker, endDateError, "End date is required");
-        isValid &= validateField(startTimeField, startTimeError, "Start time is required");
-        isValid &= validateField(endTimeField, endTimeError, "End time is required");
-        isValid &= validateField(capacityField, capacityError, "Event capacity is required");
-        isValid &= validateField(priceField, priceError, "Event price is required");
+        isValid &= validateField(titleField, titleError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(descriptionField, descriptionError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(categoriesComboBox, categoriesError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(locationComboBox, locationError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(startDatePicker, startDateError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(endDatePicker, endDateError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(startTimeField, startTimeError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(endTimeField, endTimeError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(capacityField, capacityError, Main.bundle.getString("empty.field"));
+        isValid &= validateField(priceField, priceError, Main.bundle.getString("empty.field"));
         return isValid;
     }
 

@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import utils.SessionManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 class FavouriteControllerTest {
+    static List<Event> events;
 
     @BeforeAll
     static void setUp() {
@@ -21,12 +23,14 @@ class FavouriteControllerTest {
         UserController.login("testuser@example.com", "password");
         User user = SessionManager.getInstance().getUser();
         assertNotNull(user);
+
+        events = new ArrayList<>(EventController.getAllEvents());
     }
 
     @Test
     @Order(1)
     void createFavourite() {
-        assertDoesNotThrow(() -> FavouriteController.createFavourite("1"));
+        assertDoesNotThrow(() -> FavouriteController.createFavourite(events.get(0).getId()));
     }
 
     @Test
@@ -40,7 +44,7 @@ class FavouriteControllerTest {
     @Test
     @Order(3)
     void deleteFavourite() {
-        assertDoesNotThrow(() -> FavouriteController.deleteFavourite("1"));
+        assertDoesNotThrow(() -> FavouriteController.deleteFavourite(events.get(0).getId()));
     }
 
 }
