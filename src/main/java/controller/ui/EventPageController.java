@@ -24,7 +24,7 @@ import java.util.Objects;
 public class EventPageController {
 
     @FXML private Label eventNameLabel, organizerLabel, dateLabel, startTimeLabel, endTimeLabel, locationLabel, priceLabel, descriptionLabel;
-    @FXML private ImageView eventImage, eventImageView;
+    @FXML private ImageView eventImage;
     @FXML private Button buyTicketButton;
     private Event event;
 
@@ -33,7 +33,7 @@ public class EventPageController {
     @FXML
     private void handleBuyTicketAction() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.bundle);
             Parent root = loader.load();
             RSVPController controller = loader.getController();
             controller.setEvent(this.event);
@@ -64,7 +64,6 @@ public class EventPageController {
             try {
                 File image = ImageController.getImage(event);
                 eventImage.setImage(new Image(image.toURI().toString()));
-                eventImageView.setImage(new Image(image.toURI().toString()));
             } catch (Exception ex) {
                 System.err.println("Failed to load event image: " + ex.getMessage());
                 eventImage.setImage(placeholderImage);
