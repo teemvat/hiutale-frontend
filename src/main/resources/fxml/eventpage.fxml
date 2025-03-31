@@ -39,162 +39,120 @@
 <?import javafx.scene.text.*?>
 
 <HBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.EventPageController">
-   <children>
-      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="199.0">
-         <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="500.0" spacing="10.0">
-               <children>
-                  <ImageView fx:id="eventImage" fitHeight="31.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../pictures/snowflake_dark.png" />
-                     </image>
-                  </ImageView>
-                  <Label text="Hiutale.app">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-            <Separator prefWidth="200.0" />
-            <VBox prefHeight="902.0" prefWidth="572.0" spacing="5.0">
-               <children>
-                  <Label prefHeight="10.0" prefWidth="159.0" text="Tapahtuman tiedot">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" />
-                     </padding>
-                  </Label>
-                  <Label fx:id="eventNameLabel" text="Tapahtuman nimi">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <HBox prefHeight="11.0" prefWidth="460.0" spacing="10.0">
-                     <children>
-                        <Label text="Järjestäjä:">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="organizerLabel" text="Organizer name">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="10.0" prefWidth="460.0" spacing="5.0">
-                     <children>
-                        <Label fx:id="dateLabel" text="DD.MM.YYYY">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="startTimeLabel" text="00:00">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="-">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="endTimeLabel" text="23:59">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="16.0" prefWidth="460.0" spacing="5.0">
-                     <children>
-                        <Label text="\@">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="locationLabel" text="Location">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="27.0" prefWidth="304.0" spacing="5.0">
-                     <children>
-                        <Label text="Hinta:">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="priceLabel" text="0">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="€">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </VBox>
-         </children>
-      </VBox>
-      <VBox prefHeight="444.0" prefWidth="476.0" spacing="10.0">
-         <children>
-            <ImageView fx:id="eventImageView" fitHeight="168.0" fitWidth="466.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../pictures/placeholder_event.jpg" />
-               </image>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </ImageView>
-            <Label text="Tapahtuman kuvaus">
+   <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="199.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="500.0" spacing="10.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <ImageView fx:id="eventImage" fitHeight="31.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../pictures/snowflake_dark.png" />
+         </ImageView>
+         <Label text="%app.name">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <VBox prefHeight="902.0" prefWidth="572.0" spacing="5.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <Label fx:id="eventNameLabel" text="event_name">
+            <font>
+               <Font size="13.0" />
+            </font>
+         </Label>
+         <HBox prefHeight="11.0" prefWidth="460.0" spacing="10.0">
+            <Label text="%organizer">
                <font>
-                  <Font size="14.0" />
+                  <Font size="13.0" />
                </font>
             </Label>
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="175.0" prefWidth="466.0" vbarPolicy="NEVER">
-               <content>
-                  <Label fx:id="descriptionLabel" alignment="TOP_LEFT" prefHeight="245.0" prefWidth="443.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." wrapText="true">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-               </content>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
-               </padding>
-            </ScrollPane>
-            <Button fx:id="buyTicketButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="69.0" text="Osta lippu" onAction="#handleBuyTicketAction">
+            <Label fx:id="organizerLabel" text="organizer_name">
                <font>
-                  <Font size="11.0" />
+                  <Font size="13.0" />
                </font>
-            </Button>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
+            </Label>
+         </HBox>
+         <HBox prefHeight="10.0" prefWidth="460.0" spacing="5.0">
+            <Label fx:id="dateLabel" text="event_date">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="startTimeLabel" text="start_time">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label text="-">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="endTimeLabel" text="end_time">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </HBox>
+         <HBox prefHeight="16.0" prefWidth="460.0" spacing="5.0">
+            <Label fx:id="locationLabel" text="event_location">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </HBox>
+         <HBox prefHeight="27.0" prefWidth="304.0" spacing="5.0">
+            <Label text="%price">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="priceLabel" text="event_price">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label text="%currency">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </HBox>
       </VBox>
-   </children>
+   </VBox>
+   <VBox prefHeight="444.0" prefWidth="476.0" spacing="10.0">
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+      <ImageView fx:id="eventImageView" fitHeight="168.0" fitWidth="466.0" pickOnBounds="true">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <Image url="@../pictures/placeholder_event.jpg" />
+      </ImageView>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="195.0" prefWidth="466.0" vbarPolicy="NEVER">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+         </padding>
+         <Label fx:id="descriptionLabel" alignment="TOP_LEFT" prefHeight="245.0" prefWidth="443.0" text="event_description" wrapText="true">
+            <font>
+               <Font size="11.0" />
+            </font>
+         </Label>
+      </ScrollPane>
+      <Button fx:id="buyTicketButton" mnemonicParsing="false" onAction="#handleBuyTicketAction" prefHeight="23.0" prefWidth="69.0" text="%buy.button">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+   </VBox>
 </HBox>
