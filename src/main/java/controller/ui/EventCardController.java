@@ -3,6 +3,7 @@ package controller.ui;
 import app.Main;
 import controller.api.FavouriteController;
 import controller.api.ImageController;
+import controller.api.LocationController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +49,7 @@ public class EventCardController {
         }
         eventTitle.setText(event.getTitle());
         eventDate.setText(event.getDate());
-        eventLocation.setText(event.getLocationId());
+        eventLocation.setText(LocationController.getLocationById(event.getLocationId()).getName());
 
         updateTicketIcon();
         updateFavouriteIcon();
