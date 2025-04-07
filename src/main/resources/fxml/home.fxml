@@ -40,7 +40,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.3" prefHeight="394.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12"
+<SplitPane dividerPositions="0.3" prefHeight="394.0" stylesheets="@../styles.css" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.HomeController">
 
    <VBox prefHeight="373.0" prefWidth="251.0">
