@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
+import utils.ImageUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,17 +61,7 @@ public class EventPageController {
         priceLabel.setText(Double.toString(event.getPrice()));
         descriptionLabel.setText(event.getDescription());
 
-        if (event.getImage() != null) {
-            try {
-                File image = ImageController.getImage(event);
-                eventImage.setImage(new Image(image.toURI().toString()));
-            } catch (Exception ex) {
-                System.err.println("Failed to load event image: " + ex.getMessage());
-                eventImage.setImage(placeholderImage);
-            }
-        } else {
-            eventImage.setImage(placeholderImage);
-        }
+        ImageUtil.loadEventImage(event, eventImage);
     }
 
 }

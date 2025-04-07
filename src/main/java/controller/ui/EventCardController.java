@@ -4,7 +4,10 @@ import app.Main;
 import controller.api.FavouriteController;
 import controller.api.ImageController;
 import controller.api.LocationController;
-import javafx.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,42 +21,41 @@ import javafx.scene.input.ClipboardContent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
+import utils.ImageUtil;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Objects;
-
+/**
+ * Controller for controlling the event cards.
+ */
 public class EventCardController {
 
-    @FXML private ImageView eventImage, ticketImage, favoriteImage;
-    @FXML private Label eventTitle, eventDate, eventLocation;
-    @FXML private Button ticketButton, shareButton, favoriteButton;
+  @FXML private ImageView eventImage;
+  @FXML private ImageView ticketImage;
+  @FXML private ImageView favoriteImage;
+  @FXML private Label eventTitle;
+  @FXML private Label eventDate;
+  @FXML private Label eventLocation;
+  @FXML private Button ticketButton;
+  @FXML private Button shareButton;
+  @FXML private Button favoriteButton;
 
-    private Event event;
-    private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
+  private Event event;
+  //private final Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
 
-    public void setEventData(Event event) {
-        this.event = event;
+  /**
+   * Method that updates the information on event card based on the event.
+   *
+   * @param event the event containing the information to be displayed.
+   */
+  public void setEventData(Event event) {
+    this.event = event;
+    ImageUtil.loadEventImage(event, eventImage);
+    eventTitle.setText(event.getTitle());
+    eventDate.setText(event.getDate());
+    eventLocation.setText(LocationController.getLocationById(event.getLocationId()).getName());
 
-        if (event.getImage() != null) {
-            try {
-                File image = ImageController.getImage(event);
-                eventImage.setImage(new Image(image.toURI().toString()));
-            } catch (Exception e) {
-                System.err.println("Failed to load event image: " + e.getMessage());
-                eventImage.setImage(placeholderImage);
-            }
-        } else {
-            eventImage.setImage(placeholderImage);
-        }
-        eventTitle.setText(event.getTitle());
-        eventDate.setText(event.getDate());
-        eventLocation.setText(LocationController.getLocationById(event.getLocationId()).getName());
-
-        updateTicketIcon();
-        updateFavouriteIcon();
-    }
+    updateTicketIcon();
+    updateFavouriteIcon();
+  }
 
     private void updateTicketIcon() {
         int totalTickets = event.getCapacity();
@@ -115,7 +117,7 @@ public class EventCardController {
     @FXML
     private void handleCardClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/eventpage.fxml"), Main.bundle);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_page.fxml"), Main.bundle);
             Parent root = loader.load();
             EventPageController controller = loader.getController();
             controller.setEventDetails(event);
