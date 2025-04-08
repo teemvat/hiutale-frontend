@@ -38,7 +38,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="376.0" prefWidth="640.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.LoginController">
+<VBox alignment="CENTER" prefHeight="420.0" prefWidth="640.0" stylesheets="@../styles.css" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.LoginController">
 
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -49,7 +49,7 @@
         </VBox.margin>
         <Image url="@../pictures/snowflake_dark.png" />
     </ImageView>
-    <Label text="%app.name" textAlignment="CENTER">
+    <Label text="%app.name" textAlignment="CENTER" fx:id="appNameLabel">
         <font>
             <Font size="24.0" />
         </font>

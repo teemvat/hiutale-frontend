@@ -20,6 +20,9 @@ public class Main extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
+
+        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+
         stage.setTitle(bundle.getString("login.title"));
         stage.setScene(scene);
         stage.show();
