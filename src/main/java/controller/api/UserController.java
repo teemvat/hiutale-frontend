@@ -8,9 +8,21 @@ import utils.SessionManager;
 
 import static utils.ApiConnector.sendHttpRequest;
 
+/**
+ * The UserController class provides methods to manage user-related operations,
+ * such as login, logout, registration, retrieval, and deletion of user accounts.
+ */
 public class UserController {
+    // Gson instance for JSON serialization and deserialization
     private static final Gson gson = new Gson();
 
+    /**
+     * Logs in a user with the provided email and password.
+     *
+     * @param email    The email address of the user.
+     * @param password The password of the user.
+     * @return The User object if login is successful, or null if authentication fails.
+     */
     public static User login(String email, String password) {
         String requestBody = '{'
                 + "\"email\": \""
@@ -53,10 +65,21 @@ public class UserController {
         }
     }
 
+    /**
+     * Logs out the currently logged-in user.
+     */
     public static void logout() {
         SessionManager.getInstance().logout();
     }
 
+    /**
+     * Registers a new user with the provided username, password, and email.
+     *
+     * @param username The username of the new user.
+     * @param password The password of the new user.
+     * @param email    The email address of the new user.
+     * @return The newly registered User object.
+     */
     public static User register(String username, String password, String email) {
         String requestBody = '{'
                 + "\"username\": \""
@@ -79,11 +102,22 @@ public class UserController {
         return user;
     }
 
+    /**
+     * Retrieves a user by their unique ID.
+     *
+     * @param id The unique identifier of the user to retrieve.
+     * @return The User object representing the requested user.
+     */
     public static User getUser(int id) {
         String response = sendHttpRequest("GET", "/users/one/" + id, "");
         return gson.fromJson(response, User.class);
     }
 
+    /**
+     * Deletes a user by their unique ID and logs out the current session.
+     *
+     * @param id The unique identifier of the user to delete.
+     */
     public static void deleteUser(int id) {
         sendHttpRequest("DELETE", "/users/" + id, "");
         SessionManager.getInstance().logout();

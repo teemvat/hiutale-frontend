@@ -12,23 +12,44 @@ import java.util.List;
 
 import static utils.ApiConnector.sendHttpRequest;
 
-
+/**
+ * The EventController class provides methods to manage events, including creating, retrieving,
+ * searching, and deleting events. It handles event-related operations such as uploading images.
+ */
 public class EventController {
+    // Gson configured with custom FileTypeAdapter for JSON serialization and deserialization
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(File.class, new FileTypeAdapter())
             .create();
+    // A list to store all events
     private static final List<Event> events = new ArrayList<>();
 
+    /**
+     * Creates a new event and uploads an associated image.
+     *
+     * @param title       The title of the event.
+     * @param description The description of the event.
+     * @param locationId  The ID of the event's location.
+     * @param capacity    The capacity of the event.
+     * @param categories  An array of category IDs associated with the event.
+     * @param startDate   The start date of the event.
+     * @param endDate     The end date of the event.
+     * @param startTime   The start time of the event.
+     * @param endTime     The end time of the event.
+     * @param price       The price of the event.
+     * @param image       The image file associated with the event.
+     * @return The newly created Event object.
+     */
     public static Event createEvent(String title,
-                                      String description,
-                                      String locationId,
-                                      String capacity,
-                                      String[] categories,
-                                      String startDate,
-                                      String endDate,
-                                      String startTime,
-                                      String endTime,
-                                      double price,
+                                    String description,
+                                    String locationId,
+                                    String capacity,
+                                    String[] categories,
+                                    String startDate,
+                                    String endDate,
+                                    String startTime,
+                                    String endTime,
+                                    double price,
                                     File image) {
         Event event = new Event(
                 null,
@@ -59,6 +80,11 @@ public class EventController {
         return newEvent;
     }
 
+    /**
+     * Retrieves all events from the server and updates the local event list.
+     *
+     * @return A list of all Event objects.
+     */
     public static List<Event> getAllEvents() {
         events.clear();
 
@@ -80,6 +106,18 @@ public class EventController {
         return allEvents;
     }
 
+    /**
+     * Searches for events based on various criteria.
+     *
+     * @param query       The search query for event titles.
+     * @param category    The category ID to filter events.
+     * @param date        The date to filter events.
+     * @param location    The location ID to filter events.
+     * @param minPrice    The minimum price to filter events.
+     * @param maxPrice    The maximum price to filter events.
+     * @param organizerId The organizer ID to filter events.
+     * @return A list of Event objects matching the search criteria.
+     */
     public static List<Event> searchEvents(
             String query,
             String category,
@@ -142,7 +180,7 @@ public class EventController {
                         continue;
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid minPrice value: " + maxPrice);
+                    System.out.println("Invalid minPrice value: " + minPrice);
                 }
             }
             if (organizerId != null
@@ -156,12 +194,23 @@ public class EventController {
         return searchResults;
     }
 
+    /**
+     * Deletes an event by its ID and removes it from the local event list.
+     *
+     * @param eventId The ID of the event to delete.
+     */
     public static void deleteEvent(String eventId) {
         sendHttpRequest("DELETE", "/events/delete/" + eventId, "");
         events.removeIf(event -> event.getId().equals(eventId));
         ImageController.deleteImage(eventId);
     }
 
+    /**
+     * Retrieves a specific event by its ID.
+     *
+     * @param eventId The ID of the event to retrieve.
+     * @return The Event object with the specified ID, or null if not found.
+     */
     public static Event getEvent(String eventId) {
         for (Event event : events) {
             if (event.getId().equals(eventId)) {
@@ -172,6 +221,12 @@ public class EventController {
         return null;
     }
 
+    /**
+     * Retrieves all events organized by a specific organizer.
+     *
+     * @param organizerId The ID of the organizer.
+     * @return A list of Event objects organized by the specified organizer.
+     */
     public static List<Event> getEventsByOrganizer(String organizerId) {
         List<Event> organizerEvents = new ArrayList<>();
         for (Event event : events) {

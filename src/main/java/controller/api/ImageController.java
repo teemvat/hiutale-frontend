@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import model.Event;
 import utils.SessionManager;
 
-import java.io.*; // Checkstyle doesn't like this, but IDE wants this
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -17,9 +17,20 @@ import java.nio.file.StandardCopyOption;
 
 import static utils.ApiConnector.sendHttpRequest;
 
+/**
+ * The ImageController class provides methods to handle image-related operations,
+ * such as uploading, downloading, retrieving, and deleting images associated with events.
+ */
 public class ImageController {
+    // Base URL for image-related API endpoints
     private static final String BASE_URL = "http://37.27.9.255:8080/files";
 
+    /**
+     * Uploads an image file associated with a specific event.
+     *
+     * @param eventId The ID of the event the image is associated with.
+     * @param file    The image file to upload.
+     */
     public static void uploadImage(long eventId, File file) {
         if (file == null) {
             return;
@@ -104,7 +115,6 @@ public class ImageController {
 
             System.out.println("Response: " + response);
 
-            // Return the response
         } catch (Exception e) {
             System.err.println("Error during image upload: " + e.getMessage());
         } finally {
@@ -114,6 +124,12 @@ public class ImageController {
         }
     }
 
+    /**
+     * Retrieves the URL of an image associated with a specific event.
+     *
+     * @param eventId The ID of the event whose image URL is to be retrieved.
+     * @return The URL of the image as a String, or an empty string if no image is found.
+     */
     public static String getImageUrl(String eventId) {
         String response = sendHttpRequest("GET", "/event/" + eventId, "");
         if (response.isEmpty()) {
@@ -134,7 +150,12 @@ public class ImageController {
         }
     }
 
-
+    /**
+     * Downloads an image associated with a specific event and saves it to a temporary file.
+     *
+     * @param event The Event object containing the image filename to download.
+     * @return The downloaded image file, or null if the download fails.
+     */
     public static File getImage(Event event) {
         if (event == null || event.getImage() == null || event.getImage().isEmpty()) {
             System.out.println("Invalid event or image filename");
@@ -158,7 +179,12 @@ public class ImageController {
         }
     }
 
-
+    /**
+     * Deletes an image by its ID from the server.
+     *
+     * @param imageId The ID of the image to delete.
+     * @return The server's response message indicating the result of the deletion.
+     */
     public static String deleteImage(String imageId) {
         HttpURLConnection conn = null;
         String output = null;
