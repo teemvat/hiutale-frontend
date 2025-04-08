@@ -30,7 +30,7 @@ class ImageControllerTest {
     void getImageUrl() {
         try {
             // Download an image
-            String imageFile = ImageController.getImageURL(events.get(0).getId());
+            String imageFile = ImageController.getImageUrl(events.get(0).getId());
 
             // Check that the file is not null
             assertNotNull(imageFile);

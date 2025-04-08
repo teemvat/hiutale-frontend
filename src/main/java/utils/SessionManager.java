@@ -7,7 +7,7 @@ public class SessionManager {
     private User user;
     private String token;
 
-    private SessionManager() { }
+    private SessionManager() {}
 
     public static SessionManager getInstance() {
         if (instance == null) {
@@ -31,20 +31,18 @@ public class SessionManager {
     }
 
     public boolean isLoggedIn() {
-        boolean loggedIn =  user != null;
-        //System.out.println("SessionManager: isLoggedIn = " + loggedIn);
-        return loggedIn;
+        return user != null;
     }
 
     public void setToken(String token) {
         this.token = token;
     }
 
-    public String getToken(){
+    public String getToken() {
         return token;
     }
 
-    public String getUserName(){
+    public String getUserName() {
         return user != null ? user.getUsername() : "Guest";
     }
 }

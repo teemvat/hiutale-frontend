@@ -1,9 +1,9 @@
 package model;
 
 public class Category {
-    private int categoryId;
-    private String name;
-    private String description;
+    private final int categoryId;
+    private final String name;
+    private final String description;
 
     public Category(int id, String name, String description) {
         this.categoryId = id;

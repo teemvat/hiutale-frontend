@@ -15,10 +15,10 @@ class EventTest {
 
     @Order(26)
     @Test
-    void reformatDateForBE() {
+    void reformatDateForBe() {
         String expectedStart = "2021-01-01T00:00:00";
         String expectedEnd = "2021-01-01T00:00:00";
-        event.reformatDateForBE();
+        event.reformatDateForBe();
         assertEquals(expectedStart, event.getStart());
         assertEquals(expectedEnd, event.getEnd());
     }
@@ -139,39 +139,48 @@ class EventTest {
 
     @Order(14)
     @Test
+    void setStatus() {
+        String expected = "New Status";
+        event.setStatus(expected);
+        assertEquals(expected, event.getStatus());
+    }
+
+    @Order(15)
+    @Test
     void getDate() {
         String expected = "2021-01-01";
         assertEquals(expected, event.getDate());
     }
 
-    @Order(15)
+    @Order(16)
     @Test
     void getStart() {
         String expected = "00:00";
         assertEquals(expected, event.getStart());
     }
 
-    @Order(16)
+    @Order(17)
     @Test
     void getEnd() {
         String expected = "00:00";
         assertEquals(expected, event.getEnd());
     }
 
-    @Order(17)
+    @Order(18)
     @Test
     void getPrice() {
         double expected = 0.0;
         assertEquals(expected, event.getPrice());
     }
 
-    @Order(18)
+    @Order(19)
     @Test
     void getId() {
         String expected = "1";
         assertEquals(expected, event.getId());
     }
 
+    @Order(20)
     @Test
     void setId() {
         String expected = "2";
@@ -179,14 +188,14 @@ class EventTest {
         assertEquals(expected, event.getId());
     }
 
-    @Order(19)
+    @Order(21)
     @Test
     void getAttendanceCount() {
         int expected = 0;
         assertEquals(expected, event.getAttendanceCount());
     }
 
-    @Order(20)
+    @Order(22)
     @Test
     void setAttendanceCount() {
         int expected = 1;
@@ -194,14 +203,14 @@ class EventTest {
         assertEquals(expected, event.getAttendanceCount());
     }
 
-    @Order(21)
+    @Order(23)
     @Test
     void getFavouriteCount() {
         int expected = 0;
         assertEquals(expected, event.getFavouriteCount());
     }
 
-    @Order(22)
+    @Order(24)
     @Test
     void setFavouriteCount() {
         int expected = 1;
@@ -209,7 +218,7 @@ class EventTest {
         assertEquals(expected, event.getFavouriteCount());
     }
 
-    @Order(23)
+    @Order(25)
     @Test
     void setImage() {
         String expected = "image";
@@ -217,7 +226,7 @@ class EventTest {
         assertEquals(expected, event.getImage());
     }
 
-    @Order(24)
+    @Order(26)
     @Test
     void getImage() {
         String expected = "image";

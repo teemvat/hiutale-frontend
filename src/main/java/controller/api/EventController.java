@@ -5,60 +5,19 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Event;
 import utils.FileTypeAdapter;
-import utils.SessionManager;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static utils.ApiConnector.sendHttpRequest;
+
 
 public class EventController {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(File.class, new FileTypeAdapter())
             .create();
-    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
     private static final List<Event> events = new ArrayList<>();
-
-    private static String sendHttpRequest(String method, String endpoint, String requestBody) {
-        try {
-            URL url = new URL(BASE_URL + endpoint);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
-
-            if (SessionManager.getInstance().isLoggedIn()) {
-                String token = SessionManager.getInstance().getUser().getToken();
-                conn.setRequestProperty("Authorization", "Bearer " + token);
-                System.out.println("User is logged in, token set");
-            } else {
-                System.out.println("User is not logged in");
-            }
-
-            if (!requestBody.isEmpty()) {
-                try (OutputStream os = conn.getOutputStream()) {
-                    os.write(requestBody.getBytes());
-                    System.out.println("Request body is not empty");
-                }
-            }
-
-            int responseCode = conn.getResponseCode();
-            InputStream is = (responseCode < 400) ? conn.getInputStream() : conn.getErrorStream();
-
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                return response.toString();
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            return "";
-        }
-    }
 
     public static Event createEvent(String title,
                                       String description,
@@ -71,8 +30,22 @@ public class EventController {
                                       String endTime,
                                       double price,
                                     File image) {
-        Event event = new Event(null, title, description, locationId, capacity, null, categories, startDate, endDate, startTime, endTime, price, 0, 0);
-        event.reformatDateForBE();
+        Event event = new Event(
+                null,
+                title,
+                description,
+                locationId,
+                capacity,
+                null,
+                categories,
+                startDate,
+                endDate,
+                startTime,
+                endTime,
+                price,
+                0,
+                0);
+        event.reformatDateForBe();
         System.out.println("EventController, created event: " + event);
         String requestBody = gson.toJson(event);
         System.out.println("EventController, request: " + requestBody);
@@ -95,8 +68,8 @@ public class EventController {
         }.getType());
         events.addAll(allEvents);
         for (Event event : events) {
-            event.reformatDateForFE();
-            String imageUrl = ImageController.getImageURL(event.getId());
+            event.reformatDateForFe();
+            String imageUrl = ImageController.getImageUrl(event.getId());
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 System.out.println("Image found for event ID: " + event.getId());
                 event.setImage(imageUrl);
@@ -107,7 +80,15 @@ public class EventController {
         return allEvents;
     }
 
-    public static List<Event> searchEvents(String query, String category, String date, String location, String minPrice, String maxPrice, String organizerId) {
+    public static List<Event> searchEvents(
+            String query,
+            String category,
+            String date,
+            String location,
+            String minPrice,
+            String maxPrice,
+            String organizerId
+    ) {
         List<Event> searchResults = new ArrayList<>();
 
         for (Event event : events) {
@@ -117,19 +98,30 @@ public class EventController {
             }
             System.out.println("Category: " + category);
             System.out.println("event category: " + event.getCategories());
-            if (category != null && !category.isEmpty() && event.getCategories() != null && !event.getCategories().contains(Integer.parseInt(category))) {
+            if (category != null
+                    && !category.isEmpty()
+                    && event.getCategories() != null
+                    && !event.getCategories().contains(Integer.parseInt(category))
+            ) {
                 System.out.println("Skipping event due to category: " + event.getTitle());
                 continue;
             }
-            if (date != null && !date.isEmpty() && !event.getDate().equals(date)) {
+            if (date != null
+                    && !date.isEmpty()
+                    && !event.getDate().equals(date)
+            ) {
                 System.out.println("Skipping event due to date: " + event.getTitle());
                 continue;
             }
-            if (location != null && (!event.getLocationId().equalsIgnoreCase(location))) {
+            if (location != null
+                    && (!event.getLocationId().equalsIgnoreCase(location))
+            ) {
                 System.out.println("Skipping event due to location: " + event.getTitle());
                 continue;
             }
-            if (minPrice != null && !minPrice.trim().isEmpty()) {
+            if (minPrice != null
+                    && !minPrice.trim().isEmpty()
+            ) {
                 try {
                     double minPriceValue = Double.parseDouble(minPrice);
                     if (event.getPrice() < minPriceValue) {
@@ -140,7 +132,9 @@ public class EventController {
                     System.out.println("Invalid minPrice value: " + minPrice);
                 }
             }
-            if (maxPrice != null && !maxPrice.isEmpty()) {
+            if (maxPrice != null
+                    && !maxPrice.isEmpty()
+            ) {
                 try {
                     double maxPriceValue = Double.parseDouble(maxPrice);
                     if (event.getPrice() > maxPriceValue) {
@@ -151,7 +145,9 @@ public class EventController {
                     System.out.println("Invalid minPrice value: " + maxPrice);
                 }
             }
-            if (organizerId != null && (!event.getOrganizerId().equalsIgnoreCase(organizerId))) {
+            if (organizerId != null
+                    && (!event.getOrganizerId().equalsIgnoreCase(organizerId))
+            ) {
                 System.out.println("Skipping event due to organizerId: " + event.getTitle());
                 continue;
             }
@@ -169,7 +165,7 @@ public class EventController {
     public static Event getEvent(String eventId) {
         for (Event event : events) {
             if (event.getId().equals(eventId)) {
-                event.setImage(ImageController.getImageURL(event.getId()));
+                event.setImage(ImageController.getImageUrl(event.getId()));
                 return event;
             }
         }

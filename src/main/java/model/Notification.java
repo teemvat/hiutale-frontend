@@ -2,7 +2,7 @@ package model;
 
 public class Notification {
     private int id;
-    private User user;
+    private final User user;
     private String message;
     private boolean isRead;
 

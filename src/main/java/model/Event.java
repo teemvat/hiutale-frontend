@@ -13,7 +13,7 @@ public class Event {
     private String locationId;
     private int capacity;
     private String organizerId;
-    private List<Integer> eventCategoryIds;
+    private final List<Integer> eventCategoryIds;
     private String status;
     private String startDate;
     private String endDate;
@@ -25,7 +25,21 @@ public class Event {
     private String image;
 
     // for new event and getting events from database
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String[] eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
+    public Event(
+            String eventId,
+            String eventTitle,
+            String eventDescription,
+            String eventLocationId,
+            String eventCapacity,
+            String eventOrganizerId,
+            String[] eventCategories,
+            String startDate,
+            String endDate,
+            String startTime,
+            String endTime,
+            double eventPrice,
+            int attendeeCount,
+            int favouriteCount) {
         this.id = eventId;
         this.title = eventTitle;
         this.description = eventDescription;
@@ -43,15 +57,16 @@ public class Event {
         this.end = endTime;
         this.price = eventPrice;
         this.attendanceCount = attendeeCount;
+        this.favouriteCount = favouriteCount;
         this.image = null;
     }
 
-    public void reformatDateForBE() {
+    public void reformatDateForBe() {
         this.start = this.startDate + "T" + this.start + ":00";
         this.end = this.endDate + "T" + this.end + ":00";
     }
 
-    public void reformatDateForFE() {
+    public void reformatDateForFe() {
         this.startDate = this.start.split("T")[0];
         this.endDate = this.end.split("T")[0];
         this.start = getTime(this.start);
@@ -128,6 +143,10 @@ public class Event {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getDate() {
         return startDate;
     }
@@ -142,6 +161,10 @@ public class Event {
 
     public double getPrice() {
         return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getId() {
@@ -178,23 +201,48 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", locationId='" + locationId + '\'' +
-                ", capacity=" + capacity +
-                ", organizerId='" + organizerId + '\'' +
-                ", eventCategoryIds=" + eventCategoryIds +
-                ", status='" + status + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", start='" + start + '\'' +
-                ", end='" + end + '\'' +
-                ", price=" + price +
-                ", attendanceCount=" + attendanceCount +
-                ", favouriteCount=" + favouriteCount +
-                ", image=" + image +
-                '}';
+        return "Event{"
+                + "id='"
+                + id
+                + '\''
+                + ", title='"
+                + title + '\''
+                + ", description='"
+                + description
+                + '\''
+                + ", locationId='"
+                + locationId
+                + '\''
+                + ", capacity="
+                + capacity
+                + ", organizerId='"
+                + organizerId
+                + '\''
+                + ", eventCategoryIds="
+                + eventCategoryIds
+                + ", status='"
+                + status
+                + '\''
+                + ", startDate='"
+                + startDate
+                + '\''
+                + ", endDate='"
+                + endDate
+                + '\''
+                + ", start='"
+                + start
+                + '\''
+                + ", end='"
+                + end
+                + '\''
+                + ", price="
+                + price
+                + ", attendanceCount="
+                + attendanceCount
+                + ", favouriteCount="
+                + favouriteCount
+                + ", image="
+                + image
+                + '}';
     }
 }
