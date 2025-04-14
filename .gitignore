@@ -45,3 +45,6 @@ build/
 /*.bmp
 /*.tiff
 /*.webp
+
+### Other ###
+sonar-project.properties
