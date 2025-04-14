@@ -15,8 +15,8 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-  public static Locale currentLocale = Locale.getDefault();
-  public static ResourceBundle bundle = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+  private static Locale currentLocale = Locale.getDefault();
+  private static ResourceBundle bundle = ResourceBundle.getBundle("MessagesBundle", currentLocale);
 
   /**
    * The main entry point for the JavaFX application.
@@ -53,6 +53,14 @@ public class Main extends Application {
         return TTL_DONT_CACHE;
       }
     });
+  }
+
+  public static Locale getCurrentLocale() {
+    return currentLocale;
+  }
+
+  public static ResourceBundle getBundle() {
+    return bundle;
   }
 
   /**

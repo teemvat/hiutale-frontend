@@ -86,8 +86,8 @@ public class HomeController {
   }
 
   private static final Map<String, SortType> SORT_MAP = Map.of(
-          Main.bundle.getString("sort.alphabetical"), SortType.ALPHABETICAL,
-          Main.bundle.getString("sort.date"), SortType.DATE
+          Main.getBundle().getString("sort.alphabetical"), SortType.ALPHABETICAL,
+          Main.getBundle().getString("sort.date"), SortType.DATE
   );
 
   /**
@@ -115,12 +115,12 @@ public class HomeController {
 
     // Set sorting options
     sortChoiceBox.setItems(FXCollections.observableArrayList(
-            Main.bundle.getString("sort.alphabetical"),
-            Main.bundle.getString("sort.date")
+            Main.getBundle().getString("sort.alphabetical"),
+            Main.getBundle().getString("sort.date")
     ));
 
     // Set default sorting option
-    sortChoiceBox.setValue(Main.bundle.getString("sort.alphabetical"));
+    sortChoiceBox.setValue(Main.getBundle().getString("sort.alphabetical"));
   }
 
   private void setComboBoxConverters() {
@@ -288,7 +288,7 @@ public class HomeController {
   private void loadEventCards() {
     listViewPane.getChildren().clear();
     if (cachedEvents.isEmpty()) {
-      listViewPane.getChildren().add(new Label(Main.bundle.getString("no.events")));
+      listViewPane.getChildren().add(new Label(Main.getBundle().getString("no.events")));
     } else {
       cachedEvents.forEach(event -> listViewPane.getChildren().add(loadFxml("/fxml/event_card.fxml", event)));
     }
@@ -303,7 +303,7 @@ public class HomeController {
   */
   private Parent loadFxml(String resource, Event event) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.bundle);
+      FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.getBundle());
       Parent root = loader.load();
 
       if (resource.equals("/fxml/event_card.fxml")) {
@@ -358,7 +358,7 @@ public class HomeController {
   private void updateListView(List<Event> events) {
     listViewPane.getChildren().clear();
     if (events.isEmpty()) {
-      listViewPane.getChildren().add(new Label(Main.bundle.getString("no.events")));
+      listViewPane.getChildren().add(new Label(Main.getBundle().getString("no.events")));
     } else {
       events.forEach(event -> listViewPane.getChildren().add(loadFxml("/fxml/event_card.fxml", event)));
     }
@@ -398,7 +398,7 @@ public class HomeController {
   */
   @FXML
   private void handleProfileAction() {
-    openNewWindow("/fxml/profile.fxml", Main.bundle.getString("profile.title"), profileButton);
+    openNewWindow("/fxml/profile.fxml", Main.getBundle().getString("profile.title"), profileButton);
   }
 
   /**
@@ -406,7 +406,7 @@ public class HomeController {
   */
   @FXML
   private void handleAddEventAction() {
-    openNewWindow("/fxml/new_event.fxml", Main.bundle.getString("new.event.title"), addEventButton);
+    openNewWindow("/fxml/new_event.fxml", Main.getBundle().getString("new.event.title"), addEventButton);
   }
 
   /**
@@ -418,7 +418,7 @@ public class HomeController {
   */
   private void openNewWindow(String resource, String title, Button ownerButton) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.bundle);
+      FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.getBundle());
       Parent root = loader.load();
       Stage stage = new Stage();
       stage.setTitle(title);

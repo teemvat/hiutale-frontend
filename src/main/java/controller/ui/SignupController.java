@@ -44,27 +44,27 @@ public class SignupController {
     String confirmPassword = confirmPasswordField.getText();
 
     if (username.isEmpty()) {
-      usernameError.setText(Main.bundle.getString("empty.field"));
+      usernameError.setText(Main.getBundle().getString("empty.field"));
     } else {
       usernameError.setText("");
     }
 
     if (email.isEmpty()) {
-      emailError.setText(Main.bundle.getString("empty.field"));
+      emailError.setText(Main.getBundle().getString("empty.field"));
     } else {
       emailError.setText("");
     }
 
     if (password.isEmpty()) {
-      passwordError.setText(Main.bundle.getString("empty.field"));
+      passwordError.setText(Main.getBundle().getString("empty.field"));
     } else {
       passwordError.setText("");
     }
 
     if (confirmPassword.isEmpty()) {
-      confirmPasswordError.setText(Main.bundle.getString("empty.field"));
+      confirmPasswordError.setText(Main.getBundle().getString("empty.field"));
     } else if (!password.equals(confirmPassword)) {
-      confirmPasswordError.setText(Main.bundle.getString("password.match.error"));
+      confirmPasswordError.setText(Main.getBundle().getString("password.match.error"));
     } else {
       confirmPasswordError.setText("");
     }
@@ -72,18 +72,18 @@ public class SignupController {
     if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && password.equals(confirmPassword)) {
       if (UserController.register(username, password, email) != null) {
         try {
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"), Main.bundle);
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"), Main.getBundle());
           Parent root = loader.load();
           Scene scene = new Scene(root);
           Stage stage = (Stage) signupButton.getScene().getWindow();
-          stage.setTitle(Main.bundle.getString("home.title"));
+          stage.setTitle(Main.getBundle().getString("home.title"));
           stage.setScene(scene);
         } catch (IOException e) {
           System.err.println("Error opening homepage: " + e.getMessage());
           e.printStackTrace(System.err);
         }
       } else {
-        signupError.setText(Main.bundle.getString("signup.error"));
+        signupError.setText(Main.getBundle().getString("signup.error"));
       }
     }
   }
@@ -94,11 +94,11 @@ public class SignupController {
   @FXML
   private void handleLoginAction() {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"), Main.bundle);
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"), Main.getBundle());
       Parent root = loader.load();
       Scene scene = new Scene(root);
       Stage stage = (Stage) loginLink.getScene().getWindow();
-      stage.setTitle(Main.bundle.getString("login.title"));
+      stage.setTitle(Main.getBundle().getString("login.title"));
       stage.setScene(scene);
     } catch (IOException e) {
       System.err.println("Error with login: " + e.getMessage());

@@ -59,7 +59,7 @@ public class CategoryController {
     }
 
     public static List<Category> getAllCategories() {
-        String response = sendHttpRequest("GET", "/categories/" + Main.currentLocale.getLanguage() + "/all", "");
+        String response = sendHttpRequest("GET", "/categories/" + Main.getCurrentLocale().getLanguage() + "/all", "");
         return gson.fromJson(response, new TypeToken<ArrayList<Category>>() {}.getType());
     }
 

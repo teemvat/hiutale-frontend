@@ -41,9 +41,9 @@ public class ProfileController {
   */
   @FXML
   private void initialize() {
-    loadEventCards(favoriteEventsBox, FavouriteController.getUserFavourites(), Main.bundle.getString("no.favourite.events"));
-    loadEventCards(upcomingEventsBox, AttendanceController.getUserAttendances(), Main.bundle.getString("no.upcoming.events"));
-    loadEventCards(organizedEventsBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), Main.bundle.getString("no.organized.events"));
+    loadEventCards(favoriteEventsBox, FavouriteController.getUserFavourites(), Main.getBundle().getString("no.favourite.events"));
+    loadEventCards(upcomingEventsBox, AttendanceController.getUserAttendances(), Main.getBundle().getString("no.upcoming.events"));
+    loadEventCards(organizedEventsBox, EventController.getEventsByOrganizer(String.valueOf(SessionManager.getInstance().getUser().getId())), Main.getBundle().getString("no.organized.events"));
     setUserInformation();
   }
 
@@ -73,7 +73,7 @@ public class ProfileController {
 
     for (Event event : events) {
       try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_card.fxml"), Main.bundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_card.fxml"), Main.getBundle());
         Parent root = loader.load();
         EventCardController controller = loader.getController();
         controller.setEventData(event);

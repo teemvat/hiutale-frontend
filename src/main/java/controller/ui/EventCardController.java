@@ -3,8 +3,8 @@ package controller.ui;
 import app.Main;
 import controller.api.FavouriteController;
 import controller.api.LocationController;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Objects;
 import javafx.fxml.FXML;
@@ -74,12 +74,12 @@ public class EventCardController {
   @FXML
   private void handleTicketAction() {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.bundle);
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.getBundle());
       Parent root = loader.load();
       RsvpController controller = loader.getController();
       controller.setEvent(this.event);
       Stage stage = new Stage();
-      stage.setTitle(Main.bundle.getString("ticket.title"));
+      stage.setTitle(Main.getBundle().getString("ticket.title"));
       stage.setScene(new Scene(root));
       stage.initModality(Modality.WINDOW_MODAL);
       stage.initOwner(ticketButton.getScene().getWindow());
@@ -99,7 +99,7 @@ public class EventCardController {
 
   @FXML
   private void handleShareAction() {
-    String eventInfo = MessageFormat.format(Main.bundle.getString("card.info"),
+    String eventInfo = MessageFormat.format(Main.getBundle().getString("card.info"),
             eventTitle.getText(),
             eventDate.getText(),
             eventLocation.getText(),
@@ -125,7 +125,7 @@ public class EventCardController {
   @FXML
   private void handleCardClick() {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_page.fxml"), Main.bundle);
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_page.fxml"), Main.getBundle());
       Parent root = loader.load();
       EventPageController controller = loader.getController();
       controller.setEventDetails(event);
@@ -145,10 +145,27 @@ public class EventCardController {
   }
 
   private Image loadImage(String path, String fallbackPath) {
-    try {
-      return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-    } catch (NullPointerException e) {
-      return fallbackPath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackPath))) : null;
+
+    // Old version that works
+//    try {
+//      return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+//    } catch (NullPointerException e) {
+//      return fallbackPath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackPath))) : null;
+//    }
+
+    // New version that avoids catching NullPointerException, not yet tested
+    InputStream stream = getClass().getResourceAsStream(path);
+    if (stream != null) {
+      return new Image(stream);
     }
+
+    if (fallbackPath != null) {
+      InputStream fallbackStream = getClass().getResourceAsStream(fallbackPath);
+      if (fallbackStream != null) {
+        return new Image(fallbackStream);
+      }
+    }
+
+    return null;
   }
 }

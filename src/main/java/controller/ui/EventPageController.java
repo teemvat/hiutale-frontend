@@ -43,12 +43,12 @@ public class EventPageController {
   @FXML
   private void handleBuyTicketAction() {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.bundle);
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.getBundle());
       Parent root = loader.load();
       RsvpController controller = loader.getController();
       controller.setEvent(this.event);
       Stage stage = new Stage();
-      stage.setTitle(Main.bundle.getString("rsvp.title"));
+      stage.setTitle(Main.getBundle().getString("rsvp.title"));
       stage.setScene(new Scene(root));
       stage.initModality(Modality.WINDOW_MODAL);
       stage.initOwner(buyTicketButton.getScene().getWindow());

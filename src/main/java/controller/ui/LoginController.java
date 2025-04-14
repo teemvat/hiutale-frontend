@@ -91,7 +91,7 @@ public class LoginController {
   private void reloadScene(String selectedLanguage) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
-      loader.setResources(Main.bundle);
+      loader.setResources(Main.getBundle());
       Parent root = loader.load();
 
       // Detect RTL language
@@ -104,7 +104,7 @@ public class LoginController {
       Scene scene = new Scene(root);
       Stage stage = (Stage) emailField.getScene().getWindow();
       stage.setScene(scene);
-      stage.setTitle(Main.bundle.getString("login.title"));
+      stage.setTitle(Main.getBundle().getString("login.title"));
 
       LoginController controller = loader.getController();
       controller.setSelectedLanguage(selectedLanguage);
@@ -128,7 +128,7 @@ public class LoginController {
   }
 
   private boolean validateFields() {
-    FormValidator validator = new FormValidator(Main.bundle);
+    FormValidator validator = new FormValidator(Main.getBundle());
     boolean isValid = true;
     isValid &= validator.validateField(emailField, emailError, "empty.field");
     isValid &= validator.validateField(passwordField, passwordError, "empty.field");
@@ -145,11 +145,11 @@ public class LoginController {
     User user = UserController.login(emailField.getText(), passwordField.getText());
 
     if (user != null) {
-      WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.bundle);
+      WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.getBundle());
     } else {
       System.err.println("Error logging in");
-      emailError.setText(Main.bundle.getString("login.error"));
-      passwordError.setText(Main.bundle.getString("login.error"));
+      emailError.setText(Main.getBundle().getString("login.error"));
+      passwordError.setText(Main.getBundle().getString("login.error"));
     }
 
     loginButton.setDisable(false);
@@ -158,11 +158,11 @@ public class LoginController {
   @FXML
   private void loginAsGuest() {
     System.out.println("Login as guest");
-    WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.bundle);
+    WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.getBundle());
   }
 
   @FXML
   private void goToSignup() {
-    WindowUtil.changeScene("/fxml/signup.fxml", "signup.title", signupLink, Main.bundle);
+    WindowUtil.changeScene("/fxml/signup.fxml", "signup.title", signupLink, Main.getBundle());
   }
 }
