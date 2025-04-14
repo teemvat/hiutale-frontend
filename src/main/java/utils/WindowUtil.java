@@ -1,5 +1,7 @@
 package utils;
 
+import static utils.RtlLanguageUtil.isRtl;
+
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -8,40 +10,40 @@ import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import static utils.RtlLanguageUtil.isRtl;
 
 /**
  * Utility class that opens new windows and switches scenes in current window.
  */
 public class WindowUtil {
 
-//  /**
-//  * Opens a new modal window.
-//
-//  * @param resource the resource file
-//  * @param title the title for the new window
-//  * @param controller the controller class for the new window
-//  * @param ownerStage the owner stage
-//  * @param bundle the resource bundle for localization
-//  */
-//  public static void openNewWindow(String resource, String title, Object controller, Stage ownerStage, ResourceBundle bundle) {
-//    try {
-//      FXMLLoader loader = new FXMLLoader(controller.getClass().getResource(resource), bundle);
-//      Parent root = loader.load();
-//      loader.setController(controller);
-//
-//      Stage stage = new Stage();
-//      stage.setTitle(title);
-//      stage.setScene(new Scene(root));
-//      stage.initModality(Modality.WINDOW_MODAL);
-//      stage.initOwner(ownerStage);
-//      stage.showAndWait();
-//    } catch (IOException e) {
-//      System.err.println("Failed to open new window: " + e.getMessage());
-//      e.printStackTrace(System.err);
-//    }
-//  }
+  /**
+  * Opens a new modal window.
+
+  * @param resource the resource file
+  * @param title the title for the new window
+  * @param controller the controller class for the new window
+  * @param ownerStage the owner stage
+  * @param bundle the resource bundle for localization
+  */
+  public static void openNewWindow(String resource, String title, Object controller, Stage ownerStage, ResourceBundle bundle) {
+    try {
+      FXMLLoader loader = new FXMLLoader(controller.getClass().getResource(resource), bundle);
+      Parent root = loader.load();
+      loader.setController(controller);
+
+      Stage stage = new Stage();
+      stage.setTitle(title);
+      stage.setScene(new Scene(root));
+      stage.initModality(Modality.WINDOW_MODAL);
+      stage.initOwner(ownerStage);
+      stage.showAndWait();
+    } catch (IOException e) {
+      System.err.println("Failed to open new window: " + e.getMessage());
+      e.printStackTrace(System.err);
+    }
+  }
 
 //  /**
 //   * Switches the current stage scene.
