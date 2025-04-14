@@ -150,7 +150,7 @@
                             text="DD.MM"/>
                      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0"
                                  prefWidth="63.0" vbarPolicy="NEVER">
-                        <VBox fx:id="monVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
+                        <VBox fx:id="monBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
                      </ScrollPane>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
@@ -159,7 +159,7 @@
                      <Label fx:id="tueDateLabel" text="DD.MM"/>
                      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0"
                                  prefWidth="63.0" vbarPolicy="NEVER">
-                        <VBox fx:id="tueVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
+                        <VBox fx:id="tueBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
                      </ScrollPane>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
@@ -168,7 +168,7 @@
                      <Label fx:id="wedDateLabel" text="DD.MM"/>
                      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0"
                                  prefWidth="63.0" vbarPolicy="NEVER">
-                        <VBox fx:id="wedVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
+                        <VBox fx:id="wedBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
                      </ScrollPane>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
@@ -177,7 +177,7 @@
                      <Label fx:id="thuDateLabel" text="DD.MM"/>
                      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0"
                                  prefWidth="63.0" vbarPolicy="NEVER">
-                        <VBox fx:id="thuVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
+                        <VBox fx:id="thuBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
                      </ScrollPane>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
@@ -186,7 +186,7 @@
                      <Label fx:id="friDateLabel" text="DD.MM"/>
                      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0"
                                  prefWidth="63.0" vbarPolicy="NEVER">
-                        <VBox fx:id="friVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
+                        <VBox fx:id="friBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
                      </ScrollPane>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
@@ -195,7 +195,7 @@
                      <Label fx:id="satDateLabel" text="DD.MM"/>
                      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0"
                                  prefWidth="63.0" vbarPolicy="NEVER">
-                        <VBox fx:id="satVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
+                        <VBox fx:id="satBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
                      </ScrollPane>
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
@@ -204,7 +204,7 @@
                      <Label fx:id="sunDateLabel" text="DD.MM"/>
                      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="336.0"
                                  prefWidth="63.0" vbarPolicy="NEVER">
-                        <VBox fx:id="sunVBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
+                        <VBox fx:id="sunBox" prefHeight="451.0" prefWidth="61.0" spacing="10.0"/>
                      </ScrollPane>
                   </VBox>
                </GridPane>

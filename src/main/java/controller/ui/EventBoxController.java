@@ -33,8 +33,8 @@ public class EventBoxController {
     eventLocation.setText(LocationController.getLocationById(event.getLocationId()).getName());
   }
 
-  @FXML
-  private void handleBoxClick() {
-    WindowUtil.openNewWindow("/fxml/event_page.fxml", event.getTitle(), this, (Stage) eventTitle.getScene().getWindow(), Main.bundle);
-  }
+//  @FXML
+//  private void handleBoxClick() {
+//    WindowUtil.openNewWindow("/fxml/event_page.fxml", event.getTitle(), this, (Stage) eventTitle.getScene().getWindow(), Main.bundle);
+//  }
 }

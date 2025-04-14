@@ -73,9 +73,9 @@
         <Label fx:id="passwordError" prefHeight="17.0" prefWidth="182.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
     </GridPane>
     <HBox alignment="CENTER" prefHeight="26.0" prefWidth="620.0" spacing="10.0">
-        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginAction" prefHeight="33.0" prefWidth="120.0" text="%login.button" />
-        <Button fx:id="loginAsGuestButton" mnemonicParsing="false" onAction="#handleLoginAsGuestAction" prefHeight="33.0" prefWidth="120.0" text="%login.guest.button" />
+        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" prefHeight="33.0" prefWidth="120.0" text="%login.button" />
+        <Button fx:id="loginAsGuestButton" mnemonicParsing="false" onAction="#loginAsGuest" prefHeight="33.0" prefWidth="120.0" text="%login.guest.button" />
     </HBox>
-    <Hyperlink fx:id="signupLink" onAction="#handleSignupAction" text="%signup.link" underline="true" />
+    <Hyperlink fx:id="signupLink" onAction="#goToSignup" text="%signup.link" underline="true" />
     <ComboBox fx:id="languageSelector" prefWidth="150.0" />
 </VBox>
