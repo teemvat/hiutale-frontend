@@ -35,6 +35,11 @@ public class EventBoxController {
 
   @FXML
   private void handleBoxClick() {
-    WindowUtil.openNewWindow("/fxml/event_page.fxml", event.getTitle(), this, (Stage) eventTitle.getScene().getWindow(), Main.getBundle());
+    WindowUtil.openNewWindow(
+            "/fxml/event_page.fxml",
+            event.getTitle(),
+            (Stage) eventTitle.getScene().getWindow(),
+            Main.getBundle(),
+            (EventPageController controller) -> controller.setEventDetails(event));
   }
 }

@@ -3,19 +3,14 @@ package controller.ui;
 import app.Main;
 import controller.api.LocationController;
 import controller.api.UserController;
-import java.io.IOException;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
 import utils.ImageUtil;
+import utils.WindowUtil;
 
 /**
  * Controller for managing the Event Page view.
@@ -35,7 +30,6 @@ public class EventPageController {
   @FXML private ImageView eventImage;
   @FXML private Button buyTicketButton;
   private Event event;
-  private final Logger logger = Logger.getLogger(getClass().getName());
 
   /**
    * Handles the action of buying a ticket for the event.
@@ -43,20 +37,13 @@ public class EventPageController {
   */
   @FXML
   private void handleBuyTicketAction() {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.getBundle());
-      Parent root = loader.load();
-      RsvpController controller = loader.getController();
-      controller.setEvent(this.event);
-      Stage stage = new Stage();
-      stage.setTitle(Main.getBundle().getString("rsvp.title"));
-      stage.setScene(new Scene(root));
-      stage.initModality(Modality.WINDOW_MODAL);
-      stage.initOwner(buyTicketButton.getScene().getWindow());
-      stage.showAndWait();
-    } catch (IOException e) {
-      logger.info("Error loading RSVP window,");
-    }
+    WindowUtil.openNewWindow(
+            "/fxml/rsvp.fxml",
+            Main.getBundle().getString("rsvp.title"),
+            (Stage) buyTicketButton.getScene().getWindow(),
+            Main.getBundle(),
+            (RsvpController controller) -> controller.setEvent(event)
+    );
   }
 
   /**

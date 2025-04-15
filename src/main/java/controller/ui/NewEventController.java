@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ import javafx.util.StringConverter;
 import model.Category;
 import model.Event;
 import model.Location;
+import utils.FormValidator;
 
 /**
  * Controller class for the "New Event" view.
@@ -265,36 +267,26 @@ public class NewEventController {
    * @return true if all fields are valid, false otherwise.
   */
   private boolean validateInput() {
-    String empty = "empty.field";
-    boolean isValid = true;
-    isValid &= validateField(titleField, titleError, Main.getBundle().getString(empty));
-    isValid &= validateField(descriptionField, descriptionError, Main.getBundle().getString(empty));
-    isValid &= validateField(categoriesComboBox, categoriesError, Main.getBundle().getString(empty));
-    isValid &= validateField(locationComboBox, locationError, Main.getBundle().getString(empty));
-    isValid &= validateField(startDatePicker, startDateError, Main.getBundle().getString(empty));
-    isValid &= validateField(endDatePicker, endDateError, Main.getBundle().getString(empty));
-    isValid &= validateField(startTimeField, startTimeError, Main.getBundle().getString(empty));
-    isValid &= validateField(endTimeField, endTimeError, Main.getBundle().getString(empty));
-    isValid &= validateField(capacityField, capacityError, Main.getBundle().getString(empty));
-    isValid &= validateField(priceField, priceError, Main.getBundle().getString(empty));
-    return isValid;
+    return Stream.of(
+        validateField(titleField, titleError),
+        validateField(descriptionField, descriptionError),
+        validateField(categoriesComboBox, categoriesError),
+        validateField(locationComboBox, locationError),
+        validateField(startDatePicker, startDateError),
+        validateField(endDatePicker, endDateError),
+        validateField(startTimeField, startTimeError),
+        validateField(endTimeField, endTimeError),
+        validateField(capacityField, capacityError),
+        validateField(priceField, priceError)
+    ).allMatch(valid -> valid);
   }
 
-  /**
-   * Validates a specific field and displays an error message if the field is invalid.
-   *
-   * @param field The field to validate.
-   * @param errorLabel The label to display the error message.
-   * @param errorMessage The error message to display if the field is invalid.
-   * @return true if the field is valid, false otherwise.
-  */
-  private boolean validateField(Control field, Label errorLabel, String errorMessage) {
-    boolean isValid = true;
-    if (field instanceof TextField && ((TextField) field).getText().isEmpty()) isValid = false;
-    if (field instanceof ComboBox && ((ComboBox<?>) field).getValue() == null) isValid = false;
-    if (field instanceof DatePicker && ((DatePicker) field).getValue() == null) isValid = false;
+  private boolean validateField(Control field, Label errorLabel) {
+    boolean isValid = !(field instanceof TextField textField && textField.getText().isEmpty()
+                     || field instanceof ComboBox<?> comboBox && comboBox.getValue() == null
+                     || field instanceof DatePicker datePicker && datePicker.getValue() == null);
 
-    errorLabel.setText(isValid ? "" : errorMessage);
+    errorLabel.setText(isValid ? "" : Main.getBundle().getString("empty.field"));
     return isValid;
   }
 }

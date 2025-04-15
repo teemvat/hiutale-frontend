@@ -5,6 +5,7 @@ import static utils.RtlLanguageUtil.isRtl;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
@@ -23,21 +24,13 @@ public class WindowUtil {
 
   private WindowUtil() {}
 
-
-  /**
-  * Opens a new modal window.
-
-  * @param resource the resource file
-  * @param title the title for the new window
-  * @param controller the controller class for the new window
-  * @param ownerStage the owner stage
-  * @param bundle the resource bundle for localization
-  */
-  public static void openNewWindow(String resource, String title, Object controller, Stage ownerStage, ResourceBundle bundle) {
+  public static <T> void openNewWindow(String resource, String title, Stage ownerStage, ResourceBundle bundle, Consumer<T> controllerInitializer) {
     try {
-      FXMLLoader loader = new FXMLLoader(controller.getClass().getResource(resource), bundle);
+      FXMLLoader loader = new FXMLLoader(WindowUtil.class.getResource(resource), bundle);
       Parent root = loader.load();
-      loader.setController(controller);
+
+      T controller = loader.getController();
+      controllerInitializer.accept(controller);
 
       Stage stage = new Stage();
       stage.setTitle(title);
@@ -49,28 +42,6 @@ public class WindowUtil {
       logger.info("Failed to open new window: " + e.getMessage());
     }
   }
-
-//  /**
-//   * Switches the current stage scene.
-//   *
-//   * @param resource the FXML resource file
-//   * @param title    the title for the new scene
-//   * @param bundle   the resource bundle for localization
-//   * @param currentStage the current stage
-//   */
-//  public static void switchScene(String resource, String title, ResourceBundle bundle, Stage currentStage) {
-//    try {
-//      FXMLLoader loader = new FXMLLoader(WindowUtil.class.getResource(resource), bundle);
-//      Parent root = loader.load();
-//      Scene scene = new Scene(root);
-//
-//      currentStage.setTitle(title);
-//      currentStage.setScene(scene);
-//    } catch (IOException e) {
-//      System.err.println("Error switching scene: " + e.getMessage());
-//      e.printStackTrace(System.err);
-//    }
-//  }
 
   public static void changeScene(String resource, String titleKey, Control control, ResourceBundle bundle) {
     try {
@@ -93,4 +64,6 @@ public class WindowUtil {
       logger.info("Error changing the scene: " + e.getMessage());
     }
   }
+
+
 }

@@ -25,7 +25,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -35,13 +34,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.Category;
 import model.Event;
 import model.Location;
 import model.User;
+import utils.ComboBoxUtils;
+import utils.WindowUtil;
 
 /**
  * Controller for managing the Home view.
@@ -128,50 +127,32 @@ public class HomeController {
   }
 
   private void setComboBoxConverters() {
-    eventTypeComboBox.setConverter(new StringConverter<>() {
-      @Override
-      public String toString(Category category) {
-        return (category == null) ? "" : category.getName();
-      }
+    ComboBoxUtils.setComboBoxConverter(
+            eventTypeComboBox,
+            Category::getName,
+            string -> eventTypeComboBox.getItems().stream()
+                    .filter(category -> category.getName().equals(string))
+                    .findFirst()
+                    .orElse(null)
+    );
 
-      @Override
-      public Category fromString(String string) {
-        return eventTypeComboBox.getItems().stream()
-                .filter(category -> category.getName().equals(string))
-                .findFirst()
-                .orElse(null);
-      }
-    });
+    ComboBoxUtils.setComboBoxConverter(
+            locationComboBox,
+            Location::getName,
+            string -> locationComboBox.getItems().stream()
+                    .filter(location -> location.getName().equals(string))
+                    .findFirst()
+                    .orElse(null)
+    );
 
-    locationComboBox.setConverter(new StringConverter<>() {
-      @Override
-      public String toString(Location location) {
-        return (location == null) ? "" : location.getName();
-      }
-
-      @Override
-      public Location fromString(String string) {
-        return locationComboBox.getItems().stream()
-                .filter(location -> location.getName().equals(string))
-                .findFirst()
-                .orElse(null);
-      }
-    });
-
-    organizerComboBox.setConverter(new StringConverter<>() {
-      @Override
-      public String toString(User organizer) {
-        return (organizer == null) ? "" : organizer.getUsername();
-      }
-
-      @Override
-      public User fromString(String string) {
-        return organizerComboBox.getItems().stream()
-                .filter(organizer -> organizer.getUsername().equals(string))
-                .findFirst()
-                .orElse(null);
-        }
-    });
+    ComboBoxUtils.setComboBoxConverter(
+            organizerComboBox,
+            User::getUsername,
+            string -> organizerComboBox.getItems().stream()
+                    .filter(organizer -> organizer.getUsername().equals(string))
+                    .findFirst()
+                    .orElse(null)
+    );
   }
 
   /**
@@ -400,7 +381,13 @@ public class HomeController {
   */
   @FXML
   private void handleProfileAction() {
-    openNewWindow("/fxml/profile.fxml", Main.getBundle().getString("profile.title"), profileButton);
+    WindowUtil.openNewWindow(
+            "/fxml/profile.fxml",
+            Main.getBundle().getString("profile.title"),
+            (Stage) profileButton.getScene().getWindow(),
+            Main.getBundle(),
+            controller -> {}
+    );
   }
 
   /**
@@ -408,30 +395,14 @@ public class HomeController {
   */
   @FXML
   private void handleAddEventAction() {
-    openNewWindow("/fxml/new_event.fxml", Main.getBundle().getString("new.event.title"), addEventButton);
-  }
-
-  /**
-   * Opens a new window with the specified FXML resource and title.
-   *
-   * @param resource The path to the FXML file.
-   * @param title The title of the new window.
-   * @param ownerButton The button that owns the new window.
-  */
-  private void openNewWindow(String resource, String title, Button ownerButton) {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.getBundle());
-      Parent root = loader.load();
-      Stage stage = new Stage();
-      stage.setTitle(title);
-      stage.setScene(new Scene(root));
-      stage.initModality(Modality.WINDOW_MODAL);
-      stage.initOwner(ownerButton.getScene().getWindow());
-      stage.setOnHiding(event -> updateEventList());
-      stage.showAndWait();
-    } catch (IOException e) {
-      logger.info("Error opening new window " + e.getMessage());
-    }
+    WindowUtil.openNewWindow(
+            "/fxml/new_event.fxml",
+            Main.getBundle().getString("new.event.title"),
+            (Stage) addEventButton.getScene().getWindow(),
+            Main.getBundle(),
+            controller -> {}
+    );
+    updateEventList();
   }
 
   /**

@@ -3,24 +3,19 @@ package controller.ui;
 import app.Main;
 import controller.api.FavouriteController;
 import controller.api.LocationController;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
 import utils.ImageUtil;
+import utils.WindowUtil;
 
 /**
  * Controller for controlling the event cards.
@@ -38,7 +33,6 @@ public class EventCardController {
   @FXML private Button favoriteButton;
 
   private Event event;
-  private final Logger logger = Logger.getLogger(getClass().getName());
 
   /**
    * Method that updates the information on event card based on the event.
@@ -83,20 +77,13 @@ public class EventCardController {
 
   @FXML
   private void handleTicketAction() {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rsvp.fxml"), Main.getBundle());
-      Parent root = loader.load();
-      RsvpController controller = loader.getController();
-      controller.setEvent(this.event);
-      Stage stage = new Stage();
-      stage.setTitle(Main.getBundle().getString("ticket.title"));
-      stage.setScene(new Scene(root));
-      stage.initModality(Modality.WINDOW_MODAL);
-      stage.initOwner(ticketButton.getScene().getWindow());
-      stage.showAndWait();
-    } catch (IOException e) {
-      logger.info("Error loading RSVP window.");
-    }
+    WindowUtil.openNewWindow(
+            "/fxml/rsvp.fxml",
+            Main.getBundle().getString("ticket.title"),
+            (Stage) ticketButton.getScene().getWindow(),
+            Main.getBundle(),
+            (RsvpController controller) -> controller.setEvent(event)
+    );
   }
 
   private void updateFavouriteIcon() {
@@ -104,6 +91,16 @@ public class EventCardController {
     String startEmpty = "/pictures/icons/star.png";
     boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
     favoriteImage.setImage(loadImage(isFavourite ? starFull : startEmpty));
+  }
+
+  @FXML
+  private void handleFavoriteAction() {
+    if (FavouriteController.getUserFavourites().contains(this.event)) {
+      FavouriteController.deleteFavourite(this.event.getId());
+    } else {
+      FavouriteController.createFavourite(this.event.getId());
+    }
+    updateFavouriteIcon();
   }
 
   @FXML
@@ -121,50 +118,21 @@ public class EventCardController {
   }
 
   @FXML
-  private void handleFavoriteAction() {
-    if (FavouriteController.getUserFavourites().contains(this.event)) {
-      FavouriteController.deleteFavourite(this.event.getId());
-    } else {
-      FavouriteController.createFavourite(this.event.getId());
-    }
-    updateFavouriteIcon();
-  }
-
-  @FXML
   private void handleCardClick() {
-    try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_page.fxml"), Main.getBundle());
-      Parent root = loader.load();
-      EventPageController controller = loader.getController();
-      controller.setEventDetails(event);
-      Stage stage = new Stage();
-      stage.setTitle(event.getTitle());
-      stage.setScene(new Scene(root));
-      stage.initModality(Modality.WINDOW_MODAL);
-      stage.initOwner(eventTitle.getScene().getWindow());
-      stage.showAndWait();
-    } catch (IOException e) {
-      logger.info("Failed to open Event Page.");
-    }
+    WindowUtil.openNewWindow(
+            "/fxml/event_page.fxml",
+            event.getTitle(),
+            (Stage) eventTitle.getScene().getWindow(),
+            Main.getBundle(),
+            (EventPageController controller) -> controller.setEventDetails(event)
+    );
   }
 
   private Image loadImage(String path) {
-    return loadImage(path, null);
-  }
-
-  private Image loadImage(String path, String fallbackPath) {
     InputStream stream = getClass().getResourceAsStream(path);
     if (stream != null) {
       return new Image(stream);
     }
-
-    if (fallbackPath != null) {
-      InputStream fallbackStream = getClass().getResourceAsStream(fallbackPath);
-      if (fallbackStream != null) {
-        return new Image(fallbackStream);
-      }
-    }
-
     return null;
   }
 }
