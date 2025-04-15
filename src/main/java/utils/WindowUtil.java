@@ -5,6 +5,7 @@ import static utils.RtlLanguageUtil.isRtl;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
@@ -17,6 +18,11 @@ import javafx.stage.Stage;
  * Utility class that opens new windows and switches scenes in current window.
  */
 public class WindowUtil {
+
+  private static final Logger logger = Logger.getLogger(WindowUtil.class.getName());
+
+  private WindowUtil() {}
+
 
   /**
   * Opens a new modal window.
@@ -40,8 +46,7 @@ public class WindowUtil {
       stage.initOwner(ownerStage);
       stage.showAndWait();
     } catch (IOException e) {
-      System.err.println("Failed to open new window: " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Failed to open new window: " + e.getMessage());
     }
   }
 
@@ -85,8 +90,7 @@ public class WindowUtil {
       stage.setTitle(bundle.getString(titleKey));
       stage.setScene(scene);
     } catch (IOException e) {
-      System.err.println("Error changing the scene: " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Error changing the scene: " + e.getMessage());
     }
   }
 }
