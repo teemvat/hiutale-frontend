@@ -10,6 +10,8 @@ import javafx.util.StringConverter;
  */
 public class ComboBoxUtils {
 
+  private ComboBoxUtils() {}
+
   /**
    * Sets a StringConverter for a ComboBox to handle conversion between
    * objects and their string representations.

@@ -1,6 +1,7 @@
 package controller.ui;
 
 import controller.api.AttendanceController;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -15,6 +16,7 @@ public class RsvpController {
 
   @FXML private Button rsvpButton;
   private Event event;
+  Logger logger = Logger.getLogger(getClass().getName());
 
   /**
    * Sets the event for which the RSVP is being made.
@@ -34,12 +36,12 @@ public class RsvpController {
   private void handleRsvpAction() {
     if (this.event != null) {
       AttendanceController.createAttendance(this.event.getId());
-      System.out.println("RSVP submitted for event: " + this.event.getTitle());
+      logger.info("RSVP submitted for event: " + this.event.getTitle());
 
       Stage stage = (Stage) rsvpButton.getScene().getWindow();
       stage.close();
     } else {
-      System.out.println("Event is not set.");
+      logger.info("Event is not set.");
     }
   }
 }

@@ -4,6 +4,7 @@ import app.Main;
 import controller.api.LocationController;
 import controller.api.UserController;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,7 +35,7 @@ public class EventPageController {
   @FXML private ImageView eventImage;
   @FXML private Button buyTicketButton;
   private Event event;
-  //private Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
+  private final Logger logger = Logger.getLogger(getClass().getName());
 
   /**
    * Handles the action of buying a ticket for the event.
@@ -54,8 +55,7 @@ public class EventPageController {
       stage.initOwner(buyTicketButton.getScene().getWindow());
       stage.showAndWait();
     } catch (IOException e) {
-      System.err.println("Error loading RSVP window: " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Error loading RSVP window,");
     }
   }
 

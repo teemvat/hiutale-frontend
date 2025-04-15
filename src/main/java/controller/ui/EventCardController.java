@@ -6,7 +6,7 @@ import controller.api.LocationController;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.Objects;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,7 +38,7 @@ public class EventCardController {
   @FXML private Button favoriteButton;
 
   private Event event;
-  //private final Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/pictures/placeholder_event.jpg")));
+  private final Logger logger = Logger.getLogger(getClass().getName());
 
   /**
    * Method that updates the information on event card based on the event.
@@ -66,7 +66,17 @@ public class EventCardController {
 
     if (totalTickets > 0) {
       double percentageLeft = (double) ticketsLeft / totalTickets * 100;
-      String iconPath = percentageLeft > 75 ? greenTicket : percentageLeft > 50 ? yellowTicket : percentageLeft > 25 ? orangeTicket : redTicket;
+      String iconPath;
+
+      if (percentageLeft > 75) {
+        iconPath = greenTicket;
+      } else if (percentageLeft > 50) {
+        iconPath = yellowTicket;
+      } else if (percentageLeft > 25) {
+        iconPath = orangeTicket;
+      } else {
+        iconPath = redTicket;
+      }
       ticketImage.setImage(loadImage(iconPath));
     }
   }
@@ -85,8 +95,7 @@ public class EventCardController {
       stage.initOwner(ticketButton.getScene().getWindow());
       stage.showAndWait();
     } catch (IOException e) {
-      System.err.println("Error loading RSVP window: " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Error loading RSVP window.");
     }
   }
 
@@ -109,7 +118,6 @@ public class EventCardController {
     ClipboardContent content = new ClipboardContent();
     content.putString(eventInfo);
     clipboard.setContent(content);
-    System.out.println("Event information copied to clipboard");
   }
 
   @FXML
@@ -136,7 +144,7 @@ public class EventCardController {
       stage.initOwner(eventTitle.getScene().getWindow());
       stage.showAndWait();
     } catch (IOException e) {
-      System.err.println("Failed to open Event Page: " + e.getMessage());
+      logger.info("Failed to open Event Page.");
     }
   }
 
@@ -145,15 +153,6 @@ public class EventCardController {
   }
 
   private Image loadImage(String path, String fallbackPath) {
-
-    // Old version that works
-//    try {
-//      return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-//    } catch (NullPointerException e) {
-//      return fallbackPath != null ? new Image(Objects.requireNonNull(getClass().getResourceAsStream(fallbackPath))) : null;
-//    }
-
-    // New version that avoids catching NullPointerException, not yet tested
     InputStream stream = getClass().getResourceAsStream(path);
     if (stream != null) {
       return new Image(stream);

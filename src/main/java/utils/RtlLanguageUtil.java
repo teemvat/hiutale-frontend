@@ -7,6 +7,8 @@ import java.util.Locale;
  */
 public class RtlLanguageUtil {
 
+  private RtlLanguageUtil() {}
+
   /**
    * Checks if the given locale corresponds to a right-to-left (RTL) language.
    *

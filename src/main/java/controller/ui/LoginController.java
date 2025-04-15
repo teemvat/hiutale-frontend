@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
@@ -45,6 +46,7 @@ public class LoginController {
   @FXML private ComboBox<String> languageSelector;
 
   private static final Map<String, Locale> LANGUAGE_MAP = new LinkedHashMap<>();
+  Logger logger = Logger.getLogger(getClass().getName());
 
   static {
     LANGUAGE_MAP.put("English", Locale.of("en"));
@@ -109,8 +111,7 @@ public class LoginController {
       LoginController controller = loader.getController();
       controller.setSelectedLanguage(selectedLanguage);
     } catch (IOException e) {
-      System.err.println("Error reloading the scene: " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Error reloading the scene: " + e.getMessage());
     }
   }
 
@@ -147,7 +148,7 @@ public class LoginController {
     if (user != null) {
       WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.getBundle());
     } else {
-      System.err.println("Error logging in");
+      logger.info("Error logging in.");
       emailError.setText(Main.getBundle().getString("login.error"));
       passwordError.setText(Main.getBundle().getString("login.error"));
     }
@@ -157,7 +158,6 @@ public class LoginController {
 
   @FXML
   private void loginAsGuest() {
-    System.out.println("Login as guest");
     WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.getBundle());
   }
 

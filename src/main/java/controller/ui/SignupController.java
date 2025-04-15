@@ -3,6 +3,7 @@ package controller.ui;
 import app.Main;
 import controller.api.UserController;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +33,8 @@ public class SignupController {
   @FXML private Button signupButton;
   @FXML private Hyperlink loginLink;
 
+  Logger logger = Logger.getLogger(getClass().getName());
+
   /**
    * Handles the signup action when the signup button is clicked.
    * Validates user input, registers the user, and navigates to the home page if successful.
@@ -42,27 +45,28 @@ public class SignupController {
     String email = emailField.getText();
     String password = passwordField.getText();
     String confirmPassword = confirmPasswordField.getText();
+    String empty = "empty.field";
 
     if (username.isEmpty()) {
-      usernameError.setText(Main.getBundle().getString("empty.field"));
+      usernameError.setText(Main.getBundle().getString(empty));
     } else {
       usernameError.setText("");
     }
 
     if (email.isEmpty()) {
-      emailError.setText(Main.getBundle().getString("empty.field"));
+      emailError.setText(Main.getBundle().getString(empty));
     } else {
       emailError.setText("");
     }
 
     if (password.isEmpty()) {
-      passwordError.setText(Main.getBundle().getString("empty.field"));
+      passwordError.setText(Main.getBundle().getString(empty));
     } else {
       passwordError.setText("");
     }
 
     if (confirmPassword.isEmpty()) {
-      confirmPasswordError.setText(Main.getBundle().getString("empty.field"));
+      confirmPasswordError.setText(Main.getBundle().getString(empty));
     } else if (!password.equals(confirmPassword)) {
       confirmPasswordError.setText(Main.getBundle().getString("password.match.error"));
     } else {
@@ -79,8 +83,7 @@ public class SignupController {
           stage.setTitle(Main.getBundle().getString("home.title"));
           stage.setScene(scene);
         } catch (IOException e) {
-          System.err.println("Error opening homepage: " + e.getMessage());
-          e.printStackTrace(System.err);
+          logger.info("Error opening homepage: " + e.getMessage());
         }
       } else {
         signupError.setText(Main.getBundle().getString("signup.error"));
@@ -101,8 +104,7 @@ public class SignupController {
       stage.setTitle(Main.getBundle().getString("login.title"));
       stage.setScene(scene);
     } catch (IOException e) {
-      System.err.println("Error with login: " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Error with login: " + e.getMessage());
     }
   }
 }

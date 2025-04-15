@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -79,15 +80,18 @@ public class HomeController {
   @FXML private VBox sunBox;
   @FXML private VBox[] dayBoxes;
 
+  private static final String ALPHABETICAL = "sort.alphabetical";
+  private static final String DATE = "sort.date";
   private List<Event> cachedEvents = new ArrayList<>();
+  Logger logger = Logger.getLogger(getClass().getName());
 
   private enum SortType {
     ALPHABETICAL, DATE
   }
 
   private static final Map<String, SortType> SORT_MAP = Map.of(
-          Main.getBundle().getString("sort.alphabetical"), SortType.ALPHABETICAL,
-          Main.getBundle().getString("sort.date"), SortType.DATE
+          Main.getBundle().getString(ALPHABETICAL), SortType.ALPHABETICAL,
+          Main.getBundle().getString(DATE), SortType.DATE
   );
 
   /**
@@ -115,12 +119,12 @@ public class HomeController {
 
     // Set sorting options
     sortChoiceBox.setItems(FXCollections.observableArrayList(
-            Main.getBundle().getString("sort.alphabetical"),
-            Main.getBundle().getString("sort.date")
+            Main.getBundle().getString(ALPHABETICAL),
+            Main.getBundle().getString(DATE)
     ));
 
     // Set default sorting option
-    sortChoiceBox.setValue(Main.getBundle().getString("sort.alphabetical"));
+    sortChoiceBox.setValue(Main.getBundle().getString(ALPHABETICAL));
   }
 
   private void setComboBoxConverters() {
@@ -278,7 +282,7 @@ public class HomeController {
         dayBoxes[dayOffset].getChildren().add(loadFxml("/fxml/event_box.fxml", event));
       }
     } catch (DateTimeParseException e) {
-      System.err.println("Invalid date format for event: " + event.getTitle());
+      logger.info("Invalid date format for event: " + event.getTitle());
     }
   }
 
@@ -316,8 +320,7 @@ public class HomeController {
 
       return root;
     } catch (IOException e) {
-      System.err.println("Error loading new FXML file " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Error loading new FXML file " + e.getMessage());
       return new Label("Error loading event");
     }
   }
@@ -328,7 +331,6 @@ public class HomeController {
   @FXML
   private void handleSearchAction() {
     Category selectedCategory = eventTypeComboBox.getSelectionModel().getSelectedItem();
-    System.out.println("Selected category: " + selectedCategory);
     Location selectedLocation = locationComboBox.getSelectionModel().getSelectedItem();
     User selectedOrganizer = organizerComboBox.getSelectionModel().getSelectedItem();
 
@@ -428,8 +430,7 @@ public class HomeController {
       stage.setOnHiding(event -> updateEventList());
       stage.showAndWait();
     } catch (IOException e) {
-      System.err.println("Error opening new window " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Error opening new window " + e.getMessage());
     }
   }
 

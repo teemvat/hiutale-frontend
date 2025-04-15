@@ -8,6 +8,7 @@ import controller.api.UserController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,6 +36,8 @@ public class ProfileController {
   @FXML private VBox favoriteEventsBox;
   @FXML private VBox upcomingEventsBox;
   @FXML private VBox organizedEventsBox;
+
+  Logger logger = Logger.getLogger(getClass().getName());
 
   /**
    * Initializes the profile view by loading event cards and setting user information.
@@ -79,8 +82,7 @@ public class ProfileController {
         controller.setEventData(event);
         container.getChildren().add(root);
       } catch (IOException e) {
-        System.err.println("Failed to load event card for: " + event.getTitle() + " " + e.getMessage());
-        e.printStackTrace(System.err);
+        logger.info("Failed to load event card for: " + event.getTitle() + " " + e.getMessage());
       }
     }
   }
@@ -99,10 +101,10 @@ public class ProfileController {
    * Closes all open windows in the application.
    */
   private void closeAllWindows() {
-    List<Window> windows = new ArrayList<>(Stage.getWindows());
+    List<Window> windows = new ArrayList<>(Window.getWindows());
     for (Window window : windows) {
-      if (window instanceof Stage) {
-        ((Stage) window).close();
+      if (window instanceof Stage stage) {
+        stage.close();
       }
     }
   }
@@ -117,8 +119,7 @@ public class ProfileController {
       stage.setScene(new Scene(loginPage));
       stage.show();
     } catch (IOException e) {
-      System.err.println("Failed to open login page: " + e.getMessage());
-      e.printStackTrace(System.err);
+      logger.info("Failed to open login page: " + e.getMessage());
     }
   }
 

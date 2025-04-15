@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -69,6 +70,7 @@ public class NewEventController {
   private final ObservableList<Category> selectedCategories = FXCollections.observableArrayList();
   private final List<Category> allCategories = new ArrayList<>();
   private final List<Location> allLocations = new ArrayList<>();
+  Logger logger = Logger.getLogger(getClass().getName());
 
   /**
    * Initializes the controller.
@@ -80,7 +82,6 @@ public class NewEventController {
     configureInputFormatters();
     loadCategories();
     loadLocations();
-    //eventImage = placeholderImage = new File("/pictures/placeholder_event.jpg");
     setupCategorySelection();
     setComboBoxConverters();
   }
@@ -220,8 +221,7 @@ public class NewEventController {
       } catch (FileNotFoundException e) {
         eventImage = placeholderImage;
         imageError.setText(Main.getBundle().getString("image.error"));
-        System.err.println("Error with image selection: " + e.getMessage());
-        e.printStackTrace(System.err);
+        logger.info("Error with image selection: " + e.getMessage());
       }
     }
   }
@@ -251,7 +251,7 @@ public class NewEventController {
               Double.parseDouble(priceField.getText()),
               eventImage
       );
-      System.out.println("New event created: " + createdEvent);
+      logger.info("New event created: " + createdEvent);
       ((Stage) addEventButton.getScene().getWindow()).close();
     } catch (Exception e) {
       addEventError.setText(Main.getBundle().getString("event.creation.error"));
@@ -265,17 +265,18 @@ public class NewEventController {
    * @return true if all fields are valid, false otherwise.
   */
   private boolean validateInput() {
+    String empty = "empty.field";
     boolean isValid = true;
-    isValid &= validateField(titleField, titleError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(descriptionField, descriptionError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(categoriesComboBox, categoriesError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(locationComboBox, locationError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(startDatePicker, startDateError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(endDatePicker, endDateError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(startTimeField, startTimeError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(endTimeField, endTimeError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(capacityField, capacityError, Main.getBundle().getString("empty.field"));
-    isValid &= validateField(priceField, priceError, Main.getBundle().getString("empty.field"));
+    isValid &= validateField(titleField, titleError, Main.getBundle().getString(empty));
+    isValid &= validateField(descriptionField, descriptionError, Main.getBundle().getString(empty));
+    isValid &= validateField(categoriesComboBox, categoriesError, Main.getBundle().getString(empty));
+    isValid &= validateField(locationComboBox, locationError, Main.getBundle().getString(empty));
+    isValid &= validateField(startDatePicker, startDateError, Main.getBundle().getString(empty));
+    isValid &= validateField(endDatePicker, endDateError, Main.getBundle().getString(empty));
+    isValid &= validateField(startTimeField, startTimeError, Main.getBundle().getString(empty));
+    isValid &= validateField(endTimeField, endTimeError, Main.getBundle().getString(empty));
+    isValid &= validateField(capacityField, capacityError, Main.getBundle().getString(empty));
+    isValid &= validateField(priceField, priceError, Main.getBundle().getString(empty));
     return isValid;
   }
 
