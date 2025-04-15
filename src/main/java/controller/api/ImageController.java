@@ -130,8 +130,8 @@ public class ImageController {
      * @param eventId The ID of the event whose image URL is to be retrieved.
      * @return The URL of the image as a String, or an empty string if no image is found.
      */
-    public static String getImageUrl(String eventId) {
-        String response = sendHttpRequest("GET", "/event/" + eventId, "");
+    public static String getImageUrl(String eventId) {      // Tässä vikaa
+        String response = sendHttpRequest("GET", "/files/event/" + eventId, "");
         if (response.isEmpty()) {
             System.out.println("Error: Empty response for eventId " + eventId);
             return "";
@@ -189,7 +189,7 @@ public class ImageController {
         HttpURLConnection conn = null;
         String output = null;
         try {
-            URL url = URI.create(BASE_URL + "/delete/" + imageId).toURL();
+            URL url = URI.create(BASE_URL + "/files//delete/" + imageId).toURL();
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
 
