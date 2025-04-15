@@ -11,7 +11,7 @@ import java.net.URL;
  */
 public class ApiConnector {
     // The base URL of the backend server
-    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
+    private static final String BASE_URL = "http://37.27.9.255:8080";
 
     /**
      * Sends an HTTP request to the specified endpoint with the given method and request body.

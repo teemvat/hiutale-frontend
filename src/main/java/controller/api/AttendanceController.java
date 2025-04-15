@@ -17,6 +17,14 @@ public class AttendanceController {
     private static final Gson gson = new Gson();
 
     /**
+     * Private constructor to prevent instantiation of the AttendanceController class.
+     * This class is designed to be used statically.
+     */
+    private AttendanceController() {
+        // Private constructor to prevent instantiation
+    }
+
+    /**
      * Creates an attendance record for a specific event.
      *
      * @param eventId The ID of the event for which attendance is being created.
