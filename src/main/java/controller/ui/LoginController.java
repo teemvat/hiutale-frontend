@@ -1,159 +1,168 @@
 package controller.ui;
 
 import app.Main;
-import javafx.event.ActionEvent;
+import controller.api.UserController;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.User;
-import controller.api.UserController;
+import utils.FormValidator;
+import utils.WindowUtil;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-
+/**
+ * Controller for managing the login page and its associated actions.
+ *
+ * <p>This class handles user interactions on the login page, including logging in,
+ * signing up, and selecting a language. It also manages the UI components and
+ * their behavior, such as validating input fields and switching scenes.</p>
+ *
+ * <p>The language selector allows users to choose their preferred language, and
+ * the UI updates dynamically to reflect the selected language. The controller
+ * also supports right-to-left (RTL) languages.</p>
+ */
 public class LoginController {
 
-    @FXML private TextField emailField;
-    @FXML private PasswordField passwordField;
-    @FXML private Label emailError, passwordError;
-    @FXML private Button loginButton, loginAsGuestButton;
-    @FXML private Hyperlink signupLink;
-    @FXML private ComboBox<String> languageSelector;
+  @FXML private TextField emailField;
+  @FXML private PasswordField passwordField;
+  @FXML private Label emailError;
+  @FXML private Label passwordError;
+  @FXML private Button loginButton;
+  @FXML private Button loginAsGuestButton;
+  @FXML private Hyperlink signupLink;
+  @FXML private ComboBox<String> languageSelector;
 
-    private static final Map<String, Locale> LANGUAGE_MAP = new LinkedHashMap<>();
+  private static final Map<String, Locale> LANGUAGE_MAP = new LinkedHashMap<>();
+  Logger logger = Logger.getLogger(getClass().getName());
 
-    static {
-        LANGUAGE_MAP.put("English", new Locale("en"));
-        LANGUAGE_MAP.put("Suomi", new Locale("fi", "FI"));
-        LANGUAGE_MAP.put("日本語", new Locale("ja", "JP")); // Japanese
-        LANGUAGE_MAP.put("فارسی", new Locale("fa", "IR")); // Farsi (Persian)
-    }
+  static {
+    LANGUAGE_MAP.put("English", Locale.of("en"));
+    LANGUAGE_MAP.put("Suomi", Locale.of("fi", "FI"));
+    LANGUAGE_MAP.put("日本語", Locale.of("ja", "JP")); // Japanese
+    LANGUAGE_MAP.put("فارسی", Locale.of("fa", "IR")); // Farsi (Persian)
+  }
 
-    @FXML
-    public void initialize() {
-        // Populate the ComboBox with language names
-        languageSelector.getItems().addAll(LANGUAGE_MAP.keySet());
+  /**
+   * Initializes the login controller by setting up the language selector.
+   * Populates the language selector with available languages and sets the default
+   * selection based on the system's locale. Also, attaches an event handler to
+   * handle language switching when a new language is selected.
+   */
+  @FXML
+  public void initialize() {
+    // Populate the ComboBox with language names
+    languageSelector.getItems().addAll(LANGUAGE_MAP.keySet());
 
-        // Set the default selection based on system locale
-        Locale defaultLocale = Locale.getDefault();
-        languageSelector.setValue(LANGUAGE_MAP.entrySet().stream()
+    // Set the default selection based on system locale
+    Locale defaultLocale = Locale.getDefault();
+    languageSelector.setValue(LANGUAGE_MAP.entrySet().stream()
                 .filter(entry -> entry.getValue().getLanguage().equals(defaultLocale.getLanguage()))
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse("English"));
 
-        languageSelector.setOnAction(event -> switchLanguage());
+    languageSelector.setOnAction(event -> switchLanguage());
+  }
+
+  private void switchLanguage() {
+    languageSelector.setOnAction(null);
+
+    String selectedLanguage = languageSelector.getValue();
+    Locale newLocale = LANGUAGE_MAP.get(selectedLanguage);
+
+    if (newLocale != null) {
+      Main.setLocale(newLocale);
+      reloadScene(selectedLanguage);
+
+    }
+  }
+
+  private void reloadScene(String selectedLanguage) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+      loader.setResources(Main.getBundle());
+      Parent root = loader.load();
+
+      // Detect RTL language
+      if (selectedLanguage.equals("فارسی")) {
+        root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+      } else {
+        root.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+      }
+
+      Scene scene = new Scene(root);
+      Stage stage = (Stage) emailField.getScene().getWindow();
+      stage.setScene(scene);
+      stage.setTitle(Main.getBundle().getString("login.title"));
+
+      LoginController controller = loader.getController();
+      controller.setSelectedLanguage(selectedLanguage);
+    } catch (IOException e) {
+      logger.info("Error reloading the scene: " + e.getMessage());
+    }
+  }
+
+  /**
+   * Sets the selected language in the language selector ComboBox.
+   * Updates the ComboBox value to the specified language and reattaches
+   * the event handler for language switching.
+   *
+   * @param selectedLanguage the language to be set as selected in the ComboBox
+   */
+  public void setSelectedLanguage(String selectedLanguage) {
+    languageSelector.setOnAction(null);
+    languageSelector.setValue(selectedLanguage);
+    languageSelector.setOnAction(event -> switchLanguage());
+  }
+
+  private boolean validateFields() {
+    FormValidator validator = new FormValidator(Main.getBundle());
+    boolean isValid = true;
+    isValid &= validator.validateField(emailField, emailError, "empty.field");
+    isValid &= validator.validateField(passwordField, passwordError, "empty.field");
+    return isValid;
+  }
+
+  @FXML
+  private void login() {
+    if (!validateFields()) {
+      return;
     }
 
-    private void switchLanguage() {
-        languageSelector.setOnAction(null);
+    loginButton.setDisable(true);
+    User user = UserController.login(emailField.getText(), passwordField.getText());
 
-        String selectedLanguage = languageSelector.getValue();
-        Locale newLocale = LANGUAGE_MAP.get(selectedLanguage);
-
-        if (newLocale != null) {
-            Main.setLocale(newLocale);
-            reloadScene(selectedLanguage);
-        }
+    if (user != null) {
+      WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.getBundle());
+    } else {
+      logger.info("Error logging in.");
+      emailError.setText(Main.getBundle().getString("login.error"));
+      passwordError.setText(Main.getBundle().getString("login.error"));
     }
 
-    private void reloadScene(String selectedLanguage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
-            loader.setResources(Main.bundle);
-            Parent root = loader.load();
+    loginButton.setDisable(false);
+  }
 
-            // Detect RTL language
-            if (selectedLanguage.equals("فارسی")) {
-                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-            } else {
-                root.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-            }
+  @FXML
+  private void loginAsGuest() {
+    WindowUtil.changeScene("/fxml/home.fxml", "home.title", loginButton, Main.getBundle());
+  }
 
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) emailField.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle(Main.bundle.getString("login.title"));
-
-            LoginController controller = loader.getController();
-            controller.setSelectedLanguage(selectedLanguage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setSelectedLanguage(String selectedLanguage) {
-        languageSelector.setOnAction(null);
-        languageSelector.setValue(selectedLanguage);
-        languageSelector.setOnAction(event -> switchLanguage());
-    }
-
-    @FXML
-    private void handleLoginAction(ActionEvent event) {
-        if (validateLogin()) {
-            performLogin();
-        }
-    }
-
-    @FXML
-    private void handleLoginAsGuestAction(ActionEvent event) {
-        System.out.println("Login as guest");
-        switchScene("/fxml/home.fxml", loginButton, "home.title");
-    }
-
-    @FXML
-    private void handleSignupAction(ActionEvent event) {
-        switchScene("/fxml/signup.fxml", signupLink, "signup.title");
-    }
-
-    private boolean validateLogin() {
-        boolean isValid = true;
-        isValid &= validateField(emailField, emailError, Main.bundle.getString("empty.field"));
-        isValid &= validateField(passwordField, passwordError, Main.bundle.getString("empty.field"));
-        return isValid;
-    }
-
-    private boolean validateField(TextField field, Label errorLabel, String errorMessage) {
-        if (field.getText().isEmpty()) {
-            errorLabel.setText(errorMessage);
-            return false;
-        }
-        errorLabel.setText("");
-        return true;
-    }
-
-    private void performLogin() {
-        loginButton.setDisable(true);
-
-        User user = UserController.login(emailField.getText(), passwordField.getText());
-
-        if (user != null) {
-            System.out.println("Login successful");
-            switchScene("/fxml/home.fxml", loginButton, "home.title");
-        } else {
-            System.out.println("Login failed");
-            emailError.setText(Main.bundle.getString("login.error"));
-            passwordError.setText(Main.bundle.getString("login.error"));
-        }
-        loginButton.setDisable(false);
-    }
-
-    private void switchScene(String fxmlPath, Control control, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath), Main.bundle);
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) control.getScene().getWindow();
-            stage.setTitle(Main.bundle.getString(title));
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+  @FXML
+  private void goToSignup() {
+    WindowUtil.changeScene("/fxml/signup.fxml", "signup.title", signupLink, Main.getBundle());
+  }
 }

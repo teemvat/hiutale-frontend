@@ -6,8 +6,8 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../styles.css" minHeight="-Infinity" minWidth="-Infinity"
       prefHeight="400.0" prefWidth="600.0" spacing="50.0" xmlns="http://javafx.com/javafx/17.0.12"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.RSVPController">
-   <Button fx:id="rsvpButton" mnemonicParsing="false" onAction="#handleRSVPAction" text="%rsvp.button">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ui.RsvpController">
+   <Button fx:id="rsvpButton" mnemonicParsing="false" onAction="#handleRsvpAction" text="%rsvp.button">
       <font>
          <Font size="14.0"/>
       </font>

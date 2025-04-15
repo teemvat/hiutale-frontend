@@ -5,353 +5,440 @@ import controller.api.CategoryController;
 import controller.api.EventController;
 import controller.api.LocationController;
 import controller.api.UserController;
+import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.Category;
 import model.Event;
 import model.Location;
 import model.User;
+import utils.ComboBoxUtils;
+import utils.WindowUtil;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.chrono.Chronology;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
-import java.util.*;
-import java.util.function.UnaryOperator;
-
-import java.io.IOException;
-import java.util.stream.Collectors;
-
+/**
+ * Controller for managing the Home view.
+ * This class handles the display of events, filtering, sorting, and user interactions
+ * such as searching, resetting filters, and navigating to other views.
+*/
 public class HomeController {
 
-    @FXML private TextField searchField, minPriceField, maxPriceField;
-    @FXML private DatePicker datePicker;
-    @FXML private ComboBox<User> organizerComboBox;
-    @FXML private ComboBox<Location> locationComboBox;
-    @FXML private ComboBox<Category> eventTypeComboBox;
-    @FXML private Button searchButton, resetButton, profileButton, addEventButton;
-    @FXML private ChoiceBox<String> sortChoiceBox;
-    @FXML private FlowPane listViewPane;
-    @FXML private Label monDateLabel, tueDateLabel, wedDateLabel, thuDateLabel, friDateLabel, satDateLabel, sunDateLabel;
-    @FXML private Label[] dayLabels;
-    @FXML private VBox monVBox, tueVBox, wedVBox, thuVBox, friVBox, satVBox, sunVBox;
-    @FXML private VBox[] dayBoxes;
+  @FXML private TextField searchField;
+  @FXML private TextField minPriceField;
+  @FXML private TextField maxPriceField;
+  @FXML private DatePicker datePicker;
+  @FXML private ComboBox<User> organizerComboBox;
+  @FXML private ComboBox<Location> locationComboBox;
+  @FXML private ComboBox<Category> eventTypeComboBox;
+  @FXML private Button searchButton;
+  @FXML private Button resetButton;
+  @FXML private Button profileButton;
+  @FXML private Button addEventButton;
+  @FXML private ChoiceBox<String> sortChoiceBox;
+  @FXML private FlowPane listViewPane;
+  @FXML private Label monDateLabel;
+  @FXML private Label tueDateLabel;
+  @FXML private Label wedDateLabel;
+  @FXML private Label thuDateLabel;
+  @FXML private Label friDateLabel;
+  @FXML private Label satDateLabel;
+  @FXML private Label sunDateLabel;
+  @FXML private Label[] dayLabels;
+  @FXML private VBox monBox;
+  @FXML private VBox tueBox;
+  @FXML private VBox wedBox;
+  @FXML private VBox thuBox;
+  @FXML private VBox friBox;
+  @FXML private VBox satBox;
+  @FXML private VBox sunBox;
+  @FXML private VBox[] dayBoxes;
 
-    private List<Event> cachedEvents = new ArrayList<>();
+  private static final String ALPHABETICAL = "sort.alphabetical";
+  private static final String DATE = "sort.date";
+  private List<Event> cachedEvents = new ArrayList<>();
+  Logger logger = Logger.getLogger(getClass().getName());
 
-    private enum SortType {
-        ALPHABETICAL, DATE
-    }
+  private enum SortType {
+    ALPHABETICAL, DATE
+  }
 
-    private static final Map<String, SortType> SORT_MAP = Map.of(
-            Main.bundle.getString("sort.alphabetical"), SortType.ALPHABETICAL,
-            Main.bundle.getString("sort.date"), SortType.DATE
+  private static final Map<String, SortType> SORT_MAP = Map.of(
+          Main.getBundle().getString(ALPHABETICAL), SortType.ALPHABETICAL,
+          Main.getBundle().getString(DATE), SortType.DATE
+  );
+
+  /**
+   * Initializes the Home view by setting up the calendar, loading events, and configuring UI components.
+  */
+  @FXML
+  private void initialize() {
+    List<Event> allEvents = EventController.getAllEvents();
+    cachedEvents = Optional.ofNullable(allEvents).orElse(new ArrayList<>());
+
+    dayLabels = new Label[]{monDateLabel, tueDateLabel, wedDateLabel, thuDateLabel, friDateLabel, satDateLabel, sunDateLabel};
+    dayBoxes = new VBox[]{monBox, tueBox, wedBox, thuBox, friBox, satBox, sunBox};
+    LocalDate today = LocalDate.now();
+    updateCalendar(getStartOfWeek(today));
+    datePicker.setOnAction(event -> updateCalendar(getStartOfWeek(datePicker.getValue())));
+
+    configurePriceFields();
+
+    loadEventCards();
+    populateEventTypeComboBox();
+    populateLocationComboBox();
+    populateOrganizerComboBox();
+
+    setComboBoxConverters();
+
+    // Set sorting options
+    sortChoiceBox.setItems(FXCollections.observableArrayList(
+            Main.getBundle().getString(ALPHABETICAL),
+            Main.getBundle().getString(DATE)
+    ));
+
+    // Set default sorting option
+    sortChoiceBox.setValue(Main.getBundle().getString(ALPHABETICAL));
+  }
+
+  private void setComboBoxConverters() {
+    ComboBoxUtils.setComboBoxConverter(
+            eventTypeComboBox,
+            Category::getName,
+            string -> eventTypeComboBox.getItems().stream()
+                    .filter(category -> category.getName().equals(string))
+                    .findFirst()
+                    .orElse(null)
     );
 
-    @FXML
-    private void initialize() {
-        List<Event> allEvents = EventController.getAllEvents();
-        cachedEvents = Optional.ofNullable(allEvents).orElse(new ArrayList<>());
+    ComboBoxUtils.setComboBoxConverter(
+            locationComboBox,
+            Location::getName,
+            string -> locationComboBox.getItems().stream()
+                    .filter(location -> location.getName().equals(string))
+                    .findFirst()
+                    .orElse(null)
+    );
 
-        dayLabels = new Label[]{monDateLabel, tueDateLabel, wedDateLabel, thuDateLabel, friDateLabel, satDateLabel, sunDateLabel};
-        dayBoxes = new VBox[]{monVBox, tueVBox, wedVBox, thuVBox, friVBox, satVBox, sunVBox};
-        LocalDate today = LocalDate.now();
-        updateCalendar(getStartOfWeek(today));
-        datePicker.setOnAction(event -> updateCalendar(getStartOfWeek(datePicker.getValue())));
+    ComboBoxUtils.setComboBoxConverter(
+            organizerComboBox,
+            User::getUsername,
+            string -> organizerComboBox.getItems().stream()
+                    .filter(organizer -> organizer.getUsername().equals(string))
+                    .findFirst()
+                    .orElse(null)
+    );
+  }
 
-        configurePriceFields();
+  /**
+   * Configures the price fields to accept only numeric input with up to two decimal places.
+  */
+  private void configurePriceFields() {
+    UnaryOperator<TextFormatter.Change> filter = change ->
+            change.getControlNewText().matches("\\d*(\\.\\d{0,2})?") ? change : null;
 
-        loadEventCards();
-        populateEventTypeComboBox();
-        populateLocationComboBox();
-        populateOrganizerComboBox();
+    minPriceField.setTextFormatter(new TextFormatter<>(filter));
+    maxPriceField.setTextFormatter(new TextFormatter<>(filter));
+  }
 
-        setComboBoxConverters();
+  /**
+   * Populates the event type combo box with all available categories.
+  */
+  private void populateEventTypeComboBox() {
+    List<Category> categories = CategoryController.getAllCategories();
+    eventTypeComboBox.getItems().clear();
+    eventTypeComboBox.getItems().addAll(categories);
+  }
 
-        // Set sorting options
-        sortChoiceBox.setItems(FXCollections.observableArrayList(
-                Main.bundle.getString("sort.alphabetical"),
-                Main.bundle.getString("sort.date")
-        ));
+  /**
+   * Populates the location combo box with all available locations.
+  */
+  private void populateLocationComboBox() {
+    List<Location> locations = LocationController.getAllLocations();
+    locationComboBox.getItems().clear();
+    locationComboBox.getItems().addAll(locations);
+  }
 
-        // Set default sorting option
-        sortChoiceBox.setValue(Main.bundle.getString("sort.alphabetical"));
+  /**
+   * Populates the organizer combo box with all unique organizers from the events.
+  */
+  private void populateOrganizerComboBox() {
+    List<Event> allEvents = EventController.getAllEvents();
+    Set<String> organizerIds = allEvents.stream()
+            .map(Event::getOrganizerId)
+            .collect(Collectors.toSet());
+
+    List<User> organizers = new ArrayList<>();
+    for (String id : organizerIds) {
+      User user = UserController.getUser(Integer.parseInt(id));
+      if (user != null) {
+        organizers.add(user);
+      }
     }
 
-    private void setComboBoxConverters() {
-        eventTypeComboBox.setConverter(new StringConverter<Category>() {
-            @Override
-            public String toString(Category category) {
-                return (category == null) ? "" : category.getName();
-            }
+    // Clear previous data to avoid conflicts
+    organizerComboBox.getItems().clear();
+    organizerComboBox.getItems().addAll(organizers);
+  }
 
-            @Override
-            public Category fromString(String string) {
-                return eventTypeComboBox.getItems().stream()
-                        .filter(category -> category.getName().equals(string))
-                        .findFirst()
-                        .orElse(null);
-            }
-        });
+  /**
+   * Gets the start of the week (Monday) for the given date.
+   *
+   * @param date The date for which to find the start of the week.
+   * @return The LocalDate representing the start of the week.
+  */
+  private LocalDate getStartOfWeek(LocalDate date) {
+    if (date == null) {
+      return LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    }
+    return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+  }
 
-        locationComboBox.setConverter(new StringConverter<Location>() {
-            @Override
-            public String toString(Location location) {
-                return (location == null) ? "" : location.getName();
-            }
-
-            @Override
-            public Location fromString(String string) {
-                return locationComboBox.getItems().stream()
-                        .filter(location -> location.getName().equals(string))
-                        .findFirst()
-                        .orElse(null);
-            }
-        });
-
-        organizerComboBox.setConverter(new StringConverter<User>() {
-            @Override
-            public String toString(User organizer) {
-                return (organizer == null) ? "" : organizer.getUsername();
-            }
-
-            @Override
-            public User fromString(String string) {
-                return organizerComboBox.getItems().stream()
-                        .filter(organizer -> organizer.getUsername().equals(string))
-                        .findFirst()
-                        .orElse(null);
-            }
-        });
+  /**
+   * Updates the calendar view to display the week starting from the given date.
+   *
+   * @param startOfWeek The start date of the week to display.
+  */
+  private void updateCalendar(LocalDate startOfWeek) {
+    for (int i = 0; i < 7; i++) {
+      dayLabels[i].setText(startOfWeek.plusDays(i).toString());
     }
 
-    private void configurePriceFields() {
-        // Add a TextFormatter to ensure only numbers can be typed in the price fields
-        UnaryOperator<TextFormatter.Change> filter = change ->
-                change.getControlNewText().matches("\\d*(\\.\\d{0,2})?") ? change : null;
+    loadEventsForWeek(startOfWeek);
+  }
 
-        minPriceField.setTextFormatter(new TextFormatter<>(filter));
-        maxPriceField.setTextFormatter(new TextFormatter<>(filter));
+  /**
+   * Loads events for the week starting from the given date and displays them in the calendar.
+   *
+   * @param startOfWeek The start date of the week to load events for.
+  */
+  private void loadEventsForWeek(LocalDate startOfWeek) {
+    clearCalendar();
+    if (!cachedEvents.isEmpty()) {
+      cachedEvents.forEach(event -> addEventToCalendar(event, startOfWeek));
     }
+  }
 
-    private void populateEventTypeComboBox() {
-        List<Category> categories = CategoryController.getAllCategories();
-//        List<String> categoryNames = categories.stream()
-//                .map(Category::getName)
-//                .collect(Collectors.toList());
-        eventTypeComboBox.getItems().clear();
-        eventTypeComboBox.getItems().addAll(categories);
+  /**
+   * Adds an event to the calendar on the appropriate day based on its date.
+   *
+   * @param event The event to add to the calendar.
+   * @param startOfWeek The start date of the week to determine the day offset.
+  */
+  private void addEventToCalendar(Event event, LocalDate startOfWeek) {
+    try {
+      String eventDateStr = event.getDate();
+      if (eventDateStr == null || eventDateStr.isEmpty()) {
+        throw new DateTimeParseException("Date is null or empty", eventDateStr, 0);
+      }
+      LocalDate eventDate = LocalDate.parse(eventDateStr);
+      int dayOffset = (int) ChronoUnit.DAYS.between(startOfWeek, eventDate);
+
+      if (dayOffset >= 0 && dayOffset < 7) {
+        dayBoxes[dayOffset].getChildren().add(loadFxml("/fxml/event_box.fxml", event));
+      }
+    } catch (DateTimeParseException e) {
+      logger.info("Invalid date format for event: " + event.getTitle());
     }
+  }
 
-    private void populateLocationComboBox() {
-        List<Location> locations = LocationController.getAllLocations();
-        locationComboBox.getItems().clear();
-        locationComboBox.getItems().addAll(locations);
+  /**
+   * Loads event cards into the list view pane.
+  */
+  private void loadEventCards() {
+    listViewPane.getChildren().clear();
+    if (cachedEvents.isEmpty()) {
+      listViewPane.getChildren().add(new Label(Main.getBundle().getString("no.events")));
+    } else {
+      cachedEvents.forEach(event -> listViewPane.getChildren().add(loadFxml("/fxml/event_card.fxml", event)));
     }
+  }
 
-    private void populateOrganizerComboBox() {
-        List<Event> allEvents = EventController.getAllEvents();
-        Set<String> organizerIds = allEvents.stream()
-                .map(Event::getOrganizerId)
-                .collect(Collectors.toSet());
+  /**
+   * Loads an FXML file and sets the event data for the corresponding controller.
+   *
+   * @param resource The path to the FXML file.
+   * @param event The event data to set in the controller.
+   * @return The loaded Parent node.
+  */
+  private Parent loadFxml(String resource, Event event) {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.getBundle());
+      Parent root = loader.load();
 
-        List<User> organizers = new ArrayList<>();
-        for (String id : organizerIds) {
-            User user = UserController.getUser(Integer.parseInt(id));
-            if (user != null) {
-                organizers.add(user);
-            }
-        }
+      if (resource.equals("/fxml/event_card.fxml")) {
+        EventCardController controller = loader.getController();
+        controller.setEventData(event);
+      } else if (resource.equals("/fxml/event_box.fxml")) {
+        EventBoxController controller = loader.getController();
+        controller.setEventData(event);
+      }
 
-        // Clear previous data to avoid conflicts
-        organizerComboBox.getItems().clear();
-        organizerComboBox.getItems().addAll(organizers);
+      return root;
+    } catch (IOException e) {
+      logger.info("Error loading new FXML file " + e.getMessage());
+      return new Label("Error loading event");
     }
+  }
 
-    private LocalDate getStartOfWeek(LocalDate date) {
-        if (date == null) {
-            return LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        }
-        return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+  /**
+   * Handles the search action by filtering events based on the selected criteria.
+  */
+  @FXML
+  private void handleSearchAction() {
+    Category selectedCategory = eventTypeComboBox.getSelectionModel().getSelectedItem();
+    Location selectedLocation = locationComboBox.getSelectionModel().getSelectedItem();
+    User selectedOrganizer = organizerComboBox.getSelectionModel().getSelectedItem();
+
+    String categoryId = (selectedCategory != null) ? selectedCategory.getId() : null;
+    String locationId = (selectedLocation != null) ? selectedLocation.getId() : null;
+    String organizerId = (selectedOrganizer != null) ? selectedOrganizer.getIdString() : null;
+
+    List<Event> filteredEvents = EventController.searchEvents(
+            searchField.getText(),
+            categoryId,
+            datePicker.getValue() != null ? datePicker.getValue().toString() : "",
+            locationId,
+            minPriceField.getText(),
+            maxPriceField.getText(),
+            organizerId
+    );
+
+    updateListView(filteredEvents);
+    updateCalendarView(filteredEvents);
+  }
+
+  /**
+   * Updates the list view with the given list of events.
+   *
+   * @param events The list of events to display in the list view.
+  */
+  private void updateListView(List<Event> events) {
+    listViewPane.getChildren().clear();
+    if (events.isEmpty()) {
+      listViewPane.getChildren().add(new Label(Main.getBundle().getString("no.events")));
+    } else {
+      events.forEach(event -> listViewPane.getChildren().add(loadFxml("/fxml/event_card.fxml", event)));
     }
+  }
 
-    private void updateCalendar(LocalDate startOfWeek) {
-        for (int i = 0; i < 7; i++) {
-            dayLabels[i].setText(startOfWeek.plusDays(i).toString());
-        }
-
-        loadEventsForWeek(startOfWeek);
+  /**
+   * Updates the calendar view with the given list of events.
+   *
+   * @param events The list of events to display in the calendar.
+  */
+  private void updateCalendarView(List<Event> events) {
+    clearCalendar();
+    if (!events.isEmpty()) {
+      events.forEach(event -> addEventToCalendar(event, getStartOfWeek(datePicker.getValue() != null ? datePicker.getValue() : LocalDate.now())));
     }
+  }
 
-    private void loadEventsForWeek(LocalDate startOfWeek) {
-        clearCalendar();
-        if (!cachedEvents.isEmpty()) {
-            cachedEvents.forEach(event -> addEventToCalendar(event, startOfWeek));
-        }
-    }
+  /**
+   * Handles the reset action by clearing all filters and reloading all events.
+  */
+  @FXML
+  private void handleResetAction() {
+    searchField.clear();
+    datePicker.setValue(null);
+    eventTypeComboBox.getSelectionModel().clearSelection();
+    locationComboBox.getSelectionModel().clearSelection();
+    organizerComboBox.getSelectionModel().clearSelection();
+    minPriceField.clear();
+    maxPriceField.clear();
 
-    private void addEventToCalendar(Event event, LocalDate startOfWeek) {
-        try {
-            String eventDateStr = event.getDate();
-            if (eventDateStr == null || eventDateStr.isEmpty()) {
-                throw new DateTimeParseException("Date is null or empty", eventDateStr, 0);
-            }
-            LocalDate eventDate = LocalDate.parse(eventDateStr);
-            int dayOffset = (int) ChronoUnit.DAYS.between(startOfWeek, eventDate);
+    updateListView(cachedEvents);
+    updateCalendarView(cachedEvents);
+  }
 
-            if (dayOffset >= 0 && dayOffset < 7) {
-                dayBoxes[dayOffset].getChildren().add(loadFXML("/fxml/eventbox.fxml", event));
-            }
-        } catch (DateTimeParseException e) {
-            System.err.println("Invalid date format for event: " + event.getTitle());
-        }
-    }
+  /**
+   * Handles the profile button action by opening the profile view.
+  */
+  @FXML
+  private void handleProfileAction() {
+    WindowUtil.openNewWindow(
+            "/fxml/profile.fxml",
+            Main.getBundle().getString("profile.title"),
+            (Stage) profileButton.getScene().getWindow(),
+            Main.getBundle(),
+            controller -> {}
+    );
+  }
 
-    private void loadEventCards() {
-        listViewPane.getChildren().clear();
-        if (cachedEvents.isEmpty()) {
-            listViewPane.getChildren().add(new Label(Main.bundle.getString("no.events")));
-        } else {
-            cachedEvents.forEach(event -> listViewPane.getChildren().add(loadFXML("/fxml/eventcard.fxml", event)));
-        }
-    }
+  /**
+   * Handles the add event button action by opening the new event creation view.
+  */
+  @FXML
+  private void handleAddEventAction() {
+    WindowUtil.openNewWindow(
+            "/fxml/new_event.fxml",
+            Main.getBundle().getString("new.event.title"),
+            (Stage) addEventButton.getScene().getWindow(),
+            Main.getBundle(),
+            controller -> {}
+    );
+    updateEventList();
+  }
 
-    private Parent loadFXML(String resource, Event event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.bundle);
-            Parent root = loader.load();
+  /**
+   * Sorts the cached events based on the selected sorting method.
+   *
+   * @param sortMethod The sorting method to apply.
+  */
+  private void sortEvents(SortType sortMethod) {
+    cachedEvents.sort(switch (sortMethod) {
+      case ALPHABETICAL -> Comparator.comparing(Event::getTitle);
+      case DATE -> Comparator.comparing(Event::getDate);
+    });
+    updateListView(cachedEvents);
+  }
 
-            if (resource.equals("/fxml/eventcard.fxml")) {
-                EventCardController controller = loader.getController();
-                controller.setEventData(event);
-            } else if (resource.equals("/fxml/eventbox.fxml")) {
-                EventBoxController controller = loader.getController();
-                controller.setEventData(event);
-            }
+  /**
+   * Handles the sort action by applying the selected sorting method.
+  */
+  @FXML
+  private void handleSortAction() {
+    Optional.ofNullable(SORT_MAP.get(sortChoiceBox.getValue())).ifPresent(this::sortEvents);
+  }
 
-            return root;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new Label("Error loading event");
-        }
-    }
+  /**
+   * Clears all events from the calendar view.
+  */
+  private void clearCalendar() {
+    Arrays.stream(dayBoxes).forEach(vbox -> vbox.getChildren().clear());
+  }
 
-    @FXML
-    private void handleSearchAction() {
-        Category selectedCategory = eventTypeComboBox.getSelectionModel().getSelectedItem();
-        System.out.println("Selected category: " + selectedCategory);
-        Location selectedLocation = locationComboBox.getSelectionModel().getSelectedItem();
-        User selectedOrganizer = organizerComboBox.getSelectionModel().getSelectedItem();
-
-        String categoryId = (selectedCategory != null) ? selectedCategory.getId() : null;
-        String locationId = (selectedLocation != null) ? selectedLocation.getId() : null;
-        String organizerId = (selectedOrganizer != null) ? selectedOrganizer.getIdString() : null;
-
-        List<Event> filteredEvents = EventController.searchEvents(
-                searchField.getText(),
-                categoryId,
-                datePicker.getValue() != null ? datePicker.getValue().toString() : "",
-                locationId,
-                minPriceField.getText(),
-                maxPriceField.getText(),
-                organizerId
-        );
-
-        updateListView(filteredEvents);
-        updateCalendarView(filteredEvents);
-    }
-
-    private void updateListView(List<Event> events) {
-        listViewPane.getChildren().clear();
-        if (events.isEmpty()) {
-            listViewPane.getChildren().add(new Label(Main.bundle.getString("no.events")));
-        } else {
-            events.forEach(event -> listViewPane.getChildren().add(loadFXML("/fxml/eventcard.fxml", event)));
-        }
-    }
-
-    private void updateCalendarView(List<Event> events) {
-        clearCalendar();
-        if (!events.isEmpty()) {
-            events.forEach(event -> addEventToCalendar(event, getStartOfWeek(datePicker.getValue() != null ? datePicker.getValue() : LocalDate.now())));
-        }
-    }
-
-    @FXML
-    private void handleResetAction(ActionEvent event) {
-        // Reset all fields
-        searchField.clear();
-        datePicker.setValue(null);
-        eventTypeComboBox.getSelectionModel().clearSelection();
-        locationComboBox.getSelectionModel().clearSelection();
-        organizerComboBox.getSelectionModel().clearSelection();
-        minPriceField.clear();
-        maxPriceField.clear();
-
-        // Reload all events
-        updateListView(cachedEvents);
-        updateCalendarView(cachedEvents);
-    }
-
-    @FXML
-    private void handleProfileAction() {
-        openNewWindow("/fxml/profile.fxml", Main.bundle.getString("profile.title"), profileButton);
-    }
-
-    @FXML
-    private void handleAddEventAction() {
-        openNewWindow("/fxml/newevent.fxml", Main.bundle.getString("new.event.title"), addEventButton);
-    }
-
-    private void openNewWindow(String resource, String title, Button ownerButton) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource), Main.bundle);
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(ownerButton.getScene().getWindow());
-            stage.setOnHiding(event -> updateEventList());
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sortEvents(SortType sortMethod) {
-        cachedEvents.sort(switch (sortMethod) {
-            case ALPHABETICAL -> Comparator.comparing(Event::getTitle);
-            case DATE -> Comparator.comparing(Event::getDate);
-        });
-        updateListView(cachedEvents);
-    }
-
-    @FXML
-    private void handleSortAction() {
-        Optional.ofNullable(SORT_MAP.get(sortChoiceBox.getValue())).ifPresent(this::sortEvents);
-    }
-
-    private void clearCalendar() {
-        Arrays.stream(dayBoxes).forEach(vbox -> vbox.getChildren().clear());
-    }
-
-    private void updateEventList(){
-        cachedEvents = EventController.getAllEvents();
-        updateListView(cachedEvents);
-        updateCalendarView(cachedEvents);
-    }
+  /**
+   * Updates the event list by reloading all events and updating the views.
+  */
+  private void updateEventList() {
+    cachedEvents = EventController.getAllEvents();
+    updateListView(cachedEvents);
+    updateCalendarView(cachedEvents);
+  }
 }

@@ -53,7 +53,7 @@
                 <padding>
                     <Insets bottom="10.0" top="10.0"/>
                 </padding>
-                <VBox fx:id="favoriteEventsVBox" prefHeight="368.0" prefWidth="578.0" spacing="10.0"/>
+                <VBox fx:id="favoriteEventsBox" prefHeight="368.0" prefWidth="578.0" spacing="10.0"/>
             </ScrollPane>
         </VBox>
     </Tab>
@@ -72,7 +72,7 @@
                 <padding>
                     <Insets bottom="10.0" top="10.0"/>
                 </padding>
-                <VBox fx:id="upcomingEventsVBox" prefHeight="400.0" prefWidth="580.0" spacing="10.0"/>
+                <VBox fx:id="upcomingEventsBox" prefHeight="400.0" prefWidth="580.0" spacing="10.0"/>
             </ScrollPane>
         </VBox>
     </Tab>
@@ -91,7 +91,7 @@
                 <padding>
                     <Insets bottom="10.0" top="10.0"/>
                 </padding>
-                <VBox fx:id="organizedEventsVBox" spacing="10.0"/>
+                <VBox fx:id="organizedEventsBox" spacing="10.0"/>
             </ScrollPane>
         </VBox>
     </Tab>

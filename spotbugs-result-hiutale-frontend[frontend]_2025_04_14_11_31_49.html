@@ -1,0 +1,1106 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta charset="UTF-8"/>
+      <title>SpotBugs Report</title>
+      <style type="text/css">
+		.tablerow0 {
+			background: #EEEEEE;
+		}
+
+		.tablerow1 {
+			background: white;
+		}
+
+		.detailrow0 {
+			background: #EEEEEE;
+		}
+
+		.detailrow1 {
+			background: white;
+		}
+
+		.tableheader {
+			background: #b9b9fe;
+			font-size: larger;
+		}
+		</style>
+   </head>
+   <body>
+      <h1>SpotBugs Report</h1>
+      <p>Produced using <a href="https://spotbugs.github.io">SpotBugs</a>4.8.6.</p>
+      <p>Project: 
+			hiutale-frontend[frontend]</p>
+      <h2>Metrics</h2>
+      <p>1887 lines of code analyzed,
+	in 48 classes, 
+	in 5 packages.</p>
+      <table width="500" cellpadding="5" cellspacing="2">
+         <tr class="tableheader">
+            <th align="left">Metric</th>
+            <th align="right">Total</th>
+            <th align="right">Density*</th>
+         </tr>
+         <tr class="tablerow0">
+            <td>High Priority Warnings</td>
+            <td align="right">17</td>
+            <td align="right">9.01</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>Medium Priority Warnings</td>
+            <td align="right">27</td>
+            <td align="right">14.31</td>
+         </tr>
+         <tr class="$totalClass">
+            <td>
+               <b>Total Warnings</b>
+            </td>
+            <td align="right">
+               <b>44</b>
+            </td>
+            <td align="right">
+               <b>23.32</b>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <i>(* Defects per Thousand lines of non-commenting source statements)</i>
+      </p>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>Summary</h2>
+      <table width="500" cellpadding="5" cellspacing="2">
+         <tr class="tableheader">
+            <th align="left">Warning Type</th>
+            <th align="right">Number</th>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+            </td>
+            <td align="right">4</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <a href="#Warnings_CORRECTNESS">Correctness Warnings</a>
+            </td>
+            <td align="right">1</td>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_EXPERIMENTAL">Experimental Warnings</a>
+            </td>
+            <td align="right">1</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <a href="#Warnings_I18N">Internationalization Warnings</a>
+            </td>
+            <td align="right">17</td>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
+            </td>
+            <td align="right">13</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <a href="#Warnings_PERFORMANCE">Performance Warnings</a>
+            </td>
+            <td align="right">4</td>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_STYLE">Dodgy code Warnings</a>
+            </td>
+            <td align="right">4</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <b>Total</b>
+            </td>
+            <td align="right">
+               <b>44</b>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h1>Warnings</h1>
+      <p>Click on each warning link to see a full description of the issue, and
+	    details of how to resolve it.</p>
+      <h2>
+         <a name="Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+      </h2>
+      <table class="warningtable"
+             width="100%"
+             cellspacing="2"
+             cellpadding="5">
+         <tr class="tableheader">
+            <th align="left">Warning</th>
+            <th align="left">Priority</th>
+            <th align="left">Details</th>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#CT_CONSTRUCTOR_THROW">Be wary of letting constructors throw exceptions.</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Exception thrown in class model.Event at new model.Event(String, String, String, String, String, String, String[], String, String, String, String, double, int, int) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.<br/>
+                  <br/>
+                  <br/>In file Event.java Event.java Event.java,
+					
+						line 33 33 33<br/>In class model.Event<br/>In method new model.Event(String, String, String, String, String, String, String[], String, String, String, String, double, int, int)<br/>At Event.java:[line 33]<br/>At Event.java:[line 33]<br/>At Event.java:[line 33]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#CT_CONSTRUCTOR_THROW">Be wary of letting constructors throw exceptions.</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Exception thrown in class utils.LazyImageView at new utils.LazyImageView(Event) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.<br/>
+                  <br/>
+                  <br/>In file LazyImageView.java LazyImageView.java LazyImageView.java,
+					
+						line 26 26 26<br/>In class utils.LazyImageView<br/>In method new utils.LazyImageView(Event)<br/>At LazyImageView.java:[line 26]<br/>At LazyImageView.java:[line 26]<br/>At LazyImageView.java:[line 26]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#PA_PUBLIC_PRIMITIVE_ATTRIBUTE">Primitive field is public</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Primitive field app.Main.bundle is public and set from inside the class, which makes it too exposed. Consider making it private to limit external accessibility.<br/>
+                  <br/>
+                  <br/>In file Main.java,
+					
+						line 15<br/>In class app.Main<br/>Field app.Main.bundle<br/>At Main.java:[line 15]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#PA_PUBLIC_PRIMITIVE_ATTRIBUTE">Primitive field is public</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Primitive field app.Main.currentLocale is public and set from inside the class, which makes it too exposed. Consider making it private to limit external accessibility.<br/>
+                  <br/>
+                  <br/>In file Main.java,
+					
+						line 14<br/>In class app.Main<br/>Field app.Main.currentLocale<br/>At Main.java:[line 14]</p>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="Warnings_CORRECTNESS">Correctness Warnings</a>
+      </h2>
+      <table class="warningtable"
+             width="100%"
+             cellspacing="2"
+             cellpadding="5">
+         <tr class="tableheader">
+            <th align="left">Warning</th>
+            <th align="left">Priority</th>
+            <th align="left">Details</th>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#SING_SINGLETON_GETTER_NOT_SYNCHRONIZED">Instance-getter method of class using singleton design pattern is not synchronized.</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Instance-getter method of class using singleton design pattern (utils.SessionManager) is not synchronized.<br/>
+                  <br/>
+                  <br/>In file SessionManager.java,
+					
+						lines 13
+						    to 16<br/>In class utils.SessionManager<br/>In method utils.SessionManager.getInstance()<br/>At SessionManager.java:[lines 13-16]</p>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="Warnings_EXPERIMENTAL">Experimental Warnings</a>
+      </h2>
+      <table class="warningtable"
+             width="100%"
+             cellspacing="2"
+             cellpadding="5">
+         <tr class="tableheader">
+            <th align="left">Warning</th>
+            <th align="left">Priority</th>
+            <th align="left">Details</th>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE">Method may fail to clean up stream or resource on checked exception</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>controller.api.ImageController.uploadImage(long, File) may fail to clean up java.io.InputStream on checked exception<br/>
+                  <br/>
+                  <br/>In file ImageController.java ImageController.java ImageController.java ImageController.java ImageController.java ImageController.java ImageController.java,
+					
+						line 108 109 111 138 139 140 143<br/>In class controller.api.ImageController<br/>In method controller.api.ImageController.uploadImage(long, File)<br/>Reference type java.io.InputStream<br/>1 instances of obligation remaining<br/>Obligation to clean up resource created at ImageController.java:[line 108] is not discharged<br/>Path continues at ImageController.java:[line 109]<br/>Path continues at ImageController.java:[line 111]<br/>Path continues at ImageController.java:[line 138]<br/>Path continues at ImageController.java:[line 139]<br/>Path continues at ImageController.java:[line 140]<br/>Path continues at ImageController.java:[line 143]<br/>Remaining obligations: {InputStream x 1}</p>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="Warnings_I18N">Internationalization Warnings</a>
+      </h2>
+      <table class="warningtable"
+             width="100%"
+             cellspacing="2"
+             cellpadding="5">
+         <tr class="tableheader">
+            <th align="left">Warning</th>
+            <th align="left">Priority</th>
+            <th align="left">Details</th>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.AttendanceController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file AttendanceController.java AttendanceController.java,
+					
+						line 47 47<br/>In class controller.api.AttendanceController<br/>In method controller.api.AttendanceController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At AttendanceController.java:[line 47]<br/>At AttendanceController.java:[line 47]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.AttendanceController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file AttendanceController.java AttendanceController.java,
+					
+						line 40 40<br/>In class controller.api.AttendanceController<br/>In method controller.api.AttendanceController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At AttendanceController.java:[line 40]<br/>At AttendanceController.java:[line 40]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.CategoryController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file CategoryController.java CategoryController.java,
+					
+						line 47 47<br/>In class controller.api.CategoryController<br/>In method controller.api.CategoryController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At CategoryController.java:[line 47]<br/>At CategoryController.java:[line 47]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.CategoryController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file CategoryController.java CategoryController.java,
+					
+						line 40 40<br/>In class controller.api.CategoryController<br/>In method controller.api.CategoryController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At CategoryController.java:[line 40]<br/>At CategoryController.java:[line 40]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.EventController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file EventController.java EventController.java,
+					
+						line 49 49<br/>In class controller.api.EventController<br/>In method controller.api.EventController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At EventController.java:[line 49]<br/>At EventController.java:[line 49]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.EventController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file EventController.java EventController.java,
+					
+						line 41 41<br/>In class controller.api.EventController<br/>In method controller.api.EventController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At EventController.java:[line 41]<br/>At EventController.java:[line 41]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.FavouriteController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file FavouriteController.java FavouriteController.java,
+					
+						line 47 47<br/>In class controller.api.FavouriteController<br/>In method controller.api.FavouriteController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At FavouriteController.java:[line 47]<br/>At FavouriteController.java:[line 47]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.FavouriteController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file FavouriteController.java FavouriteController.java,
+					
+						line 40 40<br/>In class controller.api.FavouriteController<br/>In method controller.api.FavouriteController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At FavouriteController.java:[line 40]<br/>At FavouriteController.java:[line 40]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.ImageController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file ImageController.java ImageController.java,
+					
+						line 46 46<br/>In class controller.api.ImageController<br/>In method controller.api.ImageController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At ImageController.java:[line 46]<br/>At ImageController.java:[line 46]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.ImageController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file ImageController.java ImageController.java,
+					
+						line 38 38<br/>In class controller.api.ImageController<br/>In method controller.api.ImageController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At ImageController.java:[line 38]<br/>At ImageController.java:[line 38]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.ImageController.uploadImage(long, File): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file ImageController.java ImageController.java,
+					
+						line 125 125<br/>In class controller.api.ImageController<br/>In method controller.api.ImageController.uploadImage(long, File)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At ImageController.java:[line 125]<br/>At ImageController.java:[line 125]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.LocationController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file LocationController.java LocationController.java,
+					
+						line 48 48<br/>In class controller.api.LocationController<br/>In method controller.api.LocationController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At LocationController.java:[line 48]<br/>At LocationController.java:[line 48]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.LocationController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file LocationController.java LocationController.java,
+					
+						line 41 41<br/>In class controller.api.LocationController<br/>In method controller.api.LocationController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At LocationController.java:[line 41]<br/>At LocationController.java:[line 41]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.NotificationController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file NotificationController.java NotificationController.java,
+					
+						line 48 48<br/>In class controller.api.NotificationController<br/>In method controller.api.NotificationController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At NotificationController.java:[line 48]<br/>At NotificationController.java:[line 48]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.NotificationController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file NotificationController.java NotificationController.java,
+					
+						line 41 41<br/>In class controller.api.NotificationController<br/>In method controller.api.NotificationController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At NotificationController.java:[line 41]<br/>At NotificationController.java:[line 41]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.UserController.sendHttpRequest(String, String, String): new java.io.InputStreamReader(InputStream)<br/>
+                  <br/>
+                  <br/>In file UserController.java UserController.java,
+					
+						line 45 45<br/>In class controller.api.UserController<br/>In method controller.api.UserController.sendHttpRequest(String, String, String)<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At UserController.java:[line 45]<br/>At UserController.java:[line 45]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+            </td>
+            <td width="10%" valign="top">High</td>
+            <td width="70%">
+               <p>Found reliance on default encoding in controller.api.UserController.sendHttpRequest(String, String, String): String.getBytes()<br/>
+                  <br/>
+                  <br/>In file UserController.java UserController.java,
+					
+						line 38 38<br/>In class controller.api.UserController<br/>In method controller.api.UserController.sendHttpRequest(String, String, String)<br/>Called method String.getBytes()<br/>At UserController.java:[line 38]<br/>At UserController.java:[line 38]</p>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
+      </h2>
+      <table class="warningtable"
+             width="100%"
+             cellspacing="2"
+             cellpadding="5">
+         <tr class="tableheader">
+            <th align="left">Warning</th>
+            <th align="left">Priority</th>
+            <th align="left">Details</th>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP">May expose internal representation by returning reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>model.Event.getCategories() may expose internal representation by returning Event.eventCategoryIds<br/>
+                  <br/>
+                  <br/>In file Event.java Event.java,
+					
+						line 117 117<br/>In class model.Event<br/>In method model.Event.getCategories()<br/>Field model.Event.eventCategoryIds<br/>At Event.java:[line 117]<br/>At Event.java:[line 117]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP">May expose internal representation by returning reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>model.Notification.getUser() may expose internal representation by returning Notification.user<br/>
+                  <br/>
+                  <br/>In file Notification.java Notification.java,
+					
+						line 21 21<br/>In class model.Notification<br/>In method model.Notification.getUser()<br/>Field model.Notification.user<br/>At Notification.java:[line 21]<br/>At Notification.java:[line 21]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP">May expose internal representation by returning reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>utils.SessionManager.getUser() may expose internal representation by returning SessionManager.user<br/>
+                  <br/>
+                  <br/>In file SessionManager.java SessionManager.java,
+					
+						line 30 30<br/>In class utils.SessionManager<br/>In method utils.SessionManager.getUser()<br/>Field utils.SessionManager.user<br/>At SessionManager.java:[line 30]<br/>At SessionManager.java:[line 30]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>controller.ui.EventBoxController.setEventData(Event) may expose internal representation by storing an externally mutable object into EventBoxController.event<br/>
+                  <br/>
+                  <br/>In file EventBoxController.java EventBoxController.java,
+					
+						line 29 29<br/>In class controller.ui.EventBoxController<br/>In method controller.ui.EventBoxController.setEventData(Event)<br/>Field controller.ui.EventBoxController.event<br/>Local variable named event<br/>At EventBoxController.java:[line 29]<br/>At EventBoxController.java:[line 29]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>controller.ui.EventCardController.setEventData(Event) may expose internal representation by storing an externally mutable object into EventCardController.event<br/>
+                  <br/>
+                  <br/>In file EventCardController.java EventCardController.java,
+					
+						line 50 50<br/>In class controller.ui.EventCardController<br/>In method controller.ui.EventCardController.setEventData(Event)<br/>Field controller.ui.EventCardController.event<br/>Local variable named event<br/>At EventCardController.java:[line 50]<br/>At EventCardController.java:[line 50]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>controller.ui.EventPageController.setEventDetails(Event) may expose internal representation by storing an externally mutable object into EventPageController.event<br/>
+                  <br/>
+                  <br/>In file EventPageController.java EventPageController.java,
+					
+						line 54 54<br/>In class controller.ui.EventPageController<br/>In method controller.ui.EventPageController.setEventDetails(Event)<br/>Field controller.ui.EventPageController.event<br/>Local variable named e<br/>At EventPageController.java:[line 54]<br/>At EventPageController.java:[line 54]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>controller.ui.RsvpController.setEvent(Event) may expose internal representation by storing an externally mutable object into RSVPController.event<br/>
+                  <br/>
+                  <br/>In file RSVPController.java RSVPController.java,
+					
+						line 16 16<br/>In class controller.ui.RsvpController<br/>In method controller.ui.RsvpController.setEvent(Event)<br/>Field controller.ui.RsvpController.event<br/>Local variable named event<br/>At RSVPController.java:[line 16]<br/>At RSVPController.java:[line 16]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>new model.Notification(int, User, String) may expose internal representation by storing an externally mutable object into Notification.user<br/>
+                  <br/>
+                  <br/>In file Notification.java Notification.java,
+					
+						line 11 11<br/>In class model.Notification<br/>In method new model.Notification(int, User, String)<br/>Field model.Notification.user<br/>Local variable named user<br/>At Notification.java:[line 11]<br/>At Notification.java:[line 11]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>new utils.FormValidator(ResourceBundle) may expose internal representation by storing an externally mutable object into FormValidator.bundle<br/>
+                  <br/>
+                  <br/>In file FormValidator.java FormValidator.java,
+					
+						line 20 20<br/>In class utils.FormValidator<br/>In method new utils.FormValidator(ResourceBundle)<br/>Field utils.FormValidator.bundle<br/>Local variable named bundle<br/>At FormValidator.java:[line 20]<br/>At FormValidator.java:[line 20]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>utils.SessionManager.login(User) may expose internal representation by storing an externally mutable object into SessionManager.user<br/>
+                  <br/>
+                  <br/>In file SessionManager.java SessionManager.java,
+					
+						line 20 20<br/>In class utils.SessionManager<br/>In method utils.SessionManager.login(User)<br/>Field utils.SessionManager.user<br/>Local variable named user<br/>At SessionManager.java:[line 20]<br/>At SessionManager.java:[line 20]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#MS_CANNOT_BE_FINAL">Field isn't final and cannot be protected from malicious code</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>app.Main.bundle isn't final and cannot be protected from malicious code<br/>
+                  <br/>
+                  <br/>In file Main.java,
+					
+						line 15<br/>In class app.Main<br/>Field app.Main.bundle<br/>At Main.java:[line 15]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#MS_CANNOT_BE_FINAL">Field isn't final and cannot be protected from malicious code</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>app.Main.currentLocale isn't final and cannot be protected from malicious code<br/>
+                  <br/>
+                  <br/>In file Main.java,
+					
+						line 14<br/>In class app.Main<br/>Field app.Main.currentLocale<br/>At Main.java:[line 14]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#MS_EXPOSE_REP">Public static method may expose internal representation by returning a mutable object or array</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Public static utils.SessionManager.getInstance() may expose internal representation by returning SessionManager.instance<br/>
+                  <br/>
+                  <br/>In file SessionManager.java SessionManager.java,
+					
+						line 16 16<br/>In class utils.SessionManager<br/>In method utils.SessionManager.getInstance()<br/>Field utils.SessionManager.instance<br/>At SessionManager.java:[line 16]<br/>At SessionManager.java:[line 16]</p>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="Warnings_PERFORMANCE">Performance Warnings</a>
+      </h2>
+      <table class="warningtable"
+             width="100%"
+             cellspacing="2"
+             cellpadding="5">
+         <tr class="tableheader">
+            <th align="left">Warning</th>
+            <th align="left">Priority</th>
+            <th align="left">Details</th>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#URF_UNREAD_FIELD">Unread field</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Unread field: controller.ui.EventBoxController.event<br/>
+                  <br/>
+                  <br/>In file EventBoxController.java,
+					
+						line 29<br/>In class controller.ui.EventBoxController<br/>Field controller.ui.EventBoxController.event<br/>At EventBoxController.java:[line 29]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#URF_UNREAD_FIELD">Unread field</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Unread field: controller.ui.EventPageController.placeholderImage<br/>
+                  <br/>
+                  <br/>In file EventPageController.java,
+					
+						line 32<br/>In class controller.ui.EventPageController<br/>Field controller.ui.EventPageController.placeholderImage<br/>At EventPageController.java:[line 32]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#URF_UNREAD_FIELD">Unread field</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Unread field: utils.FilterCriteria.maxPrice<br/>
+                  <br/>
+                  <br/>In file FilterCriteria.java,
+					
+						line 25<br/>In class utils.FilterCriteria<br/>Field utils.FilterCriteria.maxPrice<br/>At FilterCriteria.java:[line 25]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#URF_UNREAD_FIELD">Unread field</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Unread field: utils.FilterCriteria.minPrice<br/>
+                  <br/>
+                  <br/>In file FilterCriteria.java,
+					
+						line 24<br/>In class utils.FilterCriteria<br/>Field utils.FilterCriteria.minPrice<br/>At FilterCriteria.java:[line 24]</p>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="Warnings_STYLE">Dodgy code Warnings</a>
+      </h2>
+      <table class="warningtable"
+             width="100%"
+             cellspacing="2"
+             cellpadding="5">
+         <tr class="tableheader">
+            <th align="left">Warning</th>
+            <th align="left">Priority</th>
+            <th align="left">Details</th>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#DCN_NULLPOINTER_EXCEPTION">NullPointerException caught</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Do not catch NullPointerException like in controller.ui.EventCardController.loadImage(String, String)<br/>
+                  <br/>
+                  <br/>In file EventCardController.java,
+					
+						line 142<br/>In class controller.ui.EventCardController<br/>In method controller.ui.EventCardController.loadImage(String, String)<br/>At EventCardController.java:[line 142]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#DMI_HARDCODED_ABSOLUTE_FILENAME">Code contains a hard coded reference to an absolute pathname</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Hard coded reference to an absolute pathname in controller.ui.NewEventController.initialize()<br/>
+                  <br/>
+                  <br/>In file NewEventController.java NewEventController.java,
+					
+						line 52 52<br/>In class controller.ui.NewEventController<br/>In method controller.ui.NewEventController.initialize()<br/>File name /pictures/placeholder_event.jpg<br/>At NewEventController.java:[line 52]<br/>At NewEventController.java:[line 52]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1">
+            <td width="20%" valign="top">
+               <a href="#RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE">Redundant nullcheck of value known to be non-null</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Redundant nullcheck of createdEvent, which is known to be non-null in controller.ui.NewEventController.addEvent()<br/>
+                  <br/>
+                  <br/>In file NewEventController.java NewEventController.java,
+					
+						line 177 177<br/>In class controller.ui.NewEventController<br/>In method controller.ui.NewEventController.addEvent()<br/>Value loaded from createdEvent<br/>Return value of controller.api.EventController.createEvent(String, String, String, String, String[], String, String, String, String, double, File) of type model.Event<br/>Redundant null check at NewEventController.java:[line 177]<br/>Redundant null check at NewEventController.java:[line 177]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0">
+            <td width="20%" valign="top">
+               <a href="#REC_CATCH_EXCEPTION">Exception is caught when Exception is not thrown</a>
+            </td>
+            <td width="10%" valign="top">Medium</td>
+            <td width="70%">
+               <p>Exception is caught when Exception is not thrown in controller.api.ImageController.uploadImage(long, File)<br/>
+                  <br/>
+                  <br/>In file ImageController.java ImageController.java,
+					
+						line 138 138<br/>In class controller.api.ImageController<br/>In method controller.api.ImageController.uploadImage(long, File)<br/>At ImageController.java:[line 138]<br/>At ImageController.java:[line 138]</p>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h1>
+         <a name="Details">Warning Types</a>
+      </h1>
+      <h2>
+         <a name="CT_CONSTRUCTOR_THROW">Be wary of letting constructors throw exceptions.</a>
+      </h2>
+      
+            <p>Classes that throw exceptions in their constructors are vulnerable to Finalizer attacks</p>
+
+            <p>A finalizer attack can be prevented, by declaring the class final, using an empty finalizer declared as final, or by a clever use of a private constructor.</p>
+
+            <p>See <a href="https://wiki.sei.cmu.edu/confluence/display/java/OBJ11-J.+Be+wary+of+letting+constructors+throw+exceptions"><code>SEI CERT Rule OBJ-11</code></a>
+            for more information.
+            </p>
+            
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="DCN_NULLPOINTER_EXCEPTION">NullPointerException caught</a>
+      </h2>
+   
+<p>
+According to SEI Cert rule <a href="https://wiki.sei.cmu.edu/confluence/display/java/ERR08-J.+Do+not+catch+NullPointerException+or+any+of+its+ancestors">ERR08-J</a> NullPointerException should not be caught. Handling NullPointerException is considered an inferior alternative to null-checking.
+<p>
+This non-compliant code catches a NullPointerException to see if an incoming parameter is null:
+</p>
+<pre><code>
+boolean hasSpace(String m) {
+  try {
+    String ms[] = m.split(" ");
+    return names.length != 1;
+  } catch (NullPointerException e) {
+    return false;
+  }
+}
+</code></pre>
+<p>
+A compliant solution would use a null-check as in the following example:
+</p>
+<pre><code>
+boolean hasSpace(String m) {
+    if (m == null) return false;
+    String ms[] = m.split(" ");
+    return names.length != 1;
+}
+</code></pre>
+    
+     <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="DMI_HARDCODED_ABSOLUTE_FILENAME">Code contains a hard coded reference to an absolute pathname</a>
+      </h2>
+
+<p>This code constructs a File object using a hard coded to an absolute pathname
+(e.g., <code>new File("/home/dannyc/workspace/j2ee/src/share/com/sun/enterprise/deployment");</code>
+</p>
+
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="DM_DEFAULT_ENCODING">Reliance on default encoding</a>
+      </h2>
+
+<p> Found a call to a method which will perform a byte to String (or String to byte) conversion,
+and will assume that the default platform encoding is suitable. This will cause the application
+behavior to vary between platforms. Use an alternative API and specify a charset name or Charset
+object explicitly.</p>
+
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="EI_EXPOSE_REP">May expose internal representation by returning reference to mutable object</a>
+      </h2>
+
+  <p> Returning a reference to a mutable object value stored in one of the object's fields
+  exposes the internal representation of the object.&nbsp;
+   If instances
+   are accessed by untrusted code, and unchecked changes to
+   the mutable object would compromise security or other
+   important properties, you will need to do something different.
+  Returning a new copy of the object is better approach in many situations.</p>
+
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="EI_EXPOSE_REP2">May expose internal representation by incorporating reference to mutable object</a>
+      </h2>
+
+  <p> This code stores a reference to an externally mutable object into the
+  internal representation of the object.&nbsp;
+   If instances
+   are accessed by untrusted code, and unchecked changes to
+   the mutable object would compromise security or other
+   important properties, you will need to do something different.
+  Storing a copy of the object is better approach in many situations.</p>
+
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="MS_CANNOT_BE_FINAL">Field isn't final and cannot be protected from malicious code</a>
+      </h2>
+
+  <p>
+ A mutable static field could be changed by malicious code or
+        by accident from another package.
+   Unfortunately, the way the field is used doesn't allow
+   any easy fix to this problem.</p>
+
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="MS_EXPOSE_REP">Public static method may expose internal representation by returning a mutable object or array</a>
+      </h2>
+
+  <p> A public static method returns a reference to a mutable object or
+   an array that is part of the static state of the class.
+   Any code that calls this method can freely modify
+   the underlying array.
+   One fix is to return a copy of the array.</p>
+
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE">Method may fail to clean up stream or resource on checked exception</a>
+      </h2>
+          
+          <p>
+          This method may fail to clean up (close, dispose of) a stream,
+          database object, or other
+          resource requiring an explicit cleanup operation.
+          </p>
+
+          <p>
+          In general, if a method opens a stream or other resource,
+          the method should use a try/finally block to ensure that
+          the stream or resource is cleaned up before the method
+          returns.
+          </p>
+
+          <p>
+          This bug pattern is essentially the same as the
+          OS_OPEN_STREAM and ODR_OPEN_DATABASE_RESOURCE
+          bug patterns, but is based on a different
+          (and hopefully better) static analysis technique.
+          We are interested is getting feedback about the
+          usefulness of this bug pattern.
+          For sending feedback, check:
+          </p>
+          <ul>
+            <li><a href="https://github.com/spotbugs/spotbugs/blob/master/.github/CONTRIBUTING.md">contributing guideline</a></li>
+            <li><a href="https://github.com/spotbugs/discuss/issues?q=">mailinglist</a></li>
+          </ul>
+
+          <p>
+          In particular,
+          the false-positive suppression heuristics for this
+          bug pattern have not been extensively tuned, so
+          reports about false positives are helpful to us.
+          </p>
+
+          <p>
+          See Weimer and Necula, <i>Finding and Preventing Run-Time Error Handling Mistakes</i>
+          (<a href="https://people.eecs.berkeley.edu/~necula/Papers/rte_oopsla04.pdf">PDF</a>),
+          for a description of the analysis technique.
+          </p>
+          
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="PA_PUBLIC_PRIMITIVE_ATTRIBUTE">Primitive field is public</a>
+      </h2>
+      
+    <p>
+    <a href="https://wiki.sei.cmu.edu/confluence/display/java/OBJ01-J.+Limit+accessibility+of+fields">SEI CERT rule OBJ01-J</a> requires that accessibility to fields must be limited.
+    Otherwise, the values of the fields may be manipulated from outside the class, which may be unexpected or
+    undesired behaviour.
+    In general, requiring that no fields are allowed to be public is overkill and unrealistic. Even
+    the rule mentions that final fields may be public. Besides final fields, there may be other
+    usages for public fields: some public fields may serve as "flags" that affect the behavior of
+    the class. Such flag fields are expected to be read by the current instance (or the current
+    class, in case of static fields), but written by others. If a field is both written by the
+    methods of the current instance (or the current class, in case of static fields) and from the
+    outside, the code is suspicious. Consider making these fields private and provide appropriate
+    setters, if necessary. Please note that constructors, initializers and finalizers are
+    exceptions, if only they write the field inside the class, the field is not considered as
+    written by the class itself.</p>
+    
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE">Redundant nullcheck of value known to be non-null</a>
+      </h2>
+
+<p> This method contains a redundant check of a known non-null value against
+the constant null.</p>
+
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="REC_CATCH_EXCEPTION">Exception is caught when Exception is not thrown</a>
+      </h2>
+  
+  <p>
+  This method uses a try-catch block that catches Exception objects, but Exception is not
+  thrown within the try block, and RuntimeException is not explicitly caught.  It is a common bug pattern to
+  say try { ... } catch (Exception e) { something } as a shorthand for catching a number of types of exception
+  each of whose catch blocks is identical, but this construct also accidentally catches RuntimeException as well,
+  masking potential bugs.
+  </p>
+  <p>A better approach is to either explicitly catch the specific exceptions that are thrown,
+  or to explicitly catch RuntimeException exception, rethrow it, and then catch all non-Runtime Exceptions, as shown below:</p>
+<pre><code>try {
+    ...
+} catch (RuntimeException e) {
+    throw e;
+} catch (Exception e) {
+    ... deal with all non-runtime exceptions ...
+}
+</code></pre>
+  
+     <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="SING_SINGLETON_GETTER_NOT_SYNCHRONIZED">Instance-getter method of class using singleton design pattern is not synchronized.</a>
+      </h2>
+      
+        <p>
+        Instance-getter method of class using singleton design pattern is not synchronized. When this method is invoked by two or more threads simultaneously, 
+        multiple instantiation of a singleton class becomes possible.<br><br>
+        
+        <a href="https://wiki.sei.cmu.edu/confluence/display/java/MSC07-J.+Prevent+multiple+instantiations+of+singleton+objects">SEI CERT MSC07-J</a> rule
+        </p>
+    <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>
+         <a name="URF_UNREAD_FIELD">Unread field</a>
+      </h2>
+
+  <p> This field is never read.&nbsp; Consider removing it from the class.</p>
+
+    <p>
+         <br/>
+         <br/>
+      </p>
+   </body>
+</html>

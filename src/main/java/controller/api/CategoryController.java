@@ -23,15 +23,7 @@ public class CategoryController {
      * @return A list of Category objects representing all categories.
      */
     public static List<Category> getAllCategories() {
-        // Send a GET request to fetch all categories for the current locale
-        String response = sendHttpRequest(
-                "GET",
-                "/categories/"
-                        + Main.currentLocale.getLanguage()
-                        + "/all",
-                ""
-        );
-        // Deserialize the JSON response into a list of Category objects
+        String response = sendHttpRequest("GET", "/categories/" + Main.getCurrentLocale().getLanguage() + "/all", "");
         return gson.fromJson(response, new TypeToken<ArrayList<Category>>() {}.getType());
     }
 
