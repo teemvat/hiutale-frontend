@@ -48,3 +48,4 @@ build/
 
 ### Other ###
 sonar-project.properties
+.idea
