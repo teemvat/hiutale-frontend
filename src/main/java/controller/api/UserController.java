@@ -6,61 +6,32 @@ import com.google.gson.JsonParser;
 import model.User;
 import utils.SessionManager;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import static utils.ApiConnector.sendHttpRequest;
 
+/**
+ * The UserController class provides methods to manage user-related operations,
+ * such as login, logout, registration, retrieval, and deletion of user accounts.
+ */
 public class UserController {
+    // Gson instance for JSON serialization and deserialization
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
-    private static String sendHttpRequest(String method, String endpoint, String requestBody) {
-        try {
-            URL url = new URL(BASE_URL + endpoint);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
-
-            if (SessionManager.getInstance().isLoggedIn()) {
-                String token = SessionManager.getInstance().getToken();
-                if (token != null) {
-                    conn.setRequestProperty("Authorization", "Bearer " + token);
-                }
-            }
-
-            if (!requestBody.isEmpty()) {
-                try (OutputStream os = conn.getOutputStream()) {
-                    os.write(requestBody.getBytes());
-                }
-            }
-
-            int responseCode = conn.getResponseCode();
-            InputStream is = (responseCode < 400) ? conn.getInputStream() : conn.getErrorStream();
-
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                return response.toString();
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            return "";
-        }
-    }
-
+    /**
+     * Logs in a user with the provided email and password.
+     *
+     * @param email    The email address of the user.
+     * @param password The password of the user.
+     * @return The User object if login is successful, or null if authentication fails.
+     */
     public static User login(String email, String password) {
-        String requestBody = '{' +
-                "\"email\": \"" + email + "\"," +
-                "\"password\": \"" + password + "\"" +
-                '}';
+        String requestBody = '{'
+                + "\"email\": \""
+                + email
+                + "\","
+                + "\"password\": \""
+                + password
+                + "\""
+                + '}';
         String response = sendHttpRequest("POST", "/users/login", requestBody);
         System.out.println("Login response: " + response);
 
@@ -94,17 +65,34 @@ public class UserController {
         }
     }
 
+    /**
+     * Logs out the currently logged-in user.
+     */
     public static void logout() {
         SessionManager.getInstance().logout();
     }
 
+    /**
+     * Registers a new user with the provided username, password, and email.
+     *
+     * @param username The username of the new user.
+     * @param password The password of the new user.
+     * @param email    The email address of the new user.
+     * @return The newly registered User object.
+     */
     public static User register(String username, String password, String email) {
-        String requestBody = '{' +
-                "\"username\": \"" + username + "\"," +
-                "\"password\": \"" + password + "\"," +
-                "\"email\": \"" + email + "\"," +
-                "\"role\": \"USER\"" +
-                '}';
+        String requestBody = '{'
+                + "\"username\": \""
+                + username
+                + "\","
+                + "\"password\": \""
+                + password
+                + "\","
+                + "\"email\": \""
+                + email
+                + "\","
+                + "\"role\": \"USER\""
+                + '}';
         String response = sendHttpRequest("POST", "/users/register", requestBody);
         System.out.println("Registration response: " + response);
         User user = gson.fromJson(response, User.class);
@@ -114,11 +102,22 @@ public class UserController {
         return user;
     }
 
+    /**
+     * Retrieves a user by their unique ID.
+     *
+     * @param id The unique identifier of the user to retrieve.
+     * @return The User object representing the requested user.
+     */
     public static User getUser(int id) {
         String response = sendHttpRequest("GET", "/users/one/" + id, "");
         return gson.fromJson(response, User.class);
     }
 
+    /**
+     * Deletes a user by their unique ID and logs out the current session.
+     *
+     * @param id The unique identifier of the user to delete.
+     */
     public static void deleteUser(int id) {
         sendHttpRequest("DELETE", "/users/" + id, "");
         SessionManager.getInstance().logout();

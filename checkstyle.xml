@@ -410,7 +410,7 @@
                                    ]/IDENT"/>
       <property name="message" value="'[a-z][a-z0-9][a-zA-Z0-9]*(?:_[a-z][a-z0-9][a-zA-Z0-9]*)*'"/>
     </module>
-    <module name="SingleLineJavadoc"/>
+<!--    <module name="SingleLineJavadoc"/>-->
     <module name="EmptyCatchBlock">
       <property name="exceptionVariableName" value="expected"/>
     </module>

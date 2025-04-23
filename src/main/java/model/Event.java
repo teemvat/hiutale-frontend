@@ -6,26 +6,78 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Event class represents an event with various attributes such as title, description,
+ * location, capacity, organizer, categories, status, date, time, price, and counts for
+ * attendance and favorites. It provides methods to manipulate and retrieve event details.
+ */
 public class Event {
+    // Unique identifier for the event
     private String id;
+    // Title of the event
     private String title;
+    // Description of the event
     private String description;
+    // ID of the location where the event is held
     private String locationId;
+    // Maximum capacity of attendees for the event
     private int capacity;
+    // ID of the organizer of the event
     private String organizerId;
-    private List<Integer> eventCategoryIds;
+    // List of category IDs associated with the event
+    private final List<Integer> eventCategoryIds;
+    // Status of the event
     private String status;
+    // Start date of the event
     private String startDate;
+    // End date of the event
     private String endDate;
+    // Start time of the event
     private String start;
+    // End time of the event
     private String end;
+    // Price of the event
     private double price;
+    // Number of attendees for the event
     private int attendanceCount;
+    // Number of times the event has been marked as a favorite
     private int favouriteCount;
+    // Image associated with the event
     private String image;
 
-    // for new event and getting events from database
-    public Event(String eventId, String eventTitle, String eventDescription, String eventLocationId, String eventCapacity, String eventOrganizerId, String[] eventCategories, String startDate, String endDate, String startTime, String endTime, double eventPrice, int attendeeCount, int favouriteCount) {
+    /**
+     * Constructs a new Event object with the specified attributes.
+     *
+     * @param eventId          The unique identifier for the event.
+     * @param eventTitle       The title of the event.
+     * @param eventDescription The description of the event.
+     * @param eventLocationId  The ID of the location where the event is held.
+     * @param eventCapacity    The maximum capacity of attendees for the event.
+     * @param eventOrganizerId The ID of the organizer of the event.
+     * @param eventCategories  The array of category IDs associated with the event.
+     * @param startDate        The start date of the event.
+     * @param endDate          The end date of the event.
+     * @param startTime        The start time of the event.
+     * @param endTime          The end time of the event.
+     * @param eventPrice       The price of the event.
+     * @param attendeeCount    The number of attendees for the event.
+     * @param favouriteCount   The number of times the event has been marked as a favorite.
+     */
+    public Event(
+            String eventId,
+            String eventTitle,
+            String eventDescription,
+            String eventLocationId,
+            String eventCapacity,
+            String eventOrganizerId,
+            String[] eventCategories,
+            String startDate,
+            String endDate,
+            String startTime,
+            String endTime,
+            double eventPrice,
+            int attendeeCount,
+            int favouriteCount) {
         this.id = eventId;
         this.title = eventTitle;
         this.description = eventDescription;
@@ -43,21 +95,34 @@ public class Event {
         this.end = endTime;
         this.price = eventPrice;
         this.attendanceCount = attendeeCount;
+        this.favouriteCount = favouriteCount;
         this.image = null;
     }
 
-    public void reformatDateForBE() {
+    /**
+     * Reformats the start and end date-time for backend processing.
+     */
+    public void reformatDateForBe() {
         this.start = this.startDate + "T" + this.start + ":00";
         this.end = this.endDate + "T" + this.end + ":00";
     }
 
-    public void reformatDateForFE() {
+    /**
+     * Reformats the start and end date-time for frontend display.
+     */
+    public void reformatDateForFe() {
         this.startDate = this.start.split("T")[0];
         this.endDate = this.end.split("T")[0];
         this.start = getTime(this.start);
         this.end = getTime(this.end);
     }
 
+    /**
+     * Extracts and formats the time from a given date-time string.
+     *
+     * @param input The input date-time string.
+     * @return The formatted time string.
+     */
     private String getTime(String input) {
         String formattedTime;
         if (input.contains("T")) { // Full timestamp
@@ -69,6 +134,8 @@ public class Event {
         }
         return formattedTime;
     }
+
+    // Getters and setters for various attributes of the Event class
 
     public String getTitle() {
         return title;
@@ -110,6 +177,11 @@ public class Event {
         this.organizerId = organizerId;
     }
 
+    /**
+     * Retrieves the list of category IDs associated with the event.
+     *
+     * @return A list of category IDs.
+     */
     public List<Integer> getCategories() {
         if (eventCategoryIds == null) {
             return new ArrayList<>();
@@ -117,6 +189,11 @@ public class Event {
         return eventCategoryIds;
     }
 
+    /**
+     * Sets the category IDs for the event.
+     *
+     * @param eventCategoryIds A comma-separated string of category IDs.
+     */
     public void setEventCategoryIds(String eventCategoryIds) {
         this.eventCategoryIds.clear();
         for (String category : eventCategoryIds.split(",")) {
@@ -126,6 +203,10 @@ public class Event {
 
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDate() {
@@ -142,6 +223,10 @@ public class Event {
 
     public double getPrice() {
         return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getId() {
@@ -176,25 +261,55 @@ public class Event {
         return image;
     }
 
+    /**
+     * Returns a string representation of the Event object.
+     *
+     * @return A string containing the event's details.
+     */
     @Override
     public String toString() {
-        return "Event{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", locationId='" + locationId + '\'' +
-                ", capacity=" + capacity +
-                ", organizerId='" + organizerId + '\'' +
-                ", eventCategoryIds=" + eventCategoryIds +
-                ", status='" + status + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", start='" + start + '\'' +
-                ", end='" + end + '\'' +
-                ", price=" + price +
-                ", attendanceCount=" + attendanceCount +
-                ", favouriteCount=" + favouriteCount +
-                ", image=" + image +
-                '}';
+        return "Event{"
+                + "id='"
+                + id
+                + '\''
+                + ", title='"
+                + title + '\''
+                + ", description='"
+                + description
+                + '\''
+                + ", locationId='"
+                + locationId
+                + '\''
+                + ", capacity="
+                + capacity
+                + ", organizerId='"
+                + organizerId
+                + '\''
+                + ", eventCategoryIds="
+                + eventCategoryIds
+                + ", status='"
+                + status
+                + '\''
+                + ", startDate='"
+                + startDate
+                + '\''
+                + ", endDate='"
+                + endDate
+                + '\''
+                + ", start='"
+                + start
+                + '\''
+                + ", end='"
+                + end
+                + '\''
+                + ", price="
+                + price
+                + ", attendanceCount="
+                + attendanceCount
+                + ", favouriteCount="
+                + favouriteCount
+                + ", image="
+                + image
+                + '}';
     }
 }

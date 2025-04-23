@@ -2,71 +2,42 @@ package controller.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import model.Event;
 import model.Location;
-import utils.SessionManager;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-// pitäis olla ok kaikki
-// todo: testaa postmanilla
+import static utils.ApiConnector.sendHttpRequest;
+
+/**
+ * The LocationController class provides methods to interact with location-related API endpoints.
+ * It includes functionality to retrieve all locations and fetch a specific location by its ID.
+ */
 public class LocationController {
+    // Gson instance for JSON serialization and deserialization
     private static final Gson gson = new Gson();
-    private static final String BASE_URL = "http://37.27.9.255:8080"; // Backend URL
 
-    private static String sendHttpRequest(String method, String endpoint, String requestBody) {
-        try {
-            URL url = new URL(BASE_URL + endpoint);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
-
-            if (SessionManager.getInstance().isLoggedIn()) {
-                String token = SessionManager.getInstance().getUser().getToken();
-                conn.setRequestProperty("Authorization", "Bearer " + token);
-            }
-
-            if (!requestBody.isEmpty()) {
-                try (OutputStream os = conn.getOutputStream()) {
-                    os.write(requestBody.getBytes());
-                }
-            }
-
-            int responseCode = conn.getResponseCode();
-            InputStream is = (responseCode < 400) ? conn.getInputStream() : conn.getErrorStream();
-
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                return response.toString();
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            return "";
-        }
-    }
-
+    /**
+     * Retrieves all locations available in the system.
+     *
+     * @return A list of Location objects representing all locations.
+     */
     public static List<Location> getAllLocations() {
+        // Send a GET request to fetch all locations
         String result = sendHttpRequest("GET", "/locations/all", "");
+        // Deserialize the JSON response into a list of Location objects
         return gson.fromJson(result, new TypeToken<ArrayList<Location>>(){}.getType());
     }
 
+    /**
+     * Retrieves a specific location by its unique ID.
+     *
+     * @param locationId The unique identifier of the location to retrieve.
+     * @return A Location object representing the requested location.
+     */
     public static Location getLocationById(String locationId) {
+        // Send a GET request to fetch the location by its ID
         String result = sendHttpRequest("GET", "/locations/one/" + locationId, "");
+        // Deserialize the JSON response into a Location object
         return gson.fromJson(result, Location.class);
     }
-
 }
