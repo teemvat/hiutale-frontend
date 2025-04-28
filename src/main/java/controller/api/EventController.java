@@ -136,11 +136,12 @@ public class EventController {
                 continue;
             }
             System.out.println("Category: " + category);
-            System.out.println("event category: " + event.getCategories());
+            System.out.println("event category: " + Arrays.toString(event.getCategories()));
             if (category != null
                     && !category.isEmpty()
                     && event.getCategories() != null
-                    && !Arrays.asList(event.getCategories()).contains(Integer.parseInt(category))
+                    && Arrays.stream(event.getCategories())
+                    .noneMatch(c -> c == Integer.parseInt(category))
             ) {
                 System.out.println("Skipping event due to category: " + event.getTitle());
                 continue;
