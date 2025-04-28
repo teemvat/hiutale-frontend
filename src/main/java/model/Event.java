@@ -25,7 +25,7 @@ public class Event {
     // ID of the organizer of the event
     private String organizerId;
     // List of category IDs associated with the event
-    private final List<Integer> eventCategoryIds;
+    private int[] categories;
     // Status of the event
     private String status;
     // Start date of the event
@@ -54,7 +54,7 @@ public class Event {
      * @param eventLocationId  The ID of the location where the event is held.
      * @param eventCapacity    The maximum capacity of attendees for the event.
      * @param eventOrganizerId The ID of the organizer of the event.
-     * @param eventCategories  The array of category IDs associated with the event.
+     * @param categories  The array of category IDs associated with the event.
      * @param startDate        The start date of the event.
      * @param endDate          The end date of the event.
      * @param startTime        The start time of the event.
@@ -70,7 +70,7 @@ public class Event {
             String eventLocationId,
             String eventCapacity,
             String eventOrganizerId,
-            String[] eventCategories,
+            int[] categories,
             String startDate,
             String endDate,
             String startTime,
@@ -84,10 +84,7 @@ public class Event {
         this.locationId = eventLocationId;
         this.capacity = Integer.parseInt(eventCapacity);
         this.organizerId = eventOrganizerId;
-        this.eventCategoryIds = new ArrayList<>();
-        for (String category : eventCategories) {
-            this.eventCategoryIds.add(Integer.valueOf(category.trim()));
-        }
+        this.categories = categories;
         this.status = "Default";
         this.startDate = startDate;
         this.endDate = endDate;
@@ -182,23 +179,17 @@ public class Event {
      *
      * @return A list of category IDs.
      */
-    public List<Integer> getCategories() {
-        if (eventCategoryIds == null) {
-            return new ArrayList<>();
-        }
-        return eventCategoryIds;
+    public int[] getCategories() {
+        return categories;
     }
 
     /**
      * Sets the category IDs for the event.
      *
-     * @param eventCategoryIds A comma-separated string of category IDs.
+     * @param categories A comma-separated string of category IDs.
      */
-    public void setEventCategoryIds(String eventCategoryIds) {
-        this.eventCategoryIds.clear();
-        for (String category : eventCategoryIds.split(",")) {
-            this.eventCategoryIds.add(Integer.valueOf(category.trim()));
-        }
+    public void setCategories(int[] categories) {
+        this.categories = categories;
     }
 
     public String getStatus() {
@@ -286,7 +277,7 @@ public class Event {
                 + organizerId
                 + '\''
                 + ", eventCategoryIds="
-                + eventCategoryIds
+                + categories
                 + ", status='"
                 + status
                 + '\''

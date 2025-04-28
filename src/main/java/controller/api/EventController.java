@@ -8,6 +8,7 @@ import utils.FileTypeAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static utils.ApiConnector.sendHttpRequest;
@@ -44,7 +45,7 @@ public class EventController {
                                     String description,
                                     String locationId,
                                     String capacity,
-                                    String[] categories,
+                                    int[] categories,
                                     String startDate,
                                     String endDate,
                                     String startTime,
@@ -139,7 +140,7 @@ public class EventController {
             if (category != null
                     && !category.isEmpty()
                     && event.getCategories() != null
-                    && !event.getCategories().contains(Integer.parseInt(category))
+                    && !Arrays.asList(event.getCategories()).contains(Integer.parseInt(category))
             ) {
                 System.out.println("Skipping event due to category: " + event.getTitle());
                 continue;

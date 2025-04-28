@@ -315,7 +315,7 @@ public class HomeController {
     Location selectedLocation = locationComboBox.getSelectionModel().getSelectedItem();
     User selectedOrganizer = organizerComboBox.getSelectionModel().getSelectedItem();
 
-    String categoryId = (selectedCategory != null) ? selectedCategory.getId() : null;
+    String categoryId = (selectedCategory != null) ? String.valueOf(selectedCategory.getId()) : null;
     String locationId = (selectedLocation != null) ? selectedLocation.getId() : null;
     String organizerId = (selectedOrganizer != null) ? selectedOrganizer.getIdString() : null;
 
