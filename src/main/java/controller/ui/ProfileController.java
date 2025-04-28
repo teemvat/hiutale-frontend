@@ -54,9 +54,11 @@ public class ProfileController {
    * Sets the user information (username and email) in the profile view.
   */
   private void setUserInformation() {
-    User user = SessionManager.getInstance().getUser();
-    usernameLabel.setText(user.getUsername());
-    emailLabel.setText(user.getEmail());
+    if (SessionManager.getInstance().isLoggedIn()) {
+      User user = SessionManager.getInstance().getUser();
+      usernameLabel.setText(user.getUsername());
+      emailLabel.setText(user.getEmail());
+    }
   }
 
   /**
@@ -69,20 +71,22 @@ public class ProfileController {
    */
   private void loadEventCards(VBox container, List<Event> events, String emptyMessage) {
     container.getChildren().clear();
-    if (events == null || events.isEmpty()) {
-      container.getChildren().add(new Label(emptyMessage));
-      return;
-    }
+    if (SessionManager.getInstance().isLoggedIn()) {
+      if (events == null || events.isEmpty()) {
+        container.getChildren().add(new Label(emptyMessage));
+        return;
+      }
 
-    for (Event event : events) {
-      try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_card.fxml"), Main.getBundle());
-        Parent root = loader.load();
-        EventCardController controller = loader.getController();
-        controller.setEventData(event);
-        container.getChildren().add(root);
-      } catch (IOException e) {
-        logger.info("Failed to load event card for: " + event.getTitle() + " " + e.getMessage());
+      for (Event event : events) {
+        try {
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/event_card.fxml"), Main.getBundle());
+          Parent root = loader.load();
+          EventCardController controller = loader.getController();
+          controller.setEventData(event);
+          container.getChildren().add(root);
+        } catch (IOException e) {
+          logger.info("Failed to load event card for: " + event.getTitle() + " " + e.getMessage());
+        }
       }
     }
   }
@@ -92,9 +96,11 @@ public class ProfileController {
    */
   @FXML
   private void handleLogoutAction() {
-    UserController.logout();
-    closeAllWindows();
-    openLoginPage();
+    if (SessionManager.getInstance().isLoggedIn()) {
+      UserController.logout();
+      closeAllWindows();
+      openLoginPage();
+    }
   }
 
   /**
@@ -129,7 +135,9 @@ public class ProfileController {
    */
   @FXML
   private void handleRemoveUserAction() {
-    UserController.deleteUser(SessionManager.getInstance().getUser().getId());
-    handleLogoutAction();
+    if (SessionManager.getInstance().isLoggedIn()) {
+      UserController.deleteUser(SessionManager.getInstance().getUser().getId());
+      handleLogoutAction();
+    }
   }
 }

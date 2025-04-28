@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.Event;
 import utils.ImageUtil;
+import utils.SessionManager;
 import utils.WindowUtil;
 
 /**
@@ -37,13 +38,15 @@ public class EventPageController {
   */
   @FXML
   private void handleBuyTicketAction() {
-    WindowUtil.openNewWindow(
-            "/fxml/rsvp.fxml",
-            Main.getBundle().getString("rsvp.title"),
-            (Stage) buyTicketButton.getScene().getWindow(),
-            Main.getBundle(),
-            (RsvpController controller) -> controller.setEvent(event)
-    );
+    if (SessionManager.getInstance().isLoggedIn()) {
+      WindowUtil.openNewWindow(
+              "/fxml/rsvp.fxml",
+              Main.getBundle().getString("rsvp.title"),
+              (Stage) buyTicketButton.getScene().getWindow(),
+              Main.getBundle(),
+              (RsvpController controller) -> controller.setEvent(event)
+      );
+    }
   }
 
   /**

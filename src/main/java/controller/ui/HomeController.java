@@ -40,6 +40,7 @@ import model.Event;
 import model.Location;
 import model.User;
 import utils.ComboBoxUtils;
+import utils.SessionManager;
 import utils.WindowUtil;
 
 /**
@@ -381,13 +382,15 @@ public class HomeController {
   */
   @FXML
   private void handleProfileAction() {
-    WindowUtil.openNewWindow(
-            "/fxml/profile.fxml",
-            Main.getBundle().getString("profile.title"),
-            (Stage) profileButton.getScene().getWindow(),
-            Main.getBundle(),
-            controller -> {}
-    );
+    if (SessionManager.getInstance().isLoggedIn()) {
+      WindowUtil.openNewWindow(
+              "/fxml/profile.fxml",
+              Main.getBundle().getString("profile.title"),
+              (Stage) profileButton.getScene().getWindow(),
+              Main.getBundle(),
+              controller -> {}
+      );
+    }
   }
 
   /**
@@ -395,14 +398,16 @@ public class HomeController {
   */
   @FXML
   private void handleAddEventAction() {
-    WindowUtil.openNewWindow(
-            "/fxml/new_event.fxml",
-            Main.getBundle().getString("new.event.title"),
-            (Stage) addEventButton.getScene().getWindow(),
-            Main.getBundle(),
-            controller -> {}
-    );
-    updateEventList();
+    if (SessionManager.getInstance().isLoggedIn()) {
+      WindowUtil.openNewWindow(
+              "/fxml/new_event.fxml",
+              Main.getBundle().getString("new.event.title"),
+              (Stage) addEventButton.getScene().getWindow(),
+              Main.getBundle(),
+              controller -> {}
+      );
+      updateEventList();
+    }
   }
 
   /**

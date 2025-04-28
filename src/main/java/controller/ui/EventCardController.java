@@ -15,6 +15,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.stage.Stage;
 import model.Event;
 import utils.ImageUtil;
+import utils.SessionManager;
 import utils.WindowUtil;
 
 /**
@@ -77,30 +78,38 @@ public class EventCardController {
 
   @FXML
   private void handleTicketAction() {
-    WindowUtil.openNewWindow(
-            "/fxml/rsvp.fxml",
-            Main.getBundle().getString("ticket.title"),
-            (Stage) ticketButton.getScene().getWindow(),
-            Main.getBundle(),
-            (RsvpController controller) -> controller.setEvent(event)
-    );
+    if (SessionManager.getInstance().isLoggedIn()) {
+      WindowUtil.openNewWindow(
+              "/fxml/rsvp.fxml",
+              Main.getBundle().getString("ticket.title"),
+              (Stage) ticketButton.getScene().getWindow(),
+              Main.getBundle(),
+              (RsvpController controller) -> controller.setEvent(event)
+      );
+    }
   }
 
   private void updateFavouriteIcon() {
     String starFull = "/pictures/icons/star_filled.png";
     String startEmpty = "/pictures/icons/star.png";
-    boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
-    favoriteImage.setImage(loadImage(isFavourite ? starFull : startEmpty));
+    if (SessionManager.getInstance().isLoggedIn()) {
+      boolean isFavourite = FavouriteController.getUserFavourites().contains(this.event);
+      favoriteImage.setImage(loadImage(isFavourite ? starFull : startEmpty));
+    } else {
+      favoriteImage.setImage(loadImage(startEmpty));
+    }
   }
 
   @FXML
   private void handleFavoriteAction() {
-    if (FavouriteController.getUserFavourites().contains(this.event)) {
-      FavouriteController.deleteFavourite(this.event.getId());
-    } else {
-      FavouriteController.createFavourite(this.event.getId());
+    if (SessionManager.getInstance().isLoggedIn()) {
+      if (FavouriteController.getUserFavourites().contains(this.event)) {
+        FavouriteController.deleteFavourite(this.event.getId());
+      } else {
+        FavouriteController.createFavourite(this.event.getId());
+      }
+      updateFavouriteIcon();
     }
-    updateFavouriteIcon();
   }
 
   @FXML
