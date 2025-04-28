@@ -10,7 +10,8 @@ class EventTest {
 
     @BeforeAll
     static void setUp() {
-        event = new Event("1", "title", "description", "1", "1", "1", new String[]{"1"}, "2021-01-01", "2021-01-01", "00:00", "00:00", 0.0, 0, 0);
+        int[] categories = {1};
+        event = new Event("1", "title", "description", "1", "1", "1", categories, "2021-01-01", "2021-01-01", "00:00", "00:00", 0.0, 0, 0);
     }
 
     @Order(26)
@@ -117,17 +118,17 @@ class EventTest {
     @Order(11)
     @Test
     void getCategories() {
-        Integer[] expected = new Integer[]{1};
-        assertArrayEquals(expected, event.getCategories().toArray());
+        int[] expected = {1};
+        assertArrayEquals(expected, event.getCategories());
     }
 
     @Order(12)
     @Test
     void setEventCategoryIds() {
-        String expected = "2";
-        event.setEventCategoryIds(expected);
-        Integer[] expectedArray = new Integer[]{2};
-        assertArrayEquals(expectedArray, event.getCategories().toArray());
+        int[] expected = {2};
+        event.setCategories(expected);
+        int[] expectedArray = {2};
+        assertArrayEquals(expectedArray, event.getCategories());
     }
 
     @Order(13)

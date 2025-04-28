@@ -181,10 +181,10 @@ public class NewEventController {
    *
    * @return An array of selected category IDs.
   */
-  private String[] getCategoryIds() {
+  private int[] getCategoryIds() {
     return selectedCategories.stream()
-            .map(Category::getId)
-            .toArray(String[]::new);
+            .mapToInt(Category::getId)
+            .toArray();
   }
 
   /**

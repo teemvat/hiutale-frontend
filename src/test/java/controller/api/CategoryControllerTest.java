@@ -30,7 +30,7 @@ class CategoryControllerTest {
 
     @Test
     void getCategoryById() {
-        Category category = CategoryController.getCategoryById(categories.get(0).getId());
+        Category category = CategoryController.getCategoryById(String.valueOf(categories.get(0).getId()));
         assertNotNull(category);
     }
 

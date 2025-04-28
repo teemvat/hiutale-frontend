@@ -32,14 +32,14 @@ class EventControllerTest {
     @Test
     @Order(1)
     void createEvent() {
-        //String[] eventCategories = new String[Integer.parseInt(categories.get(0).getId())];
-        File file = new File("src/test/resources/test.png");
+        File file = new File("src/test/resources/f.png");
+        int[] categories = {1};
         Event e = EventController.createEvent(
                 "Testi",
                 "Tämä on testi",
                 locations.get(0).getId(),
                 "200",
-                new String[]{categories.get(0).getId()},
+                categories,
                 "2025-02-26",
                 "2025-02-26",
                 "17:00",

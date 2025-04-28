@@ -30,8 +30,8 @@ public class Category {
      *
      * @return The category ID as a string.
      */
-    public String getId() {
-        return categoryId + "";
+    public int getId() {
+        return categoryId;
     }
 
     /**
